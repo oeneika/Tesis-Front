@@ -1,1 +1,56 @@
 // Here you can add other styles
+section.principal {
+  padding: 35px 0;
+}
+span.span-error {
+  width: 100%;
+  color: rgb(194, 17, 17);
+  margin-top: 5px;
+}
+
+.photo-profile {
+  width: 225px;
+  height: 225px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 200px;
+}
+
+.photo-profile-menu {
+  width: 35px;
+  height: 35px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 200px;
+}
+
+img.edit-icon {
+  height: 50px;
+  position: absolute;
+  bottom: 0;
+  bottom: 10px;
+  right: 50px;
+}
+
+@media (max-width: 480px) {
+  .nombre-apellido {
+    text-align: center;
+    margin-top: 20px;
+  }
+}
+
+.card-body,
+.card-footer {
+  padding: 1.5rem;
+}
+
+.align-center {
+  display: flex;
+  align-items: center;
+}
+
+button {
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+}
