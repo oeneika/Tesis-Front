@@ -1,4 +1,5 @@
 import { Component, OnInit, TemplateRef } from "@angular/core";
+import { Router } from "@angular/router";
 import { UserService } from "../../services/user.service";
 import { FaceService } from "../../services/face.service";
 import { ConfidenceLevelsService } from "../../services/confidence-levels.service";
@@ -21,8 +22,13 @@ export class ConfidenceLevelsComponent implements OnInit {
   public photo_default = "../../../assets/img/avatars/default.png";
   public url: string;
   public rostros;
+  public page = 1;
+  public count = 0;
+  public tableSize;
+  public returnedArray: string[];
 
   constructor(
+    private router: Router,
     private _userService: UserService,
     private modalService: BsModalService,
     private _confidenceLevels: ConfidenceLevelsService,
@@ -35,6 +41,15 @@ export class ConfidenceLevelsComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (!this.identity) {
+      this.router.navigate(["login"]);
+    }
+
+    this.getConfidenceLevels();
+    this.getFaces();
+  }
+
+  getConfidenceLevels() {
     this._confidenceLevels.getConfidenceLevels().subscribe(
       (data) => {
         this.confidenceLevels = data;
@@ -42,14 +57,13 @@ export class ConfidenceLevelsComponent implements OnInit {
       },
       (err) => {}
     );
-
-    this.getFaces();
   }
 
   getFaces() {
     this._faceService.getFaceByUser(this.identity).subscribe(
       (data) => {
         this.rostros = data;
+        this.tableSize = this.rostros.length;
       },
       (err) => {}
     );
@@ -57,7 +71,14 @@ export class ConfidenceLevelsComponent implements OnInit {
 
   //Abrir modal
   openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
+    this.modalRef = this.modalService.show(template, {
+      class: "modal-lg modal-dialog-centered",
+    });
+  }
+
+  editUser(x, user) {
+    this.openModal(x);
+    this.face = user;
   }
 
   //Eliminar un rostro
@@ -69,6 +90,31 @@ export class ConfidenceLevelsComponent implements OnInit {
         }
 
         this.getFaces();
+      },
+      (err) => {}
+    );
+  }
+
+  onSubmitEdit() {
+    this._faceService.editFace(this.face).subscribe(
+      (data) => {
+        this.face = data.face;
+        localStorage.setItem("identity", JSON.stringify(this.identity));
+
+        if (!this.filesToUpload) {
+        } else {
+          this.makeFileRequest(
+            this.url + "upload-image-face/" + this.face._id,
+            [],
+            this.filesToUpload
+          ).then((result: any) => {
+            this.face.image = result.image;
+            localStorage.setItem("identity", JSON.stringify(this.identity));
+          });
+        }
+
+        this.getFaces();
+        this.modalRef.hide();
       },
       (err) => {}
     );
@@ -94,6 +140,7 @@ export class ConfidenceLevelsComponent implements OnInit {
             localStorage.setItem("identity", JSON.stringify(this.identity));
           });
         }
+        this.face = new Face("", "", "", "", "", "", "", "");
         this.getFaces();
         this.modalRef.hide();
       },

@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { User } from "../../models/user";
 import { UserService } from "../../services/user.service";
 import { COUNTRIES } from "../../utils/select.util";
@@ -18,13 +19,17 @@ export class ProfilePageComponent implements OnInit {
   public photo_default = "../../../assets/img/avatars/default.png";
   public url: string;
 
-  constructor(private _userService: UserService) {
+  constructor(private _userService: UserService, private router: Router) {
     this.identity = this._userService.getIdentity();
     this.token = this._userService.getToken();
     this.url = environment.url;
   }
 
   ngOnInit() {
+    if (!this.identity) {
+      this.router.navigate(["login"]);
+    }
+
     this._userService.getUser(this.identity).subscribe(
       (data) => {
         this.usuario = data.user;
