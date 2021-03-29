@@ -66,6 +66,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: "confidence-levels",
+        loadChildren: () =>
+          import("./views/confidence-levels/confidence-levels.module").then(
+            (m) => m.ConfidenceLevelsModule
+          ),
+      },
+      {
         path: "base",
         loadChildren: () =>
           import("./views/base/base.module").then((m) => m.BaseModule),
