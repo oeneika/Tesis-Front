@@ -48,6 +48,8 @@ import { TabsModule } from "ngx-bootstrap/tabs";
 import { AlertModule } from "ngx-bootstrap/alert";
 import { ChartsModule } from "ng2-charts";
 import { WebcamComponent } from "./webcam/webcam.component";
+import { ServiceWorkerModule } from "@angular/service-worker";
+import { environment } from "../environments/environment";
 
 @NgModule({
   imports: [
@@ -68,6 +70,9 @@ import { WebcamComponent } from "./webcam/webcam.component";
     ChartsModule,
     IconModule,
     IconSetModule.forRoot(),
+    ServiceWorkerModule.register("ngsw-worker.js", {
+      enabled: environment.production,
+    }),
   ],
   declarations: [
     AppComponent,

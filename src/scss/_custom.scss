@@ -62,3 +62,80 @@ button {
   border: 0;
   padding: 0;
 }
+
+.font-2xl {
+  font-size: 1rem !important;
+}
+
+.camera-preview {
+  width: 100%;
+  height: 200px;
+  background-color: rgb(194, 194, 194);
+  margin-bottom: 25px;
+}
+
+.camera-live {
+  width: 100%;
+  height: 350px;
+  background-color: rgb(194, 194, 194);
+  margin-bottom: 25px;
+}
+
+a .card h2,
+a .card i,
+a .card h5 {
+  color: black;
+  text-decoration: none;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.colaboradores-item {
+  border-bottom: 1px solid rgb(194, 194, 194);
+}
+
+.btn-colaboradores-item {
+  text-align: right;
+  padding-top: 10px;
+}
+
+.main .container-fluid {
+  padding: 0 15px;
+}
+
+.funciones-basicas {
+  padding: 0 90px;
+}
+
+@media (max-width: 480px) {
+  .funciones-basicas {
+    padding: initial;
+  }
+
+  .features {
+    display: inline;
+    margin-bottom: 10px;
+  }
+  .features-div {
+    margin-bottom: 15px;
+  }
+
+  .btn-colaboradores-item {
+    text-align: left;
+    padding-top: 0px;
+    padding-bottom: 20px;
+  }
+
+  .download {
+    margin-top: 20px;
+  }
+}
+
+.btn-primary.disabled,
+.btn-primary:disabled {
+  color: #fff;
+  background-color: #969696;
+  border-color: #969696;
+}

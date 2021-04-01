@@ -1,402 +1,54 @@
 <div class="animated fadeIn pt-4">
   <div class="row">
     <div class="col-sm-6 col-lg-3">
-      <div class="card text-white bg-info">
-        <div class="card-body pb-0">
-          <button type="button" class="btn btn-transparent p-0 float-right">
-            <i class="icon-location-pin"></i>
-          </button>
-          <div class="text-value">9.823</div>
-          <div>Members online</div>
-        </div>
-        <div class="chart-wrapper mt-3 mx-3" style="height: 70px">
-          <canvas
-            baseChart
-            class="chart"
-            [datasets]="lineChart2Data"
-            [labels]="lineChart2Labels"
-            [options]="lineChart2Options"
-            [colors]="lineChart2Colours"
-            [legend]="lineChart2Legend"
-            [chartType]="lineChart2Type"
-          ></canvas>
+      <div class="card">
+        <div class="card-body">
+          <div class="h4 m-0">1539</div>
+          <div>Total de rostros capturados</div>
         </div>
       </div>
     </div>
     <!--/.col-->
     <div class="col-sm-6 col-lg-3">
-      <div class="card text-white bg-primary">
-        <div class="card-body pb-0">
-          <div class="btn-group float-right" dropdown>
-            <button
-              type="button"
-              class="btn btn-transparent dropdown-toggle p-0"
-              dropdownToggle
-            >
-              <i class="icon-settings"></i>
-            </button>
-            <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </div>
-          <div class="text-value">9.823</div>
-          <div>Members online</div>
-        </div>
-        <div class="chart-wrapper mt-3 mx-3" style="height: 70px">
-          <canvas
-            baseChart
-            class="chart"
-            [datasets]="lineChart1Data"
-            [labels]="lineChart1Labels"
-            [options]="lineChart1Options"
-            [colors]="lineChart1Colours"
-            [legend]="lineChart1Legend"
-            [chartType]="lineChart1Type"
-          ></canvas>
+      <div class="card">
+        <div class="card-body">
+          <div class="h4 m-0">800</div>
+          <div>Rostros conocidos</div>
         </div>
       </div>
     </div>
     <!--/.col-->
     <div class="col-sm-6 col-lg-3">
-      <div class="card text-white bg-warning">
-        <div class="card-body pb-0">
-          <div class="btn-group float-right" dropdown>
-            <button
-              type="button"
-              class="btn btn-transparent dropdown-toggle p-0"
-              dropdownToggle
-            >
-              <i class="icon-settings"></i>
-            </button>
-            <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </div>
-          <div class="text-value">9.823</div>
-          <div>Members online</div>
-        </div>
-        <div class="chart-wrapper mt-3" style="height: 70px">
-          <canvas
-            baseChart
-            class="chart"
-            [datasets]="lineChart3Data"
-            [labels]="lineChart3Labels"
-            [options]="lineChart3Options"
-            [colors]="lineChart3Colours"
-            [legend]="lineChart3Legend"
-            [chartType]="lineChart3Type"
-          ></canvas>
+      <div class="card">
+        <div class="card-body">
+          <div class="h4 m-0">800</div>
+          <div>Rostros desconocidos</div>
         </div>
       </div>
     </div>
     <!--/.col-->
     <div class="col-sm-6 col-lg-3">
-      <div class="card text-white bg-danger">
-        <div class="card-body pb-0">
-          <div class="btn-group float-right" dropdown>
-            <button
-              type="button"
-              class="btn btn-transparent dropdown-toggle p-0"
-              dropdownToggle
-            >
-              <i class="icon-settings"></i>
-            </button>
-            <div class="dropdown-menu dropdown-menu-right" *dropdownMenu>
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
-          </div>
-          <div class="text-value">9.823</div>
-          <div>Members online</div>
-        </div>
-        <div class="chart-wrapper mt-3 mx-3" style="height: 70px">
-          <canvas
-            baseChart
-            class="chart"
-            [datasets]="barChart1Data"
-            [labels]="barChart1Labels"
-            [options]="barChart1Options"
-            [colors]="barChart1Colours"
-            [legend]="barChart1Legend"
-            [chartType]="barChart1Type"
-          ></canvas>
+      <div class="card">
+        <div class="card-body">
+          <div class="h4 m-0">800</div>
+          <div>Edad promedio de sospechosos</div>
         </div>
       </div>
     </div>
     <!--/.col-->
   </div>
   <!--/.row-->
-  <div class="card">
-    <div class="card-body">
-      <div class="row">
-        <div class="col-sm-5">
-          <h4 class="card-title mb-0">Traffic</h4>
-          <div class="small text-muted">November 2017</div>
-        </div>
-        <!--/.col-->
-        <div class="col-sm-7 d-none d-md-block">
-          <button type="button" class="btn btn-primary float-right">
-            <i class="icon-cloud-download"></i>
-          </button>
-          <div
-            class="btn-group btn-group-toggle float-right mr-3"
-            data-toggle="buttons"
-          >
-            <label
-              class="btn btn-outline-secondary"
-              [(ngModel)]="radioModel"
-              btnRadio="Day"
-              id="option1"
-              >Day</label
-            >
-            <label
-              class="btn btn-outline-secondary"
-              [(ngModel)]="radioModel"
-              btnRadio="Month"
-              id="option2"
-              >Month</label
-            >
-            <label
-              class="btn btn-outline-secondary"
-              [(ngModel)]="radioModel"
-              btnRadio="Year"
-              id="option3"
-              >Year</label
-            >
-          </div>
-        </div>
-        <!--/.col-->
-      </div>
-      <!--/.row-->
-      <div class="chart-wrapper" style="height: 300px; margin-top: 40px">
-        <canvas
-          baseChart
-          class="chart"
-          [datasets]="mainChartData"
-          [labels]="mainChartLabels"
-          [options]="mainChartOptions"
-          [colors]="mainChartColours"
-          [legend]="mainChartLegend"
-          [chartType]="mainChartType"
-        ></canvas>
-      </div>
-    </div>
-    <div class="card-footer">
-      <div class="row text-center">
-        <div class="col-sm-12 col-md mb-sm-2 mb-0">
-          <div class="text-muted">Visits</div>
-          <strong>29.703 Users (40%)</strong>
-          <div class="progress progress-xs mt-2">
-            <div
-              class="progress-bar bg-success"
-              role="progressbar"
-              style="width: 40%"
-              aria-valuenow="40"
-              aria-valuemin="0"
-              aria-valuemax="100"
-            ></div>
-          </div>
-        </div>
-        <div class="col-sm-12 col-md mb-sm-2 mb-0">
-          <div class="text-muted">Unique</div>
-          <strong>24.093 Users (20%)</strong>
-          <div class="progress progress-xs mt-2">
-            <div
-              class="progress-bar bg-info"
-              role="progressbar"
-              style="width: 20%"
-              aria-valuenow="20"
-              aria-valuemin="0"
-              aria-valuemax="100"
-            ></div>
-          </div>
-        </div>
-        <div class="col-sm-12 col-md mb-sm-2 mb-0">
-          <div class="text-muted">Pageviews</div>
-          <strong>78.706 Views (60%)</strong>
-          <div class="progress progress-xs mt-2">
-            <div
-              class="progress-bar bg-warning"
-              role="progressbar"
-              style="width: 60%"
-              aria-valuenow="60"
-              aria-valuemin="0"
-              aria-valuemax="100"
-            ></div>
-          </div>
-        </div>
-        <div class="col-sm-12 col-md mb-sm-2 mb-0">
-          <div class="text-muted">New Users</div>
-          <strong>22.123 Users (80%)</strong>
-          <div class="progress progress-xs mt-2">
-            <div
-              class="progress-bar bg-danger"
-              role="progressbar"
-              style="width: 80%"
-              aria-valuenow="80"
-              aria-valuemin="0"
-              aria-valuemax="100"
-            ></div>
-          </div>
-        </div>
-        <div class="col-sm-12 col-md mb-sm-2 mb-0">
-          <div class="text-muted">Bounce Rate</div>
-          <strong>40.15%</strong>
-          <div class="progress progress-xs mt-2">
-            <div
-              class="progress-bar"
-              role="progressbar"
-              style="width: 40%"
-              aria-valuenow="40"
-              aria-valuemin="0"
-              aria-valuemax="100"
-            ></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--/.card-->
-  <div class="row">
-    <div class="col-sm-6 col-lg-3">
-      <div class="brand-card">
-        <div class="brand-card-header bg-facebook">
-          <i class="fa fa-facebook"></i>
-          <div class="chart-wrapper">
-            <canvas
-              baseChart
-              class="chart"
-              [datasets]="brandBoxChartData1"
-              [labels]="brandBoxChartLabels"
-              [options]="brandBoxChartOptions"
-              [colors]="brandBoxChartColours"
-              [legend]="brandBoxChartLegend"
-              [chartType]="brandBoxChartType"
-            ></canvas>
-          </div>
-        </div>
-        <div class="brand-card-body">
-          <div>
-            <div class="text-value">89k</div>
-            <div class="text-uppercase text-muted small">friends</div>
-          </div>
-          <div>
-            <div class="text-value">459</div>
-            <div class="text-uppercase text-muted small">feeds</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--/.col-->
-    <div class="col-sm-6 col-lg-3">
-      <div class="brand-card">
-        <div class="brand-card-header bg-twitter">
-          <i class="fa fa-twitter"></i>
-          <div class="chart-wrapper">
-            <canvas
-              baseChart
-              class="chart"
-              [datasets]="brandBoxChartData2"
-              [labels]="brandBoxChartLabels"
-              [options]="brandBoxChartOptions"
-              [colors]="brandBoxChartColours"
-              [legend]="brandBoxChartLegend"
-              [chartType]="brandBoxChartType"
-            ></canvas>
-          </div>
-        </div>
-        <div class="brand-card-body">
-          <div>
-            <div class="text-value">973k</div>
-            <div class="text-uppercase text-muted small">followers</div>
-          </div>
-          <div>
-            <div class="text-value">1.792</div>
-            <div class="text-uppercase text-muted small">tweets</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--/.col-->
-    <div class="col-sm-6 col-lg-3">
-      <div class="brand-card">
-        <div class="brand-card-header bg-linkedin">
-          <i class="fa fa-linkedin"></i>
-          <div class="chart-wrapper">
-            <canvas
-              baseChart
-              class="chart"
-              [datasets]="brandBoxChartData3"
-              [labels]="brandBoxChartLabels"
-              [options]="brandBoxChartOptions"
-              [colors]="brandBoxChartColours"
-              [legend]="brandBoxChartLegend"
-              [chartType]="brandBoxChartType"
-            ></canvas>
-          </div>
-        </div>
-        <div class="brand-card-body">
-          <div>
-            <div class="text-value">500+</div>
-            <div class="text-uppercase text-muted small">contacts</div>
-          </div>
-          <div>
-            <div class="text-value">292</div>
-            <div class="text-uppercase text-muted small">feeds</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--/.col-->
-    <div class="col-sm-6 col-lg-3">
-      <div class="brand-card">
-        <div class="brand-card-header bg-google-plus">
-          <i class="fa fa-google-plus"></i>
-          <div class="chart-wrapper">
-            <canvas
-              baseChart
-              class="chart"
-              [datasets]="brandBoxChartData4"
-              [labels]="brandBoxChartLabels"
-              [options]="brandBoxChartOptions"
-              [colors]="brandBoxChartColours"
-              [legend]="brandBoxChartLegend"
-              [chartType]="brandBoxChartType"
-            ></canvas>
-          </div>
-        </div>
-        <div class="brand-card-body">
-          <div>
-            <div class="text-value">894</div>
-            <div class="text-uppercase text-muted small">followers</div>
-          </div>
-          <div>
-            <div class="text-value">92</div>
-            <div class="text-uppercase text-muted small">circles</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--/.col-->
-  </div>
   <!--/.row-->
   <div class="row">
     <div class="col-md-12">
       <div class="card">
-        <div class="card-header">Traffic &amp; Sales</div>
         <div class="card-body">
           <div class="row">
             <div class="col-sm-6">
               <div class="row">
                 <div class="col-sm-6">
                   <div class="callout callout-info">
-                    <small class="text-muted">New Clients</small>
+                    <small class="text-muted">Usuarios conocidos</small>
                     <br />
                     <strong class="h4">9,123</strong>
                   </div>
@@ -404,7 +56,7 @@
                 <!--/.col-->
                 <div class="col-sm-6">
                   <div class="callout callout-danger">
-                    <small class="text-muted">Recuring Clients</small>
+                    <small class="text-muted">Usuarios desconocidos</small>
                     <br />
                     <strong class="h4">22,643</strong>
                   </div>
@@ -415,7 +67,7 @@
               <hr class="mt-0" />
               <div class="progress-group mb-4">
                 <div class="progress-group-prepend">
-                  <span class="progress-group-text"> Monday </span>
+                  <span class="progress-group-text"> Lunes </span>
                 </div>
                 <div class="progress-group-bars">
                   <div class="progress progress-xs">
@@ -442,7 +94,7 @@
               </div>
               <div class="progress-group mb-4">
                 <div class="progress-group-prepend">
-                  <span class="progress-group-text"> Tuesday </span>
+                  <span class="progress-group-text"> Martes </span>
                 </div>
                 <div class="progress-group-bars">
                   <div class="progress progress-xs">
@@ -469,7 +121,7 @@
               </div>
               <div class="progress-group mb-4">
                 <div class="progress-group-prepend">
-                  <span class="progress-group-text"> Wednesday </span>
+                  <span class="progress-group-text"> Miercoles </span>
                 </div>
                 <div class="progress-group-bars">
                   <div class="progress progress-xs">
@@ -496,7 +148,7 @@
               </div>
               <div class="progress-group mb-4">
                 <div class="progress-group-prepend">
-                  <span class="progress-group-text"> Thursday </span>
+                  <span class="progress-group-text"> Jueves </span>
                 </div>
                 <div class="progress-group-bars">
                   <div class="progress progress-xs">
@@ -523,7 +175,7 @@
               </div>
               <div class="progress-group mb-4">
                 <div class="progress-group-prepend">
-                  <span class="progress-group-text"> Friday </span>
+                  <span class="progress-group-text"> Viernes </span>
                 </div>
                 <div class="progress-group-bars">
                   <div class="progress progress-xs">
@@ -550,7 +202,7 @@
               </div>
               <div class="progress-group mb-4">
                 <div class="progress-group-prepend">
-                  <span class="progress-group-text"> Saturday </span>
+                  <span class="progress-group-text"> Sabado </span>
                 </div>
                 <div class="progress-group-bars">
                   <div class="progress progress-xs">
@@ -577,7 +229,7 @@
               </div>
               <div class="progress-group mb-4">
                 <div class="progress-group-prepend">
-                  <span class="progress-group-text"> Sunday </span>
+                  <span class="progress-group-text"> Domingo </span>
                 </div>
                 <div class="progress-group-bars">
                   <div class="progress progress-xs">
@@ -608,17 +260,17 @@
               <div class="row">
                 <div class="col-sm-6">
                   <div class="callout callout-warning">
-                    <small class="text-muted">Pageviews</small>
+                    <small class="text-muted">Hombres y mujeres</small>
                     <br />
-                    <strong class="h4">78,623</strong>
+                    <strong class="h4">10</strong>
                   </div>
                 </div>
                 <!--/.col-->
                 <div class="col-sm-6">
                   <div class="callout callout-success">
-                    <small class="text-muted">Organic</small>
+                    <small class="text-muted">Edades promedio</small>
                     <br />
-                    <strong class="h4">49,123</strong>
+                    <strong class="h4">10</strong>
                   </div>
                 </div>
                 <!--/.col-->
@@ -628,7 +280,7 @@
               <div class="progress-group">
                 <div class="progress-group-header">
                   <i class="icon-user progress-group-icon"></i>
-                  <div>Male</div>
+                  <div>Hombre</div>
                   <div class="ml-auto font-weight-bold">43%</div>
                 </div>
                 <div class="progress-group-bars">
@@ -647,7 +299,7 @@
               <div class="progress-group mb-5">
                 <div class="progress-group-header">
                   <i class="icon-user-female progress-group-icon"></i>
-                  <div>Female</div>
+                  <div>Mujeres</div>
                   <div class="ml-auto font-weight-bold">37%</div>
                 </div>
                 <div class="progress-group-bars">
@@ -665,8 +317,7 @@
               </div>
               <div class="progress-group">
                 <div class="progress-group-header align-items-end">
-                  <i class="icon-globe progress-group-icon"></i>
-                  <div>Organic Search</div>
+                  <div>25 a 30 años</div>
                   <div class="ml-auto font-weight-bold mr-2">191.235</div>
                   <div class="text-muted small">(56%)</div>
                 </div>
@@ -685,8 +336,7 @@
               </div>
               <div class="progress-group">
                 <div class="progress-group-header align-items-end">
-                  <i class="icon-social-facebook progress-group-icon"></i>
-                  <div>Facebook</div>
+                  <div>31 a 35 años</div>
                   <div class="ml-auto font-weight-bold mr-2">51.223</div>
                   <div class="text-muted small">(15%)</div>
                 </div>
@@ -705,8 +355,7 @@
               </div>
               <div class="progress-group">
                 <div class="progress-group-header align-items-end">
-                  <i class="icon-social-twitter progress-group-icon"></i>
-                  <div>Twitter</div>
+                  <div>36 a 42 años</div>
                   <div class="ml-auto font-weight-bold mr-2">37.564</div>
                   <div class="text-muted small">(11%)</div>
                 </div>
@@ -725,8 +374,7 @@
               </div>
               <div class="progress-group">
                 <div class="progress-group-header align-items-end">
-                  <i class="icon-social-linkedin progress-group-icon"></i>
-                  <div>LinkedIn</div>
+                  <div>43 a 51 años</div>
                   <div class="ml-auto font-weight-bold mr-2">27.319</div>
                   <div class="text-muted small">(8%)</div>
                 </div>
@@ -748,17 +396,29 @@
           </div>
           <!--/.row-->
           <br />
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
+  <!--/.row-->
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">Últimos usuarios capturados en el día</div>
+        <div class="card-body">
           <table
             class="table table-responsive-sm table-hover table-outline mb-0"
           >
             <thead class="thead-light">
               <tr>
                 <th class="text-center"><i class="icon-people"></i></th>
-                <th>User</th>
-                <th class="text-center">Country</th>
-                <th>Usage</th>
-                <th class="text-center">Payment Method</th>
-                <th>Activity</th>
+                <th>Nombre completo</th>
+                <th class="text-center">Edad</th>
+                <th>Fecha de nacimiento</th>
+                <th class="text-center">Sexo</th>
+                <th>Hora de la captura</th>
               </tr>
             </thead>
             <tbody>
@@ -775,45 +435,14 @@
                 </td>
                 <td>
                   <div>Yiorgos Avraamu</div>
-                  <div class="small text-muted">
-                    <span>New</span> | Registered: Jan 1, 2015
-                  </div>
+                  <div class="small text-muted">Nivel de confianza 2</div>
                 </td>
-                <td class="text-center">
-                  <i
-                    class="flag-icon flag-icon-us h4 mb-0"
-                    title="us"
-                    id="us"
-                  ></i>
-                </td>
+                <td class="text-center">18 años</td>
+                <td>08/07/1997</td>
+                <td class="text-center">Femenino</td>
                 <td>
-                  <div class="clearfix">
-                    <div class="float-left">
-                      <strong>50%</strong>
-                    </div>
-                    <div class="float-right">
-                      <small class="text-muted"
-                        >Jun 11, 2015 - Jul 10, 2015</small
-                      >
-                    </div>
-                  </div>
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-success"
-                      role="progressbar"
-                      style="width: 50%"
-                      aria-valuenow="50"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </td>
-                <td class="text-center">
-                  <i class="fa fa-cc-mastercard" style="font-size: 24px"></i>
-                </td>
-                <td>
-                  <div class="small text-muted">Last login</div>
-                  <strong>10 sec ago</strong>
+                  <div class="small text-muted">21/03/2021</div>
+                  <strong>11:32 p.m.</strong>
                 </td>
               </tr>
               <tr>
@@ -824,50 +453,19 @@
                       class="img-avatar"
                       alt="admin@bootstrapmaster.com"
                     />
-                    <span class="avatar-status badge-danger"></span>
+                    <span class="avatar-status badge-success"></span>
                   </div>
                 </td>
                 <td>
-                  <div>Avram Tarasios</div>
-                  <div class="small text-muted">
-                    <span>Recurring</span> | Registered: Jan 1, 2015
-                  </div>
+                  <div>Yiorgos Avraamu</div>
+                  <div class="small text-muted">Nivel de confianza 2</div>
                 </td>
-                <td class="text-center">
-                  <i
-                    class="flag-icon flag-icon-br h4 mb-0"
-                    title="br"
-                    id="br"
-                  ></i>
-                </td>
+                <td class="text-center">18 años</td>
+                <td>08/07/1997</td>
+                <td class="text-center">Femenino</td>
                 <td>
-                  <div class="clearfix">
-                    <div class="float-left">
-                      <strong>10%</strong>
-                    </div>
-                    <div class="float-right">
-                      <small class="text-muted"
-                        >Jun 11, 2015 - Jul 10, 2015</small
-                      >
-                    </div>
-                  </div>
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-info"
-                      role="progressbar"
-                      style="width: 10%"
-                      aria-valuenow="10"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </td>
-                <td class="text-center">
-                  <i class="fa fa-cc-visa" style="font-size: 24px"></i>
-                </td>
-                <td>
-                  <div class="small text-muted">Last login</div>
-                  <strong>5 minutes ago</strong>
+                  <div class="small text-muted">21/03/2021</div>
+                  <strong>11:32 p.m.</strong>
                 </td>
               </tr>
               <tr>
@@ -878,212 +476,19 @@
                       class="img-avatar"
                       alt="admin@bootstrapmaster.com"
                     />
-                    <span class="avatar-status badge-warning"></span>
-                  </div>
-                </td>
-                <td>
-                  <div>Quintin Ed</div>
-                  <div class="small text-muted">
-                    <span>New</span> | Registered: Jan 1, 2015
-                  </div>
-                </td>
-                <td class="text-center">
-                  <i
-                    class="flag-icon flag-icon-in h4 mb-0"
-                    title="in"
-                    id="in"
-                  ></i>
-                </td>
-                <td>
-                  <div class="clearfix">
-                    <div class="float-left">
-                      <strong>74%</strong>
-                    </div>
-                    <div class="float-right">
-                      <small class="text-muted"
-                        >Jun 11, 2015 - Jul 10, 2015</small
-                      >
-                    </div>
-                  </div>
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-warning"
-                      role="progressbar"
-                      style="width: 74%"
-                      aria-valuenow="74"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </td>
-                <td class="text-center">
-                  <i class="fa fa-cc-stripe" style="font-size: 24px"></i>
-                </td>
-                <td>
-                  <div class="small text-muted">Last login</div>
-                  <strong>1 hour ago</strong>
-                </td>
-              </tr>
-              <tr>
-                <td class="text-center">
-                  <div class="avatar">
-                    <img
-                      src="assets/img/avatars/4.jpg"
-                      class="img-avatar"
-                      alt="admin@bootstrapmaster.com"
-                    />
-                    <span class="avatar-status badge-secondary"></span>
-                  </div>
-                </td>
-                <td>
-                  <div>Enéas Kwadwo</div>
-                  <div class="small text-muted">
-                    <span>New</span> | Registered: Jan 1, 2015
-                  </div>
-                </td>
-                <td class="text-center">
-                  <i
-                    class="flag-icon flag-icon-fr h4 mb-0"
-                    title="fr"
-                    id="fr"
-                  ></i>
-                </td>
-                <td>
-                  <div class="clearfix">
-                    <div class="float-left">
-                      <strong>98%</strong>
-                    </div>
-                    <div class="float-right">
-                      <small class="text-muted"
-                        >Jun 11, 2015 - Jul 10, 2015</small
-                      >
-                    </div>
-                  </div>
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-danger"
-                      role="progressbar"
-                      style="width: 98%"
-                      aria-valuenow="98"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </td>
-                <td class="text-center">
-                  <i class="fa fa-paypal" style="font-size: 24px"></i>
-                </td>
-                <td>
-                  <div class="small text-muted">Last login</div>
-                  <strong>Last month</strong>
-                </td>
-              </tr>
-              <tr>
-                <td class="text-center">
-                  <div class="avatar">
-                    <img
-                      src="assets/img/avatars/5.jpg"
-                      class="img-avatar"
-                      alt="admin@bootstrapmaster.com"
-                    />
                     <span class="avatar-status badge-success"></span>
                   </div>
                 </td>
                 <td>
-                  <div>Agapetus Tadeáš</div>
-                  <div class="small text-muted">
-                    <span>New</span> | Registered: Jan 1, 2015
-                  </div>
+                  <div>Yiorgos Avraamu</div>
+                  <div class="small text-muted">Nivel de confianza 2</div>
                 </td>
-                <td class="text-center">
-                  <i
-                    class="flag-icon flag-icon-es h4 mb-0"
-                    title="es"
-                    id="es"
-                  ></i>
-                </td>
+                <td class="text-center">18 años</td>
+                <td>08/07/1997</td>
+                <td class="text-center">Femenino</td>
                 <td>
-                  <div class="clearfix">
-                    <div class="float-left">
-                      <strong>22%</strong>
-                    </div>
-                    <div class="float-right">
-                      <small class="text-muted"
-                        >Jun 11, 2015 - Jul 10, 2015</small
-                      >
-                    </div>
-                  </div>
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-info"
-                      role="progressbar"
-                      style="width: 22%"
-                      aria-valuenow="22"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </td>
-                <td class="text-center">
-                  <i class="fa fa-google-wallet" style="font-size: 24px"></i>
-                </td>
-                <td>
-                  <div class="small text-muted">Last login</div>
-                  <strong>Last week</strong>
-                </td>
-              </tr>
-              <tr>
-                <td class="text-center">
-                  <div class="avatar">
-                    <img
-                      src="assets/img/avatars/6.jpg"
-                      class="img-avatar"
-                      alt="admin@bootstrapmaster.com"
-                    />
-                    <span class="avatar-status badge-danger"></span>
-                  </div>
-                </td>
-                <td>
-                  <div>Friderik Dávid</div>
-                  <div class="small text-muted">
-                    <span>New</span> | Registered: Jan 1, 2015
-                  </div>
-                </td>
-                <td class="text-center">
-                  <i
-                    class="flag-icon flag-icon-pl h4 mb-0"
-                    title="pl"
-                    id="pl"
-                  ></i>
-                </td>
-                <td>
-                  <div class="clearfix">
-                    <div class="float-left">
-                      <strong>43%</strong>
-                    </div>
-                    <div class="float-right">
-                      <small class="text-muted"
-                        >Jun 11, 2015 - Jul 10, 2015</small
-                      >
-                    </div>
-                  </div>
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-success"
-                      role="progressbar"
-                      style="width: 43%"
-                      aria-valuenow="43"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </td>
-                <td class="text-center">
-                  <i class="fa fa-cc-amex" style="font-size: 24px"></i>
-                </td>
-                <td>
-                  <div class="small text-muted">Last login</div>
-                  <strong>Yesterday</strong>
+                  <div class="small text-muted">21/03/2021</div>
+                  <strong>11:32 p.m.</strong>
                 </td>
               </tr>
             </tbody>
@@ -1091,7 +496,5 @@
         </div>
       </div>
     </div>
-    <!--/.col-->
   </div>
-  <!--/.row-->
 </div>

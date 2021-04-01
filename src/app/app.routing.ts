@@ -73,6 +73,11 @@ export const routes: Routes = [
           ),
       },
       {
+        path: "camera",
+        loadChildren: () =>
+          import("./views/camera/camera.module").then((m) => m.CameraModule),
+      },
+      {
         path: "base",
         loadChildren: () =>
           import("./views/base/base.module").then((m) => m.BaseModule),

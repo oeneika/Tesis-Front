@@ -4,6 +4,7 @@ import { navItems } from "../../_nav";
 import { Router } from "@angular/router";
 import { User } from "../../models/user";
 import { UserService } from "../../services/user.service";
+import { SwPush } from "@angular/service-worker";
 
 @Component({
   selector: "app-dashboard",
@@ -19,14 +20,26 @@ export class DefaultLayoutComponent implements OnInit {
   public token;
   public errorLogin = false;
   public photo_default = "../../../assets/img/avatars/default.png";
+  respuesta: any;
+  readonly VAPID_PUBLIC_KEY =
+    "BPWkPcyZruyIUOSj6XWbltqNRDP5sfC2hO31tRQPGs9AgAkxPcxRqbMnAQiuPbdSZDqcgWggIBJ0IOWzvf0i4hw";
 
-  constructor(private _userService: UserService, private router: Router) {
+  constructor(
+    private swPush: SwPush,
+    private _userService: UserService,
+    private router: Router
+  ) {
     this.user = new User("", "", "", "", "", "", "", "", "ROLE_USER");
     this.identity = this._userService.getIdentity();
     this.token = this._userService.getToken();
   }
 
   ngOnInit() {
+    //Si el usuario no inicio sesión no puede ver el contenido
+    if (!this.identity) {
+      this.router.navigate(["login"]);
+    }
+
     this._userService.getUser(this.identity).subscribe(
       (data) => {
         this.usuario = data.user;
@@ -35,6 +48,19 @@ export class DefaultLayoutComponent implements OnInit {
       },
       (err) => {}
     );
+  }
+
+  subscribeToNotifications() {
+    this.swPush
+      .requestSubscription({
+        serverPublicKey: this.VAPID_PUBLIC_KEY,
+      })
+      .then((respuesta) => {
+        this.respuesta = respuesta;
+      })
+      .catch((err) => {
+        this.respuesta = err;
+      });
   }
 
   public setPhoto() {
