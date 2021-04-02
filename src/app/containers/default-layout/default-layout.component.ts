@@ -23,13 +23,14 @@ export class DefaultLayoutComponent implements OnInit {
   respuesta: any;
   readonly VAPID_PUBLIC_KEY =
     "BPWkPcyZruyIUOSj6XWbltqNRDP5sfC2hO31tRQPGs9AgAkxPcxRqbMnAQiuPbdSZDqcgWggIBJ0IOWzvf0i4hw";
+  public secret;
 
   constructor(
     private swPush: SwPush,
     private _userService: UserService,
     private router: Router
   ) {
-    this.user = new User("", "", "", "", "", "", "", "", "ROLE_USER");
+    this.user = new User("", "", "", "", "", {}, "", "", "", "ROLE_USER");
     this.identity = this._userService.getIdentity();
     this.token = this._userService.getToken();
   }
@@ -45,6 +46,7 @@ export class DefaultLayoutComponent implements OnInit {
         this.usuario = data.user;
         this.user = this.usuario;
         this.setPhoto();
+        this.secret = this.user.temp_secreto;
       },
       (err) => {}
     );

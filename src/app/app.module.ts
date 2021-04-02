@@ -4,6 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { LocationStrategy, HashLocationStrategy } from "@angular/common";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientModule } from "@angular/common/http";
+import { ClipboardModule } from "ngx-clipboard";
 
 import { PerfectScrollbarModule } from "ngx-perfect-scrollbar";
 import { PERFECT_SCROLLBAR_CONFIG } from "ngx-perfect-scrollbar";
@@ -28,6 +29,8 @@ import { P404Component } from "./views/error/404.component";
 import { P500Component } from "./views/error/500.component";
 import { LoginComponent } from "./views/login/login.component";
 import { RegisterComponent } from "./views/register/register.component";
+import { VerficationCodeComponent } from "./views/verification-code/verification-code.component";
+import { YourCodeComponent } from "./views/verification-code/your-code.component";
 
 const APP_CONTAINERS = [DefaultLayoutComponent];
 
@@ -54,6 +57,7 @@ import { environment } from "../environments/environment";
 @NgModule({
   imports: [
     BrowserModule,
+    ClipboardModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     AlertModule,
@@ -82,6 +86,8 @@ import { environment } from "../environments/environment";
     LoginComponent,
     RegisterComponent,
     WebcamComponent,
+    VerficationCodeComponent,
+    YourCodeComponent,
   ],
   providers: [
     {

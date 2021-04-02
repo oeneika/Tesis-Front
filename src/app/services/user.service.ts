@@ -37,7 +37,7 @@ export class UserService {
   }
 
   //Usuario entra al sistema
-  signUp(user_to_register) {
+  signUp(user_to_register): Observable<any> {
     let json = JSON.stringify(user_to_register);
     let params = json;
 
@@ -64,6 +64,19 @@ export class UserService {
     return this._http.get(environment.url + "get-user/" + idUser, {
       headers: this.headersAuthorization,
     });
+  }
+
+  public VerificationCode(payload, secret): Observable<any> {
+    return this._http.post(
+      environment.url.concat("verify"),
+      {
+        secret: secret,
+        token_secret: payload.temp_secret,
+      },
+      {
+        headers: this.headers,
+      }
+    );
   }
 
   getIdentity() {

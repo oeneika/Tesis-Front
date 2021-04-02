@@ -82,7 +82,7 @@
     <app-sidebar-minimizer></app-sidebar-minimizer>
   </app-sidebar>
   <!-- Main content -->
-  <main class="main" *ngIf="identity">
+  <main class="main" *ngIf="identity && secret">
     <div class="container-fluid">
       <!--
       <button class="btn btn-primary" (click)="subscribeToNotifications()">

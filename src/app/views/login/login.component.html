@@ -7,10 +7,7 @@
             <div class="card p-4">
               <div class="card-body">
                 <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
-                  <h1>Iniciar sesión</h1>
-                  <p class="text-muted">
-                    Accede a tu cuenta y disfruta de una increíble experiencia
-                  </p>
+                  <h1 class="text-center mb-4">Iniciar sesión</h1>
                   <alert type="danger" *ngIf="errorLogin">
                     <strong>¡Hubo un error!</strong> Intenta nuevamente iniciar
                     sesión.
@@ -59,14 +56,16 @@
                   </div>
 
                   <div class="row">
-                    <div class="col-6">
+                    <div class="col-12">
                       <input
                         type="submit"
-                        class="btn btn-primary px-4"
+                        class="btn btn-primary w-100"
                         value="Iniciar sesión"
                       />
                     </div>
-                    <div class="col-6 text-right">
+                  </div>
+                  <div class="row">
+                    <div class="col-12 text-center">
                       <button type="button" class="btn btn-link px-0">
                         ¿Olvídaste tu contraseña?
                       </button>
@@ -76,20 +75,25 @@
               </div>
             </div>
             <div
-              class="card text-white bg-primary py-5 d-md-down-none"
+              class="card text-white py-5 d-md-down-none background-register"
               style="width: 44%"
             >
-              <div class="card-body text-center">
-                <div>
-                  <h2>Registrarse</h2>
-                  <p>
-                    Crea tu cuenta para acceder al sistema de videovigilancia.
-                    Visualiza tus cámaras y disfruta de la mejor seguridad para
-                    ti y tus seres queridos
-                  </p>
-                  <a routerLink="/register" class="btn btn-primary active mt-3">
-                    ¡Regístrate ahora!
-                  </a>
+              <div class="overlay">
+                <div class="card-body text-center">
+                  <div>
+                    <h2>Registrarse</h2>
+                    <p>
+                      Crea tu cuenta para acceder al sistema de videovigilancia.
+                      Visualiza tus cámaras y disfruta de la mejor seguridad
+                      para ti y tus seres queridos
+                    </p>
+                    <a
+                      routerLink="/register"
+                      class="btn btn-primary active mt-3"
+                    >
+                      ¡Regístrate ahora!
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>

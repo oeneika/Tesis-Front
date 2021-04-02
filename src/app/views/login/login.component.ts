@@ -4,7 +4,7 @@ import { UserService } from "../../services/user.service";
 import { Router } from "@angular/router";
 
 @Component({
-  selector: "app-dashboard",
+  selector: "app-login",
   templateUrl: "login.component.html",
   providers: [UserService],
 })
@@ -15,7 +15,10 @@ export class LoginComponent implements OnInit {
   public errorLogin = false;
 
   constructor(private _userService: UserService, private router: Router) {
-    this.user = new User("", "", "", "", "", "", "", "", "ROLE_USER");
+    this.user = new User("", "", "", "", "", {}, "", "", "", "ROLE_USER");
+    localStorage.removeItem("identity");
+    localStorage.removeItem("token");
+    localStorage.clear();
   }
 
   ngOnInit() {
@@ -36,7 +39,8 @@ export class LoginComponent implements OnInit {
             let token = data["token"];
             this.token = token;
             localStorage.setItem("token", JSON.stringify(token));
-            this.router.navigate(["/"]);
+            let secret = data["secret"];
+            this.router.navigate([`/verification-code/${secret}`]);
           },
           (err) => {
             var error = <any>err;

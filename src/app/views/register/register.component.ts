@@ -14,18 +14,26 @@ export class RegisterComponent {
   public token;
 
   constructor(private _userService: UserService, private router: Router) {
-    this.user = new User("", "", "", "", "", "", "", "", "ROLE_USER");
+    this.user = new User("", "", "", "", "", {}, "", "", "", "ROLE_USER");
+    localStorage.removeItem("identity");
+    localStorage.removeItem("token");
+    localStorage.clear();
   }
 
   public onSubmit() {
     this._userService.signUp(this.user).subscribe(
       (data) => {
         console.log(data);
-        let token = data["token"];
+        let token = data.token;
         if (token) {
           this.token = token;
           localStorage.setItem("token", JSON.stringify(token));
-          this.router.navigate(["/"]);
+          let identity = data.id;
+          //Crear elemento en el localstorage
+          localStorage.setItem("identity", JSON.stringify(identity));
+          let secret = data.secret.secret;
+          let qr = data.secret.qr;
+          this.router.navigate([`/your-code`]);
         } else {
           this.errorRegister = true;
         }
