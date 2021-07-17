@@ -18,10 +18,10 @@ export class ConfidenceLevelsComponent implements OnInit {
   public token;
   modalRef: BsModalRef;
   public confidenceLevels: Array<any> = [];
-  public niveles;
+  public niveles = [];
   public photo_default = "../../../assets/img/avatars/default.png";
   public url: string;
-  public rostros;
+  public rostros = [];
   public page = 1;
   public count = 0;
   public tableSize;
@@ -52,8 +52,10 @@ export class ConfidenceLevelsComponent implements OnInit {
   getConfidenceLevels() {
     this._confidenceLevels.getConfidenceLevels().subscribe(
       (data) => {
-        this.confidenceLevels = data;
-        this.niveles = this.confidenceLevels;
+        if (data != null && data != "") {
+          this.confidenceLevels = data;
+          this.niveles = this.confidenceLevels;
+        }
       },
       (err) => {}
     );
@@ -62,8 +64,10 @@ export class ConfidenceLevelsComponent implements OnInit {
   getFaces() {
     this._faceService.getFaceByUser(this.identity).subscribe(
       (data) => {
-        this.rostros = data;
-        this.tableSize = this.rostros.length;
+        if (data != null && data != "") {
+          this.rostros = data;
+          this.tableSize = this.rostros.length;
+        }
       },
       (err) => {}
     );

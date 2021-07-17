@@ -13,12 +13,11 @@ export const navItems: INavData[] = [
   {
     name: "Cámara",
     url: "/cemara",
-    icon: "icon-puzzle",
+    icon: "icon-camera",
     children: [
       {
         name: "Modo cámara",
         url: "/camera",
-        icon: "icon-puzzle",
         badge: {
           variant: "danger",
           text: "EN VIVO",
@@ -27,18 +26,17 @@ export const navItems: INavData[] = [
       {
         name: "Listado de cámara",
         url: "/camera/list-cameras",
-        icon: "icon-puzzle",
       },
     ],
   },
   {
-    name: "Niveles de confianza",
-    url: "/confidence-levels",
-    icon: "icon-drop",
+    name: "Grabaciones",
+    url: "/",
+    icon: "icon-camrecorder",
   },
   {
-    name: "Notificaciones",
-    url: "/notifications",
-    icon: "icon-pencil",
+    name: "Niveles de confianza",
+    url: "/confidence-levels",
+    icon: "icon-notebook",
   },
 ];

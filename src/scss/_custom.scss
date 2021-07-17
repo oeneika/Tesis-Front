@@ -158,6 +158,11 @@ a {
   align-items: center;
 }
 
+.app-body {
+  height: 100vh;
+  margin-top: 0;
+}
+
 .app-body .main {
   flex: 1;
   min-width: 0;
@@ -165,10 +170,6 @@ a {
 }
 
 @media (min-width: 768px) {
-  .app-body .main {
-    height: 100vh;
-  }
-
   .app-body .main .app-body {
     margin-top: 0;
   }
