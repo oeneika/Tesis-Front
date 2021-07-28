@@ -3,7 +3,7 @@ import { Router } from "@angular/router";
 import { User } from "../../models/user";
 import { UserService } from "../../services/user.service";
 import { COUNTRIES } from "../../utils/select.util";
-import { environment } from "../../environments/environment";
+import { environment } from "../../../environments/environment";
 
 @Component({
   selector: "app-profile-page",

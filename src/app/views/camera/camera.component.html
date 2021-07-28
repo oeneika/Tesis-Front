@@ -15,8 +15,10 @@
   <div class="row">
     <div class="col-sm-7">
       <div class="card">
-        <div class="card-body">
-          <div class="camera-live"></div>
+        <div class="card-body" align="center">
+          <div class="camera-live" >
+            <app-app-video-player [stream]="user" *ngFor="let user of listUser"></app-app-video-player>
+          </div>          
           <div class="funciones-basicas">
             <div class="row">
               <div class="col-6 col-sm-4">

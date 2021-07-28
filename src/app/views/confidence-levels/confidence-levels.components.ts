@@ -3,7 +3,7 @@ import { Router } from "@angular/router";
 import { UserService } from "../../services/user.service";
 import { FaceService } from "../../services/face.service";
 import { ConfidenceLevelsService } from "../../services/confidence-levels.service";
-import { environment } from "../../environments/environment";
+import { environment } from "../../../environments/environment";
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import { Face } from "../../models/face";
 

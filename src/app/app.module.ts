@@ -24,7 +24,6 @@ import { AppComponent } from "./app.component";
 
 // Import containers
 import { DefaultLayoutComponent } from "./containers";
-
 import { P404Component } from "./views/error/404.component";
 import { P500Component } from "./views/error/500.component";
 import { LoginComponent } from "./views/login/login.component";
@@ -32,8 +31,7 @@ import { RegisterComponent } from "./views/register/register.component";
 import { VerficationCodeComponent } from "./views/verification-code/verification-code.component";
 import { YourCodeComponent } from "./views/verification-code/your-code.component";
 
-const APP_CONTAINERS = [DefaultLayoutComponent];
-
+import {SocketIoConfig, SocketIoModule, Socket} from "ngx-socket-io";
 import {
   AppAsideModule,
   AppBreadcrumbModule,
@@ -53,6 +51,12 @@ import { ChartsModule } from "ng2-charts";
 import { WebcamComponent } from "./webcam/webcam.component";
 import { ServiceWorkerModule } from "@angular/service-worker";
 import { environment } from "../environments/environment";
+
+
+const config: SocketIoConfig ={ url: environment.shortURL +'/socket.io/?EIO=3&transport=polling'};
+
+const APP_CONTAINERS = [DefaultLayoutComponent];
+
 
 @NgModule({
   imports: [
@@ -77,6 +81,7 @@ import { environment } from "../environments/environment";
     ServiceWorkerModule.register("ngsw-worker.js", {
       enabled: environment.production,
     }),
+    SocketIoModule.forRoot(config)
   ],
   declarations: [
     AppComponent,

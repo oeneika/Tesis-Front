@@ -6,7 +6,7 @@ import { FormsModule } from "@angular/forms";
 import { CameraComponent } from "./camera.component";
 import { CameraDetailsComponent } from "./camera-details.component";
 import { ListCamerasComponent } from "./list-cameras.component";
-
+import { AppVideoPlayerComponent } from './app-video-player/app-video-player.component'
 import { CameraRoutingModule } from "./camera-routing.module";
 import { ModalModule } from "ngx-bootstrap/modal";
 
@@ -17,6 +17,11 @@ import { ModalModule } from "ngx-bootstrap/modal";
     FormsModule,
     ModalModule.forRoot(),
   ],
-  declarations: [CameraComponent, CameraDetailsComponent, ListCamerasComponent],
+  declarations: [
+    CameraComponent, 
+    CameraDetailsComponent, 
+    ListCamerasComponent,
+    AppVideoPlayerComponent
+  ],
 })
 export class CameraModule {}
