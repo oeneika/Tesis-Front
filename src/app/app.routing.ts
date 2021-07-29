@@ -9,6 +9,8 @@ import { P500Component } from "./views/error/500.component";
 import { LoginComponent } from "./views/login/login.component";
 import { RegisterComponent } from "./views/register/register.component";
 import { WebcamComponent } from "./webcam/webcam.component";
+import { VerficationCodeComponent } from "./views/verification-code/verification-code.component";
+import { YourCodeComponent } from "./views/verification-code/your-code.component";
 
 export const routes: Routes = [
   {
@@ -38,6 +40,20 @@ export const routes: Routes = [
     },
   },
   {
+    path: "your-code",
+    component: YourCodeComponent,
+    data: {
+      title: "Your verification code",
+    },
+  },
+  {
+    path: "verification-code/:secret",
+    component: VerficationCodeComponent,
+    data: {
+      title: "Verification code",
+    },
+  },
+  {
     path: "webcam",
     component: WebcamComponent,
     data: {
@@ -58,6 +74,25 @@ export const routes: Routes = [
       title: "Home",
     },
     children: [
+      {
+        path: "profile-user",
+        loadChildren: () =>
+          import("./views/profile-user/profile-user.module").then(
+            (m) => m.ProfileUserModule
+          ),
+      },
+      {
+        path: "confidence-levels",
+        loadChildren: () =>
+          import("./views/confidence-levels/confidence-levels.module").then(
+            (m) => m.ConfidenceLevelsModule
+          ),
+      },
+      {
+        path: "camera",
+        loadChildren: () =>
+          import("./views/camera/camera.module").then((m) => m.CameraModule),
+      },
       {
         path: "base",
         loadChildren: () =>

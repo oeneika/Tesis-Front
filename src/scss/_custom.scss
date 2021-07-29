@@ -1,1 +1,184 @@
 // Here you can add other styles
+section.principal {
+  padding: 35px 0;
+}
+span.span-error {
+  width: 100%;
+  color: rgb(194, 17, 17);
+  margin-top: 5px;
+}
+
+.photo-profile {
+  width: 225px;
+  height: 225px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 200px;
+}
+
+.photo-profile-menu {
+  width: 35px;
+  height: 35px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 200px;
+}
+
+.image-confidence-level {
+  width: 35px;
+  height: 35px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 200px;
+}
+
+img.edit-icon {
+  height: 50px;
+  position: absolute;
+  bottom: 0;
+  bottom: 10px;
+  right: 50px;
+}
+
+@media (max-width: 480px) {
+  .nombre-apellido {
+    text-align: center;
+    margin-top: 20px;
+  }
+}
+
+.card-body,
+.card-footer {
+  padding: 1.5rem;
+}
+
+.align-center {
+  display: flex;
+  align-items: center;
+}
+
+button {
+  background-color: transparent;
+  border: 0;
+  padding: 0;
+}
+
+.font-2xl {
+  font-size: 1rem !important;
+}
+
+.camera-preview {
+  width: 100%;
+  height: 200px;
+  background-color: rgb(194, 194, 194);
+  margin-bottom: 25px;
+}
+
+.camera-live {
+  width: 100%;
+  height: 350px;
+  background-color: rgb(194, 194, 194);
+  margin-bottom: 25px;
+}
+
+a .card h2,
+a .card i,
+a .card h5 {
+  color: black;
+  text-decoration: none;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.colaboradores-item {
+  border-bottom: 1px solid rgb(194, 194, 194);
+}
+
+.btn-colaboradores-item {
+  text-align: right;
+  padding-top: 10px;
+}
+
+.main .container-fluid {
+  padding: 0 15px;
+}
+
+.funciones-basicas {
+  padding: 0 90px;
+}
+
+@media (max-width: 480px) {
+  .funciones-basicas {
+    padding: initial;
+  }
+
+  .features {
+    display: inline;
+    margin-bottom: 10px;
+  }
+  .features-div {
+    margin-bottom: 15px;
+  }
+
+  .btn-colaboradores-item {
+    text-align: left;
+    padding-top: 0px;
+    padding-bottom: 20px;
+  }
+
+  .download {
+    margin-top: 20px;
+  }
+}
+
+.btn-primary.disabled,
+.btn-primary:disabled {
+  color: #fff;
+  background-color: #969696;
+  border-color: #969696;
+}
+
+.background-register {
+  background: black;
+  background-image: url("../assets/img/01.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+}
+
+.app-body {
+  height: 100vh;
+  margin-top: 0;
+}
+
+.app-body .main {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+}
+
+@media (min-width: 768px) {
+  .app-body .main .app-body {
+    margin-top: 0;
+  }
+}
+
+.codigo-qr {
+  height: 200px;
+  width: auto;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
