@@ -1,11 +1,11 @@
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ChartsModule } from 'ng2-charts';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { ButtonsModule } from 'ngx-bootstrap/buttons';
-
-import { DashboardComponent } from './dashboard.component';
-import { DashboardRoutingModule } from './dashboard-routing.module';
+import { NgModule } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { ChartsModule } from "ng2-charts";
+import { BsDropdownModule } from "ngx-bootstrap/dropdown";
+import { ButtonsModule } from "ngx-bootstrap/buttons";
+import { DashboardComponent } from "./dashboard.component";
+import { DashboardRoutingModule } from "./dashboard-routing.module";
+import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
 
 @NgModule({
   imports: [
@@ -13,8 +13,9 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
     DashboardRoutingModule,
     ChartsModule,
     BsDropdownModule,
-    ButtonsModule.forRoot()
+    ButtonsModule.forRoot(),
+    BsDatepickerModule.forRoot(),
   ],
-  declarations: [ DashboardComponent ]
+  declarations: [DashboardComponent],
 })
-export class DashboardModule { }
+export class DashboardModule {}

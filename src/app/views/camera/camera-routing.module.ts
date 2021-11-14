@@ -4,6 +4,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { CameraComponent } from "./camera.component";
 import { ListCamerasComponent } from "./list-cameras.component";
 import { CameraDetailsComponent } from "./camera-details.component";
+import { CameraSharedWithMeComponent } from "./camera-shared-with-me";
 
 const routes: Routes = [
   {
@@ -28,6 +29,13 @@ const routes: Routes = [
         component: ListCamerasComponent,
         data: {
           title: "Listado de cámaras",
+        },
+      },
+      {
+        path: "camera-shared-with-me",
+        component: CameraSharedWithMeComponent,
+        data: {
+          title: "Cámaras compartidas conmigo",
         },
       },
       {

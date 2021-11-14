@@ -1,410 +1,305 @@
 <section class="principal" *ngIf="identity">
-  <div class="row">
-    <div class="col-sm-6">
-      <h1 class="mb-3">Rostros de confianza</h1>
-      <p>Necesito crear y personalizar los niveles de confianza actuales</p>
-    </div>
-    <div class="col-sm-6">
-      <div style="text-align: right">
-        <button class="btn btn-primary" (click)="openModal(AddUser)">
+    <div class="row">
+        <div class="col-sm-6">
+            <h1 class="mb-3">Niveles de confianza</h1>
+            <p>Necesito crear y personalizar los niveles de confianza actuales</p>
+        </div>
+        <div class="col-sm-6">
+            <div style="text-align: right">
+                <button class="btn btn-primary" (click)="openModal(AddUser)">
           Agregar usuario
         </button>
-      </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="card">
-        <div class="card-header">
-          <div class="row">
-            <div class="col-sm-12">
-              <h4>{{niveles ? niveles[0].title : ''}}</h4>
-              <p class="mb-0">{{ niveles ? niveles[0].description : ''}}</p>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Nombre completo</th>
-                  <th>Edad</th>
-                  <th>Sexo</th>
-                  <th>Foto</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let rostro of rostros; let i = index">
-                  <ng-container
-                    *ngIf="rostro.confidenceLevels == '60d3d412bdeafb0c64b1fcd9' "
-                  >
-                    <td>{{rostro.name}} {{rostro.surname}}</td>
-                    <td>{{rostro.age}}</td>
-                    <td>{{rostro.gender}}</td>
-                    <td>
-                      <ng-container *ngIf="rostro.image;else other_content">
-                        <div
-                          class="image-confidence-level"
-                          [ngStyle]="{
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4>{{niveles ? niveles[0].title : ''}}</h4>
+                            <p class="mb-0">{{ niveles ? niveles[0].description : ''}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre completo</th>
+                                    <th>Edad</th>
+                                    <th>Sexo</th>
+                                    <th>Foto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let rostro of rostros; let i = index">
+                                    <ng-container *ngIf="rostro.confidenceLevels == '60d3d412bdeafb0c64b1fcd9' ">
+                                        <td>{{rostro.name}} {{rostro.surname}}</td>
+                                        <td>{{rostro.age}}</td>
+                                        <td>{{rostro.gender}}</td>
+                                        <td>
+                                            <ng-container *ngIf="rostro.image;else other_content">
+                                                <div class="image-confidence-level" [ngStyle]="{
                         'background-image': 'url(http://localhost:8000/api/get-image-face/' + rostro.image + ')'
-                      }"
-                        ></div>
-                      </ng-container>
-                      <ng-template #other_content>
-                        <div
-                          class="image-confidence-level"
-                          style="
+                      }"></div>
+                                            </ng-container>
+                                            <ng-template #other_content>
+                                                <div class="image-confidence-level" style="
                             background-image: url('../../../assets/img/avatars/default.png');
-                          "
-                        ></div
-                      ></ng-template>
-                    </td>
-                    <td>
-                      <button
-                        class="btn btn-success"
-                        (click)="editUser(EditUser, rostro)"
-                      >
+                          "></div>
+                                            </ng-template>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-success" (click)="editUser(EditUser, rostro)">
                         <i class="fa fa-edit fa-lg"></i>
                       </button>
-                      <button
-                        class="btn btn-danger"
-                        (click)="deleteFace(rostro._id)"
-                      >
+                                            <button class="btn btn-danger" (click)="deleteFace(rostro._id)">
                         <i class="fa fa-trash-o fa-lg"></i>
                       </button>
-                    </td>
-                  </ng-container>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+                                        </td>
+                                    </ng-container>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-          <ng-container *ngIf="tableSize">
-            <pagination [totalItems]="30"></pagination>
-          </ng-container>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-6">
-      <div class="card">
-        <div class="card-header">
-          <div class="row">
-            <div class="col-sm-12">
-              <h4>{{niveles ? niveles[1].title : ''}}</h4>
-              <p class="mb-0">{{ niveles ? niveles[1].description : ''}}</p>
+                    <ng-container *ngIf="tableSize">
+                        <pagination [totalItems]="30"></pagination>
+                    </ng-container>
+                </div>
             </div>
-          </div>
         </div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Nombre completo</th>
-                  <th>Edad</th>
-                  <th>Sexo</th>
-                  <th>Foto</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let rostro of rostros; let i = index">
-                  <ng-container
-                    *ngIf="rostro.confidenceLevels == '603165309fc13d17bcbd7089' "
-                  >
-                    <td>{{rostro.name}} {{rostro.surname}}</td>
-                    <td>{{rostro.age}}</td>
-                    <td>{{rostro.gender}}</td>
-                    <td>
-                      <ng-container *ngIf="rostro.image;else other_content">
-                        <div
-                          class="image-confidence-level"
-                          [ngStyle]="{
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4>{{niveles ? niveles[1].title : ''}}</h4>
+                            <p class="mb-0">{{ niveles ? niveles[1].description : ''}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre completo</th>
+                                    <th>Edad</th>
+                                    <th>Sexo</th>
+                                    <th>Foto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let rostro of rostros; let i = index">
+                                    <ng-container *ngIf="rostro.confidenceLevels == '603165309fc13d17bcbd7089' ">
+                                        <td>{{rostro.name}} {{rostro.surname}}</td>
+                                        <td>{{rostro.age}}</td>
+                                        <td>{{rostro.gender}}</td>
+                                        <td>
+                                            <ng-container *ngIf="rostro.image;else other_content">
+                                                <div class="image-confidence-level" [ngStyle]="{
                         'background-image': 'url(http://localhost:8000/api/get-image-face/' + rostro.image + ')'
-                      }"
-                        ></div>
-                      </ng-container>
-                      <ng-template #other_content>
-                        <div
-                          class="image-confidence-level"
-                          style="
+                      }"></div>
+                                            </ng-container>
+                                            <ng-template #other_content>
+                                                <div class="image-confidence-level" style="
                             background-image: url('../../../assets/img/avatars/default.png');
-                          "
-                        ></div
-                      ></ng-template>
-                    </td>
-                    <td>
-                      <button
-                        class="btn btn-success"
-                        (click)="editUser(EditUser, rostro)"
-                      >
+                          "></div>
+                                            </ng-template>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-success" (click)="editUser(EditUser, rostro)">
                         <i class="fa fa-edit fa-lg"></i>
                       </button>
-                      <button
-                        class="btn btn-danger"
-                        (click)="deleteFace(rostro._id)"
-                      >
+                                            <button class="btn btn-danger" (click)="deleteFace(rostro._id)">
                         <i class="fa fa-trash-o fa-lg"></i>
                       </button>
-                    </td>
-                  </ng-container>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <pagination [totalItems]="30"></pagination>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="card">
-        <div class="card-header">
-          <div class="row">
-            <div class="col-sm-12">
-              <h4>{{niveles ? niveles[2].title : ''}}</h4>
-              <p class="mb-0">{{ niveles ? niveles[2].description : ''}}</p>
+                                        </td>
+                                    </ng-container>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <pagination [totalItems]="30"></pagination>
+                </div>
             </div>
-          </div>
         </div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Nombre completo</th>
-                  <th>Edad</th>
-                  <th>Sexo</th>
-                  <th>Foto</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let rostro of rostros; let i = index">
-                  <ng-container
-                    *ngIf="rostro.confidenceLevels == '603167ef9fc13d17bcbd708a' "
-                  >
-                    <td>{{rostro.name}} {{rostro.surname}}</td>
-                    <td>{{rostro.age}}</td>
-                    <td>{{rostro.gender}}</td>
-                    <td>
-                      <ng-container *ngIf="rostro.image;else other_content">
-                        <div
-                          class="image-confidence-level"
-                          [ngStyle]="{
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4>{{niveles ? niveles[2].title : ''}}</h4>
+                            <p class="mb-0">{{ niveles ? niveles[2].description : ''}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre completo</th>
+                                    <th>Edad</th>
+                                    <th>Sexo</th>
+                                    <th>Foto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let rostro of rostros; let i = index">
+                                    <ng-container *ngIf="rostro.confidenceLevels == '603167ef9fc13d17bcbd708a' ">
+                                        <td>{{rostro.name}} {{rostro.surname}}</td>
+                                        <td>{{rostro.age}}</td>
+                                        <td>{{rostro.gender}}</td>
+                                        <td>
+                                            <ng-container *ngIf="rostro.image;else other_content">
+                                                <div class="image-confidence-level" [ngStyle]="{
                         'background-image': 'url(http://localhost:8000/api/get-image-face/' + rostro.image + ')'
-                      }"
-                        ></div>
-                      </ng-container>
-                      <ng-template #other_content>
-                        <div
-                          class="image-confidence-level"
-                          style="
+                      }"></div>
+                                            </ng-container>
+                                            <ng-template #other_content>
+                                                <div class="image-confidence-level" style="
                             background-image: url('../../../assets/img/avatars/default.png');
-                          "
-                        ></div
-                      ></ng-template>
-                    </td>
-                    <td>
-                      <button
-                        class="btn btn-success"
-                        (click)="editUser(EditUser, rostro)"
-                      >
+                          "></div>
+                                            </ng-template>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-success" (click)="editUser(EditUser, rostro)">
                         <i class="fa fa-edit fa-lg"></i>
                       </button>
-                      <button
-                        class="btn btn-danger"
-                        (click)="deleteFace(rostro._id)"
-                      >
+                                            <button class="btn btn-danger" (click)="deleteFace(rostro._id)">
                         <i class="fa fa-trash-o fa-lg"></i>
                       </button>
-                    </td>
-                  </ng-container>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <pagination [totalItems]="30"></pagination>
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-6">
-      <div class="card">
-        <div class="card-header">
-          <div class="row">
-            <div class="col-sm-12">
-              <h4>{{niveles ? niveles[3].title : ''}}</h4>
-              <p class="mb-0">{{ niveles ? niveles[3].description : ''}}</p>
+                                        </td>
+                                    </ng-container>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <pagination [totalItems]="30"></pagination>
+                </div>
             </div>
-          </div>
         </div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Nombre completo</th>
-                  <th>Edad</th>
-                  <th>Sexo</th>
-                  <th>Foto</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let rostro of rostros; let i = index">
-                  <ng-container
-                    *ngIf="rostro.confidenceLevels == '603168839fc13d17bcbd708b' "
-                  >
-                    <td>{{rostro.name}} {{rostro.surname}}</td>
-                    <td>{{rostro.age}}</td>
-                    <td>{{rostro.gender}}</td>
-                    <td>
-                      <ng-container *ngIf="rostro.image;else other_content">
-                        <div
-                          class="image-confidence-level"
-                          [ngStyle]="{
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4>{{niveles ? niveles[3].title : ''}}</h4>
+                            <p class="mb-0">{{ niveles ? niveles[3].description : ''}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre completo</th>
+                                    <th>Edad</th>
+                                    <th>Sexo</th>
+                                    <th>Foto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let rostro of rostros; let i = index">
+                                    <ng-container *ngIf="rostro.confidenceLevels == '603168839fc13d17bcbd708b' ">
+                                        <td>{{rostro.name}} {{rostro.surname}}</td>
+                                        <td>{{rostro.age}}</td>
+                                        <td>{{rostro.gender}}</td>
+                                        <td>
+                                            <ng-container *ngIf="rostro.image;else other_content">
+                                                <div class="image-confidence-level" [ngStyle]="{
                         'background-image': 'url(http://localhost:8000/api/get-image-face/' + rostro.image + ')'
-                      }"
-                        ></div>
-                      </ng-container>
-                      <ng-template #other_content>
-                        <div
-                          class="image-confidence-level"
-                          style="
+                      }"></div>
+                                            </ng-container>
+                                            <ng-template #other_content>
+                                                <div class="image-confidence-level" style="
                             background-image: url('../../../assets/img/avatars/default.png');
-                          "
-                        ></div
-                      ></ng-template>
-                    </td>
-                    <td>
-                      <button
-                        class="btn btn-success"
-                        (click)="editUser(EditUser, rostro)"
-                      >
+                          "></div>
+                                            </ng-template>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-success" (click)="editUser(EditUser, rostro)">
                         <i class="fa fa-edit fa-lg"></i>
                       </button>
-                      <button
-                        class="btn btn-danger"
-                        (click)="deleteFace(rostro._id)"
-                      >
+                                            <button class="btn btn-danger" (click)="deleteFace(rostro._id)">
                         <i class="fa fa-trash-o fa-lg"></i>
                       </button>
-                    </td>
-                  </ng-container>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <pagination [totalItems]="30"></pagination>
+                                        </td>
+                                    </ng-container>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <pagination [totalItems]="30"></pagination>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </section>
 
 <!-- AGREGAR USUARIO-->
 <ng-template #AddUser>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">Agregar usuario</h4>
-    <button
-      type="button"
-      class="close pull-right"
-      aria-label="Close"
-      (click)="modalRef.hide()"
-    >
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Agregar usuario</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
-  </div>
-  <form #AddUserForm="ngForm" (ngSubmit)="onSubmit()">
-    <div class="modal-body">
-      <ng-container *ngIf="niveles && niveles.length">
-        <div class="row">
-          <div class="col-sm-6">
-            <div class="form-group">
-              <label for="name">Nombre</label>
-              <input
-                type="text"
-                class="form-control"
-                #name="ngModel"
-                name="name"
-                [(ngModel)]="face.name"
-                required
-              />
-            </div>
-          </div>
-          <div class="col-sm-6">
-            <div class="form-group">
-              <label for="name">Apellido</label>
-              <input
-                type="text"
-                class="form-control"
-                #surname="ngModel"
-                name="surname"
-                [(ngModel)]="face.surname"
-                required
-              />
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-6">
-            <div class="form-group">
-              <label for="name">Edad</label>
-              <input
-                type="text"
-                class="form-control"
-                #age="ngModel"
-                name="age"
-                [(ngModel)]="face.age"
-                required
-              />
-            </div>
-          </div>
-          <div class="col-sm-6">
-            <div class="form-group">
-              <label for="name">Sexo</label>
-            </div>
-            <div class="mb-2 form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="radio"
-                #gender="ngModel"
-                name="gender"
-                [(ngModel)]="face.gender"
-                id="masculino"
-                value="Masculino"
-                required
-                checked
-              />
-              <label class="form-check-label" for="masculino">Masculino</label>
-            </div>
-            <div class="mb-2 form-check form-check-inline">
-              <input
-                class="form-check-input"
-                type="radio"
-                #gender="ngModel"
-                name="gender"
-                [(ngModel)]="face.gender"
-                id="femenino"
-                value="Femenino"
-              />
-              <label class="form-check-label" for="femenino">Femenino</label>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <label for="confidenceLevels">Niveles de confianza</label>
-            <select
-              class="form-control"
-              #confidenceLevels="ngModel"
-              name="confidenceLevels"
-              [(ngModel)]="face.confidenceLevels"
-            >
+    </div>
+    <form #AddUserForm="ngForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+            <ng-container *ngIf="niveles && niveles.length">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="name">Nombre</label>
+                            <input type="text" class="form-control" #name="ngModel" name="name" [(ngModel)]="face.name" required />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="name">Apellido</label>
+                            <input type="text" class="form-control" #surname="ngModel" name="surname" [(ngModel)]="face.surname" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="name">Edad</label>
+                            <input type="text" class="form-control" #age="ngModel" name="age" [(ngModel)]="face.age" required />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="name">Sexo</label>
+                        </div>
+                        <div class="mb-2 form-check form-check-inline">
+                            <input class="form-check-input" type="radio" #gender="ngModel" name="gender" [(ngModel)]="face.gender" id="masculino" value="Masculino" required checked />
+                            <label class="form-check-label" for="masculino">Masculino</label>
+                        </div>
+                        <div class="mb-2 form-check form-check-inline">
+                            <input class="form-check-input" type="radio" #gender="ngModel" name="gender" [(ngModel)]="face.gender" id="femenino" value="Femenino" />
+                            <label class="form-check-label" for="femenino">Femenino</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="confidenceLevels">Niveles de confianza</label>
+                        <select class="form-control" #confidenceLevels="ngModel" name="confidenceLevels" [(ngModel)]="face.confidenceLevels">
               <option class="placeholder" [value]="null" disabled>
                 Seleccione
               </option>
@@ -415,13 +310,12 @@
                 {{ confidence.title }}
               </option>
             </select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="form-group row">
-              <label class="col-md-12 col-form-label" for="file-input"
-                >Retrato del usuario</label
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group row">
+                            <label class="col-md-12 col-form-label" for="file-input">Retrato del usuario</label
               >
               <div class="col-md-12">
                 <input
@@ -463,62 +357,30 @@
             <div class="col-sm-6">
               <div class="form-group">
                 <label for="name">Nombre</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  #name="ngModel"
-                  name="name"
-                  [(ngModel)]="face.name"
-                  required
-                />
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="form-group">
-                <label for="name">Apellido</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  #surname="ngModel"
-                  name="surname"
-                  [(ngModel)]="face.surname"
-                  required
-                />
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="form-group">
-                <label for="name">Edad</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  #age="ngModel"
-                  name="age"
-                  [(ngModel)]="face.age"
-                  required
-                />
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="form-group">
-                <label for="name">Sexo</label>
-              </div>
-              <div class="mb-2 form-check form-check-inline">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  #gender="ngModel"
-                  name="gender"
-                  [(ngModel)]="face.gender"
-                  id="masculino"
-                  value="Masculino"
-                  required
-                  checked
-                />
-                <label class="form-check-label" for="masculino"
-                  >Masculino</label
+                            <input type="text" class="form-control" #name="ngModel" name="name" [(ngModel)]="face.name" required />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="name">Apellido</label>
+                            <input type="text" class="form-control" #surname="ngModel" name="surname" [(ngModel)]="face.surname" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="name">Edad</label>
+                            <input type="text" class="form-control" #age="ngModel" name="age" [(ngModel)]="face.age" required />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="name">Sexo</label>
+                        </div>
+                        <div class="mb-2 form-check form-check-inline">
+                            <input class="form-check-input" type="radio" #gender="ngModel" name="gender" [(ngModel)]="face.gender" id="masculino" value="Masculino" required checked />
+                            <label class="form-check-label" for="masculino">Masculino</label
                 >
               </div>
               <div class="mb-2 form-check form-check-inline">
@@ -532,18 +394,13 @@
                   value="Femenino"
                 />
                 <label class="form-check-label" for="femenino">Femenino</label>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <label for="confidenceLevels">Niveles de confianza</label>
-              <select
-                class="form-control"
-                #confidenceLevels="ngModel"
-                name="confidenceLevels"
-                [(ngModel)]="face.confidenceLevels"
-              >
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="confidenceLevels">Niveles de confianza</label>
+                        <select class="form-control" #confidenceLevels="ngModel" name="confidenceLevels" [(ngModel)]="face.confidenceLevels">
                 <option class="placeholder" [value]="null" disabled>
                   Seleccione
                 </option>
@@ -554,13 +411,12 @@
                   {{ confidence.title }}
                 </option>
               </select>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="form-group row">
-                <label class="col-md-12 col-form-label" for="file-input"
-                  >Retrato del usuario</label
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group row">
+                            <label class="col-md-12 col-form-label" for="file-input">Retrato del usuario</label
                 >
                 <div class="col-md-12">
                   <input

@@ -1,203 +1,125 @@
 <section class="principal">
-  <div class="row">
-    <div class="col-sm-12">
-      <h1 class="mb-3">Detalle de cámaras</h1>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="card">
-        <div class="card-header">
-          <h2>Cocina</h2>
+    <div class="row">
+        <div class="col-sm-6">
+            <h1 class="mb-3">Detalle de cámaras</h1>
         </div>
-        <div class="card-body">
-          <div class="camera-live"></div>
-          <div class="row">
-            <div class="col-sm-4">
-              <div class="features-div">
-                <i class="icon-user icons font-2xl mt-3 mr-2"></i>
-                <h5 class="features">Colaboradores: 5</h5>
-              </div>
-            </div>
-            <div class="col-sm-4">
-              <div class="features-div">
-                <i class="icon-settings icons font-2xl mt-3 mr-2"></i>
-                <h5 class="features">Resolución: Baja</h5>
-              </div>
-            </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Cocina</h2>
+                </div>
+                <div class="card-body">
+                    <div class="camera-live"></div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="features-div">
+                                <i class="icon-user icons font-2xl mt-3 mr-2"></i>
+                                <h5 class="features">Colaboradores: 5</h5>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="features-div">
+                                <i class="icon-settings icons font-2xl mt-3 mr-2"></i>
+                                <h5 class="features">Resolución: Baja</h5>
+                            </div>
+                        </div>
 
-            <div class="col-sm-4">
-              <div class="features-div">
-                <i class="icon-camera icons font-2xl mt-3 mr-2"></i>
-                <h5 class="features">Cámara: Frontal</h5>
-              </div>
+                        <div class="col-sm-4">
+                            <div class="features-div">
+                                <i class="icon-camera icons font-2xl mt-3 mr-2"></i>
+                                <h5 class="features">Cámara: Frontal</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-    <div class="col-sm-6">
-      <div class="card">
-        <div class="card-header">
-          <div class="row">
-            <div class="col-8">
-              <h2>Colaboradores</h2>
-            </div>
-            <div class="col-4">
-              <div class="text-right">
-                <button class="btn btn-primary" (click)="openModal(template)">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-8">
+                            <h2>Colaboradores</h2>
+                        </div>
+                        <div class="col-4">
+                            <div class="text-right">
+                                <button class="btn btn-primary" (click)="openModal(template)">
                   Agregar
                 </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="colaboradores-item">
-            <div class="row">
-              <div class="col-sm-8">
-                <h3>Alexander De Azevedo</h3>
-                <p>alexander_deazevedo@hotmail.com</p>
-              </div>
-              <div class="col-sm-4">
-                <div class="btn-colaboradores-item">
-                  <button
-                    class="btn btn-success"
-                    (click)="editCollaborator(EditUser, 1)"
-                  >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="colaboradores-item">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <p class="mt-3">alexander_deazevedo@hotmail.com</p>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="btn-colaboradores-item">
+                                    <button class="btn btn-success" (click)="editCollaborator(EditUser, 1)">
                     <i class="fa fa-edit fa-lg"></i>
                   </button>
-                  <button class="btn btn-danger">
+                                    <button class="btn btn-danger">
                     <i class="fa fa-trash-o fa-lg"></i>
                   </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </section>
 
 <ng-template #template>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">Agregar colaboradores</h4>
-    <button
-      type="button"
-      class="close pull-right"
-      aria-label="Close"
-      (click)="modalRef.hide()"
-    >
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Agregar colaboradores</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
-  </div>
-  <form #cameraForm="ngForm" (ngSubmit)="onSubmit()">
-    <div class="modal-body">
-      <div class="row">
-        <div class="col-sm-6">
-          <div class="form-group">
-            <label for="name">Nombre</label>
-            <input
-              type="text"
-              class="form-control"
-              #name="ngModel"
-              name="name"
-              [(ngModel)]="user.name"
-            />
-          </div>
-        </div>
-        <div class="col-sm-6">
-          <div class="form-group">
-            <label for="name">Apellido</label>
-            <input
-              type="text"
-              class="form-control"
-              #surname="ngModel"
-              name="surname"
-              [(ngModel)]="user.surname"
-            />
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-6">
-          <div class="form-group">
-            <label for="name">Correo electrónico</label>
-            <input
-              type="text"
-              class="form-control"
-              #email="ngModel"
-              name="email"
-              [(ngModel)]="user.email"
-            />
-          </div>
-        </div>
-      </div>
     </div>
-    <div class="modal-footer">
-      <input type="submit" class="btn btn-primary" value="Agregar" />
-    </div>
-  </form>
+    <form #cameraForm="ngForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Correo electrónico</label>
+                        <input type="text" class="form-control" #email="ngModel" name="email" [(ngModel)]="user.email" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="submit" class="btn btn-primary" value="Agregar" />
+        </div>
+    </form>
 </ng-template>
 
 <ng-template #EditUser>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">Editar colaboradores</h4>
-    <button
-      type="button"
-      class="close pull-right"
-      aria-label="Close"
-      (click)="modalRef.hide()"
-    >
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Editar colaboradores</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
-  </div>
-  <form #cameraForm="ngForm" (ngSubmit)="onSubmit()">
-    <div class="modal-body">
-      <div class="row">
-        <div class="col-sm-6">
-          <div class="form-group">
-            <label for="name">Nombre</label>
-            <input
-              type="text"
-              class="form-control"
-              #name="ngModel"
-              name="name"
-              [(ngModel)]="user.name"
-            />
-          </div>
-        </div>
-        <div class="col-sm-6">
-          <div class="form-group">
-            <label for="name">Apellido</label>
-            <input
-              type="text"
-              class="form-control"
-              #surname="ngModel"
-              name="surname"
-              [(ngModel)]="user.surname"
-            />
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-6">
-          <div class="form-group">
-            <label for="name">Correo electrónico</label>
-            <input
-              type="text"
-              class="form-control"
-              #email="ngModel"
-              name="email"
-              [(ngModel)]="user.email"
-            />
-          </div>
-        </div>
-      </div>
     </div>
-    <div class="modal-footer">
-      <input type="submit" class="btn btn-primary" value="Editar" />
-    </div>
-  </form>
+    <form #cameraForm="ngForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Correo electrónico</label>
+                        <input type="text" class="form-control" #email="ngModel" name="email" [(ngModel)]="user.email" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="submit" class="btn btn-primary" value="Editar" />
+        </div>
+    </form>
 </ng-template>

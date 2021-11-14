@@ -8,7 +8,7 @@ export const navItems: INavData[] = [
   },
   {
     title: true,
-    name: "Opciones",
+    name: "Opciones del sistema",
   },
   {
     name: "Cámara",
@@ -18,21 +18,16 @@ export const navItems: INavData[] = [
       {
         name: "Modo cámara",
         url: "/camera",
-        badge: {
-          variant: "danger",
-          text: "EN VIVO",
-        },
       },
       {
-        name: "Listado de cámara",
+        name: "Mis cámaras",
         url: "/camera/list-cameras",
       },
+      {
+        name: "Compartidas conmigo",
+        url: "/camera/camera-shared-with-me",
+      },
     ],
-  },
-  {
-    name: "Grabaciones",
-    url: "/",
-    icon: "icon-camrecorder",
   },
   {
     name: "Niveles de confianza",

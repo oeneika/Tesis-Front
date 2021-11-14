@@ -1,405 +1,74 @@
 <div class="animated fadeIn pt-4">
-  <div class="row">
-    <div class="col-sm-6 col-lg-3">
-      <div class="card">
+    <h1 class="mb-3">Reportes del sistema</h1>
+    <div class="card">
         <div class="card-body">
-          <div class="h4 m-0">1539</div>
-          <div>Total de rostros capturados</div>
+            <form action="">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="name">Selecciona la cámara</label>
+                            <select class="form-control">
+                <option value="1">Cocina</option>
+                <option value="2">Sala</option>
+                <option value="3">Baño</option>
+              </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="name">Selecciona rango de fechas y hora</label>
+                            <input type="text" placeholder="" class="form-control" [bsConfig]="{
+                  withTimepicker: true,
+                  rangeInputFormat: 'MMMM Do YYYY, h:mm:ss a',
+                  dateInputFormat: 'MMMM Do YYYY, h:mm:ss a'
+                }" bsDaterangepicker />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group"></div>
+                        <button class="btn btn-primary w-100 mt-2">Generar Reporte</button>
+                    </div>
+                </div>
+            </form>
         </div>
-      </div>
     </div>
-    <!--/.col-->
-    <div class="col-sm-6 col-lg-3">
-      <div class="card">
-        <div class="card-body">
-          <div class="h4 m-0">800</div>
-          <div>Total de rostros conocidos</div>
-        </div>
-      </div>
-    </div>
-    <!--/.col-->
-    <div class="col-sm-6 col-lg-3">
-      <div class="card">
-        <div class="card-body">
-          <div class="h4 m-0">800</div>
-          <div>Total de rostros desconocidos</div>
-        </div>
-      </div>
-    </div>
-    <!--/.col-->
-    <div class="col-sm-6 col-lg-3">
-      <div class="card">
-        <div class="card-body">
-          <div class="h4 m-0">800</div>
-          <div>Edad promedio de sospechosos</div>
-        </div>
-      </div>
-    </div>
-    <!--/.col-->
-  </div>
-  <!--/.row-->
-  <!--/.row-->
-  <div class="row">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="callout callout-info">
-                    <small class="text-muted">Usuarios conocidos</small>
-                    <br />
-                    <strong class="h4">9,123</strong>
-                  </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5>
+                        Del 10/11/2021, 08:00 AM al 14/11/2021, 11:00 AM en cámara "Cocina"
+                    </h5>
+                    <table class="table table-striped mt-4">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nombre y apellido</th>
+                                <th scope="col">Rango de edad</th>
+                                <th scope="col">Expresión facial</th>
+                                <th scope="col">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Alexander De Azevedo</td>
+                                <td>22 - 28 años</td>
+                                <td>Feliz</td>
+                                <td><button class="btn btn-primary">Ver grabación</button></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Braulio Picon</td>
+                                <td>22 - 28 años</td>
+                                <td>Molesto</td>
+                                <td><button class="btn btn-primary">Ver grabación</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <!--/.col-->
-                <div class="col-sm-6">
-                  <div class="callout callout-danger">
-                    <small class="text-muted">Usuarios desconocidos</small>
-                    <br />
-                    <strong class="h4">22,643</strong>
-                  </div>
-                </div>
-                <!--/.col-->
-              </div>
-              <!--/.row-->
-              <hr class="mt-0" />
-              <div class="progress-group mb-4">
-                <div class="progress-group-prepend">
-                  <span class="progress-group-text"> Lunes </span>
-                </div>
-                <div class="progress-group-bars">
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-info"
-                      role="progressbar"
-                      style="width: 34%"
-                      aria-valuenow="34"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-danger"
-                      role="progressbar"
-                      style="width: 78%"
-                      aria-valuenow="78"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <div class="progress-group mb-4">
-                <div class="progress-group-prepend">
-                  <span class="progress-group-text"> Martes </span>
-                </div>
-                <div class="progress-group-bars">
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-info"
-                      role="progressbar"
-                      style="width: 56%"
-                      aria-valuenow="56"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-danger"
-                      role="progressbar"
-                      style="width: 94%"
-                      aria-valuenow="94"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <div class="progress-group mb-4">
-                <div class="progress-group-prepend">
-                  <span class="progress-group-text"> Miercoles </span>
-                </div>
-                <div class="progress-group-bars">
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-info"
-                      role="progressbar"
-                      style="width: 12%"
-                      aria-valuenow="12"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-danger"
-                      role="progressbar"
-                      style="width: 67%"
-                      aria-valuenow="67"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <div class="progress-group mb-4">
-                <div class="progress-group-prepend">
-                  <span class="progress-group-text"> Jueves </span>
-                </div>
-                <div class="progress-group-bars">
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-info"
-                      role="progressbar"
-                      style="width: 43%"
-                      aria-valuenow="43"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-danger"
-                      role="progressbar"
-                      style="width: 91%"
-                      aria-valuenow="91"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <div class="progress-group mb-4">
-                <div class="progress-group-prepend">
-                  <span class="progress-group-text"> Viernes </span>
-                </div>
-                <div class="progress-group-bars">
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-info"
-                      role="progressbar"
-                      style="width: 22%"
-                      aria-valuenow="22"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-danger"
-                      role="progressbar"
-                      style="width: 73%"
-                      aria-valuenow="73"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <div class="progress-group mb-4">
-                <div class="progress-group-prepend">
-                  <span class="progress-group-text"> Sabado </span>
-                </div>
-                <div class="progress-group-bars">
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-info"
-                      role="progressbar"
-                      style="width: 53%"
-                      aria-valuenow="53"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-danger"
-                      role="progressbar"
-                      style="width: 82%"
-                      aria-valuenow="82"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <div class="progress-group mb-4">
-                <div class="progress-group-prepend">
-                  <span class="progress-group-text"> Domingo </span>
-                </div>
-                <div class="progress-group-bars">
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-info"
-                      role="progressbar"
-                      style="width: 9%"
-                      aria-valuenow="9"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-danger"
-                      role="progressbar"
-                      style="width: 69%"
-                      aria-valuenow="69"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </div>
-              </div>
             </div>
-            <!--/.col-->
-            <div class="col-sm-6">
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="callout callout-warning">
-                    <small class="text-muted">Hombres y mujeres</small>
-                    <br />
-                    <strong class="h4">10</strong>
-                  </div>
-                </div>
-                <!--/.col-->
-                <div class="col-sm-6">
-                  <div class="callout callout-success">
-                    <small class="text-muted">Edades promedio</small>
-                    <br />
-                    <strong class="h4">10</strong>
-                  </div>
-                </div>
-                <!--/.col-->
-              </div>
-              <!--/.row-->
-              <hr class="mt-0" />
-              <div class="progress-group">
-                <div class="progress-group-header">
-                  <i class="icon-user progress-group-icon"></i>
-                  <div>Hombre</div>
-                  <div class="ml-auto font-weight-bold">43%</div>
-                </div>
-                <div class="progress-group-bars">
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-warning"
-                      role="progressbar"
-                      style="width: 43%"
-                      aria-valuenow="43"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <div class="progress-group mb-5">
-                <div class="progress-group-header">
-                  <i class="icon-user-female progress-group-icon"></i>
-                  <div>Mujeres</div>
-                  <div class="ml-auto font-weight-bold">37%</div>
-                </div>
-                <div class="progress-group-bars">
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-warning"
-                      role="progressbar"
-                      style="width: 43%"
-                      aria-valuenow="43"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <div class="progress-group">
-                <div class="progress-group-header align-items-end">
-                  <div>25 a 30 años</div>
-                  <div class="ml-auto font-weight-bold mr-2">191.235</div>
-                  <div class="text-muted small">(56%)</div>
-                </div>
-                <div class="progress-group-bars">
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-success"
-                      role="progressbar"
-                      style="width: 56%"
-                      aria-valuenow="56"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <div class="progress-group">
-                <div class="progress-group-header align-items-end">
-                  <div>31 a 35 años</div>
-                  <div class="ml-auto font-weight-bold mr-2">51.223</div>
-                  <div class="text-muted small">(15%)</div>
-                </div>
-                <div class="progress-group-bars">
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-success"
-                      role="progressbar"
-                      style="width: 15%"
-                      aria-valuenow="15"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <div class="progress-group">
-                <div class="progress-group-header align-items-end">
-                  <div>36 a 42 años</div>
-                  <div class="ml-auto font-weight-bold mr-2">37.564</div>
-                  <div class="text-muted small">(11%)</div>
-                </div>
-                <div class="progress-group-bars">
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-success"
-                      role="progressbar"
-                      style="width: 11%"
-                      aria-valuenow="11"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-              <div class="progress-group">
-                <div class="progress-group-header align-items-end">
-                  <div>43 a 51 años</div>
-                  <div class="ml-auto font-weight-bold mr-2">27.319</div>
-                  <div class="text-muted small">(8%)</div>
-                </div>
-                <div class="progress-group-bars">
-                  <div class="progress progress-xs">
-                    <div
-                      class="progress-bar bg-success"
-                      role="progressbar"
-                      style="width: 8%"
-                      aria-valuenow="8"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!--/.col-->
-          </div>
-          <!--/.row-->
-          <br />
         </div>
-      </div>
     </div>
-    <!--/.col-->
-  </div>
-  <!--/.row-->
 </div>

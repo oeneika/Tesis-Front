@@ -5,7 +5,7 @@ import { LocationStrategy, HashLocationStrategy } from "@angular/common";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientModule } from "@angular/common/http";
 import { ClipboardModule } from "ngx-clipboard";
-
+import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
 import { PerfectScrollbarModule } from "ngx-perfect-scrollbar";
 import { PERFECT_SCROLLBAR_CONFIG } from "ngx-perfect-scrollbar";
 import { PerfectScrollbarConfigInterface } from "ngx-perfect-scrollbar";
@@ -31,7 +31,7 @@ import { RegisterComponent } from "./views/register/register.component";
 import { VerficationCodeComponent } from "./views/verification-code/verification-code.component";
 import { YourCodeComponent } from "./views/verification-code/your-code.component";
 
-import {SocketIoConfig, SocketIoModule, Socket} from "ngx-socket-io";
+import { SocketIoConfig, SocketIoModule, Socket } from "ngx-socket-io";
 import {
   AppAsideModule,
   AppBreadcrumbModule,
@@ -52,11 +52,11 @@ import { WebcamComponent } from "./webcam/webcam.component";
 import { ServiceWorkerModule } from "@angular/service-worker";
 import { environment } from "../environments/environment";
 
-
-const config: SocketIoConfig ={ url: environment.shortURL +'/socket.io/?EIO=3&transport=polling'};
+const config: SocketIoConfig = {
+  url: environment.shortURL + "/socket.io/?EIO=3&transport=polling",
+};
 
 const APP_CONTAINERS = [DefaultLayoutComponent];
-
 
 @NgModule({
   imports: [
@@ -72,6 +72,7 @@ const APP_CONTAINERS = [DefaultLayoutComponent];
     AppHeaderModule,
     FormsModule,
     AppSidebarModule,
+    BsDatepickerModule.forRoot(),
     PerfectScrollbarModule,
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
@@ -81,7 +82,7 @@ const APP_CONTAINERS = [DefaultLayoutComponent];
     ServiceWorkerModule.register("ngsw-worker.js", {
       enabled: environment.production,
     }),
-    SocketIoModule.forRoot(config)
+    SocketIoModule.forRoot(config),
   ],
   declarations: [
     AppComponent,
