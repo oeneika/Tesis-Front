@@ -182,3 +182,14 @@ a {
   background-size: contain;
   background-position: center;
 }
+
+
+.circle-image{
+  width: 35px;
+  height: 35px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 35px;
+  background-position: center;
+  display: inline-block;
+}
