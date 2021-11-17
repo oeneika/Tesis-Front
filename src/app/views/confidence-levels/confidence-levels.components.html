@@ -1,19 +1,16 @@
 <section class="principal" *ngIf="identity">
     <div class="row">
-       <div class="col-sm-6">
-          <h1 class="mb-3">Niveles de confianza</h1>
-          <p>Necesito crear y personalizar los niveles de confianza actuales</p>
-       </div>
-       <div class="col-sm-6">
-          <div style="text-align: right">
-             <button class="btn btn-primary" (click)="openModal(AddUser)">
-             Agregar usuario
-             </button>
-             <button class="btn btn-warning" (click)="openModal(AddConfidenceLevel)">
-             Agregar nuevo nivel de confianza
-             </button>
-          </div>
-       </div>
+        <div class="col-sm-6">
+            <h1 class="mb-3">Niveles de confianza</h1>
+            <p>Necesito crear y personalizar los niveles de confianza actuales</p>
+        </div>
+        <div class="col-sm-6">
+            <div style="text-align: right">
+                <button class="btn btn-primary" (click)="openModal(AddUser)">
+          Agregar usuario
+        </button>
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="col-sm-6">
@@ -21,8 +18,10 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-sm-12">
-                            <h4>{{niveles ? niveles[0].title : ''}}</h4>
-                            <p class="mb-0">{{ niveles ? niveles[0].description : ''}}</p>
+                            <h4>Nivel 1</h4>
+                            <p class="mb-0">
+                                Personas de confianza extrema como familiares y mejores amigos.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -40,7 +39,7 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let rostro of rostros; let i = index">
-                                    <ng-container *ngIf="rostro.confidenceLevels == '60d3d412bdeafb0c64b1fcd9' ">
+                                    <ng-container *ngIf="rostro.confidenceLevels == '61944adc61d3554be0974f64' ">
                                         <td>{{rostro.name}} {{rostro.surname}}</td>
                                         <td>{{rostro.age}}</td>
                                         <td>{{rostro.gender}}</td>
@@ -69,7 +68,7 @@
                             </tbody>
                         </table>
                     </div>
-    
+
                     <ng-container *ngIf="tableSize">
                         <pagination [totalItems]="30"></pagination>
                     </ng-container>
@@ -77,213 +76,188 @@
             </div>
         </div>
     </div>
- </section>
- <!-- AGREGAR USUARIO-->
- <ng-template #AddUser>
+</section>
+<!-- AGREGAR USUARIO-->
+<ng-template #AddUser>
     <div class="modal-header">
-       <h4 class="modal-title pull-left">Agregar usuario</h4>
-       <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-       <span aria-hidden="true">&times;</span>
-       </button>
+        <h4 class="modal-title pull-left">Agregar usuario</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
     </div>
     <form #AddUserForm="ngForm" (ngSubmit)="onSubmit()">
-    <div class="modal-body">
-       <ng-container *ngIf="niveles && niveles.length">
-          <div class="row">
-             <div class="col-sm-6">
-                <div class="form-group">
-                   <label for="name">Nombre</label>
-                   <input type="text" class="form-control" #name="ngModel" name="name" [(ngModel)]="face.name" required />
+        <div class="modal-body">
+            <ng-container *ngIf="niveles && niveles.length">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="name">Nombre</label>
+                            <input type="text" class="form-control" #name="ngModel" name="name" [(ngModel)]="face.name" required />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="name">Apellido</label>
+                            <input type="text" class="form-control" #surname="ngModel" name="surname" [(ngModel)]="face.surname" required />
+                        </div>
+                    </div>
                 </div>
-             </div>
-             <div class="col-sm-6">
-                <div class="form-group">
-                   <label for="name">Apellido</label>
-                   <input type="text" class="form-control" #surname="ngModel" name="surname" [(ngModel)]="face.surname" required />
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="name">Edad</label>
+                            <input type="text" class="form-control" #age="ngModel" name="age" [(ngModel)]="face.age" required />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="name">Sexo</label>
+                        </div>
+                        <div class="mb-2 form-check form-check-inline">
+                            <input class="form-check-input" type="radio" #gender="ngModel" name="gender" [(ngModel)]="face.gender" id="masculino" value="Masculino" required checked />
+                            <label class="form-check-label" for="masculino">Masculino</label>
+                        </div>
+                        <div class="mb-2 form-check form-check-inline">
+                            <input class="form-check-input" type="radio" #gender="ngModel" name="gender" [(ngModel)]="face.gender" id="femenino" value="Femenino" />
+                            <label class="form-check-label" for="femenino">Femenino</label>
+                        </div>
+                    </div>
                 </div>
-             </div>
-          </div>
-          <div class="row">
-             <div class="col-sm-6">
-                <div class="form-group">
-                   <label for="name">Edad</label>
-                   <input type="text" class="form-control" #age="ngModel" name="age" [(ngModel)]="face.age" required />
-                </div>
-             </div>
-             <div class="col-sm-6">
-                <div class="form-group">
-                   <label for="name">Sexo</label>
-                </div>
-                <div class="mb-2 form-check form-check-inline">
-                   <input class="form-check-input" type="radio" #gender="ngModel" name="gender" [(ngModel)]="face.gender" id="masculino" value="Masculino" required checked />
-                   <label class="form-check-label" for="masculino">Masculino</label>
-                </div>
-                <div class="mb-2 form-check form-check-inline">
-                   <input class="form-check-input" type="radio" #gender="ngModel" name="gender" [(ngModel)]="face.gender" id="femenino" value="Femenino" />
-                   <label class="form-check-label" for="femenino">Femenino</label>
-                </div>
-             </div>
-          </div>
-          <div class="row">
-             <div class="col-sm-12">
-                <label for="confidenceLevels">Niveles de confianza</label>
-                <select class="form-control" #confidenceLevels="ngModel" name="confidenceLevels" [(ngModel)]="face.confidenceLevels">
-                <option class="placeholder" [value]="null" disabled>
-                   Seleccione
-                </option>
-                <option
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="confidenceLevels">Niveles de confianza</label>
+                        <select class="form-control" #confidenceLevels="ngModel" name="confidenceLevels" [(ngModel)]="face.confidenceLevels">
+              <option class="placeholder" [value]="null" disabled>
+                Seleccione
+              </option>
+              <option
                 *ngFor="let confidence of niveles; let i = index"
                 [value]="confidence._id"
-                >
+              >
                 {{ confidence.title }}
-                </option>
-                </select>
-             </div>
+              </option>
+            </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group row">
+                            <label class="col-md-12 col-form-label" for="file-input">Retrato del usuario</label
+              >
+              <div class="col-md-12">
+                <input
+                  type="file"
+                  placeholder="Subir imagen..."
+                  (change)="fileChangeEvent($event)"
+                />
+              </div>
+            </div>
           </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-primary" value="Agregar" />
+    </div>
+  </form>
+</ng-template>
+<!-- EDITAR USUARIO-->
+<ng-template #EditUser>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Editar usuario</h4>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #EditUserForm="ngForm" (ngSubmit)="onSubmitEdit()">
+      <div class="modal-body">
+        <ng-container *ngIf="niveles && niveles.length">
           <div class="row">
-             <div class="col-sm-12">
-                <div class="form-group row">
-                   <label class="col-md-12 col-form-label" for="file-input">Retrato del usuario</label
-                      >
-                   <div class="col-md-12">
-                      <input
-                         type="file"
-                         placeholder="Subir imagen..."
-                         (change)="fileChangeEvent($event)"
-                         />
-                   </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="name">Nombre</label>
+                            <input type="text" class="form-control" #name="ngModel" name="name" [(ngModel)]="face.name" required />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="name">Apellido</label>
+                            <input type="text" class="form-control" #surname="ngModel" name="surname" [(ngModel)]="face.surname" required />
+                        </div>
+                    </div>
                 </div>
-             </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="name">Edad</label>
+                            <input type="text" class="form-control" #age="ngModel" name="age" [(ngModel)]="face.age" required />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="name">Sexo</label>
+                        </div>
+                        <div class="mb-2 form-check form-check-inline">
+                            <input class="form-check-input" type="radio" #gender="ngModel" name="gender" [(ngModel)]="face.gender" id="masculino" value="Masculino" required checked />
+                            <label class="form-check-label" for="masculino">Masculino</label
+                >
+              </div>
+              <div class="mb-2 form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  #gender="ngModel"
+                  name="gender"
+                  [(ngModel)]="face.gender"
+                  id="femenino"
+                  value="Femenino"
+                />
+                <label class="form-check-label" for="femenino">Femenino</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="confidenceLevels">Niveles de confianza</label>
+                        <select class="form-control" #confidenceLevels="ngModel" name="confidenceLevels" [(ngModel)]="face.confidenceLevels">
+                <option class="placeholder" [value]="null" disabled>
+                  Seleccione
+                </option>
+                <option
+                  *ngFor="let confidence of niveles; let i = index"
+                  [value]="confidence._id"
+                >
+                  {{ confidence.title }}
+                </option>
+              </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group row">
+                            <label class="col-md-12 col-form-label" for="file-input">Retrato del usuario</label
+                >
+                <div class="col-md-12">
+                  <input
+                    type="file"
+                    placeholder="Subir imagen..."
+                    (change)="fileChangeEvent($event)"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
-       </ng-container>
-    </div>
-    <div class="modal-footer">
-       <input type="submit" class="btn btn-primary" value="Agregar" />
-    </div>
+        </ng-container>
+      </div>
+      <div class="modal-footer">
+        <input type="submit" class="btn btn-primary" value="Agregar" />
+      </div>
     </form>
- </ng-template>
- <!-- EDITAR USUARIO-->
- <ng-template #EditUser>
-    <div class="modal-header">
-       <h4 class="modal-title pull-left">Editar usuario</h4>
-       <button
-          type="button"
-          class="close pull-right"
-          aria-label="Close"
-          (click)="modalRef.hide()"
-          >
-       <span aria-hidden="true">&times;</span>
-       </button>
-    </div>
-    <div class="modal-body">
-       <form #EditUserForm="ngForm" (ngSubmit)="onSubmitEdit()">
-       <div class="modal-body">
-          <ng-container *ngIf="niveles && niveles.length">
-             <div class="row">
-                <div class="col-sm-6">
-                   <div class="form-group">
-                      <label for="name">Nombre</label>
-                      <input type="text" class="form-control" #name="ngModel" name="name" [(ngModel)]="face.name" required />
-                   </div>
-                </div>
-                <div class="col-sm-6">
-                   <div class="form-group">
-                      <label for="name">Apellido</label>
-                      <input type="text" class="form-control" #surname="ngModel" name="surname" [(ngModel)]="face.surname" required />
-                   </div>
-                </div>
-             </div>
-             <div class="row">
-                <div class="col-sm-6">
-                   <div class="form-group">
-                      <label for="name">Edad</label>
-                      <input type="text" class="form-control" #age="ngModel" name="age" [(ngModel)]="face.age" required />
-                   </div>
-                </div>
-                <div class="col-sm-6">
-                   <div class="form-group">
-                      <label for="name">Sexo</label>
-                   </div>
-                   <div class="mb-2 form-check form-check-inline">
-                      <input class="form-check-input" type="radio" #gender="ngModel" name="gender" [(ngModel)]="face.gender" id="masculino" value="Masculino" required checked />
-                      <label class="form-check-label" for="masculino">Masculino</label
-                         >
-                   </div>
-                   <div class="mb-2 form-check form-check-inline">
-                      <input
-                      class="form-check-input"
-                      type="radio"
-                      #gender="ngModel"
-                      name="gender"
-                      [(ngModel)]="face.gender"
-                      id="femenino"
-                      value="Femenino"
-                      />
-                      <label class="form-check-label" for="femenino">Femenino</label>
-                   </div>
-                </div>
-             </div>
-             <div class="row">
-                <div class="col-sm-12">
-                   <label for="confidenceLevels">Niveles de confianza</label>
-                   <select class="form-control" #confidenceLevels="ngModel" name="confidenceLevels" [(ngModel)]="face.confidenceLevels">
-                   <option class="placeholder" [value]="null" disabled>
-                      Seleccione
-                   </option>
-                   <option
-                   *ngFor="let confidence of niveles; let i = index"
-                   [value]="confidence._id"
-                   >
-                   {{ confidence.title }}
-                   </option>
-                   </select>
-                </div>
-             </div>
-             <div class="row">
-                <div class="col-sm-12">
-                   <div class="form-group row">
-                      <label class="col-md-12 col-form-label" for="file-input">Retrato del usuario</label
-                         >
-                      <div class="col-md-12">
-                         <input
-                            type="file"
-                            placeholder="Subir imagen..."
-                            (change)="fileChangeEvent($event)"
-                            />
-                      </div>
-                   </div>
-                </div>
-             </div>
-          </ng-container>
-       </div>
-       <div class="modal-footer">
-          <input type="submit" class="btn btn-primary" value="Agregar" />
-       </div>
-       </form>
-    </div>
- </ng-template>
-
-  <!-- AGREGAR USUARIO-->
-  <ng-template #AddConfidenceLevel>
-    <div class="modal-header">
-       <h4 class="modal-title pull-left">Agregar nuevo nivel de confianza</h4>
-       <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-       <span aria-hidden="true">&times;</span>
-       </button>
-    </div>
-    <form (ngSubmit)="onSubmit()">
-    <div class="modal-body">
-        <div class="form-group">
-            <label for="name">Nombre</label>
-            <input type="text" class="form-control" placeholder="Ejemplo: Nivel 5" required />
-         </div>
-         <div class="form-group">
-            <label for="name">Descripción</label>
-            <textarea class="form-control" rows="3" placeholder="Describe el tipo de personas que pertenecen a este nivel" required></textarea>
-         </div>
-    </div>
-    <div class="modal-footer">
-       <input type="submit" class="btn btn-primary" value="Agregar" />
-    </div>
-    </form>
- </ng-template>
+  </div>
+</ng-template>
