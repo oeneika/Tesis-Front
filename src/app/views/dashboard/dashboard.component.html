@@ -40,9 +40,14 @@
             <!-- Si se genera un reporte mostrar esta vista-->
             <div class="card">
                 <div class="card-body">
-                    <h5>
-                        Del 10/11/2021, 08:00 AM al 14/11/2021, 11:00 AM en cámara "Cocina"
-                    </h5>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5>
+                                Reporte personalizado del 10/11/2021 al 14/11/2021 en cámara "Cocina"
+                            </h5>
+                        </div>
+                    </div>
+
                     <table class="table table-striped mt-4">
                         <thead>
                             <tr>
@@ -50,6 +55,7 @@
                                 <th scope="col">Nombre y apellido</th>
                                 <th scope="col">Nivel de confianza</th>
                                 <th scope="col">Edad</th>
+                                <th scope="col">Sexo</th>
                                 <th scope="col">Acción</th>
                             </tr>
                         </thead>
@@ -66,6 +72,7 @@
                                 </td>
                                 <td>Nivel 2</td>
                                 <td>25 años</td>
+                                <td>Masculino</td>
                                 <td><button class="btn btn-primary">Ver grabación</button></td>
                             </tr>
                             <tr>
@@ -80,6 +87,7 @@
                                 </td>
                                 <td></td>
                                 <td>22 - 28 años</td>
+                                <td>Femenino</td>
                                 <td>
                                     <button class="btn btn-primary">Ver grabación</button>
                                     <button class="btn btn-success">
@@ -93,7 +101,7 @@
             </div>
 
             <!-- Si NO se genera un reporte mostrar esta vista-->
-            <!-- 
+            <!--
             <div class="card">
                 <div class="card-body text-center">
                     <h5>No hay información a mostrar, genera un reporte.</h5>
@@ -102,4 +110,133 @@
             -->
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Si se genera un reporte mostrar esta vista-->
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Reporte diario</h5>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12 col-form-label" style="text-align: right">
+                                <div id="inline-radios" class="form-check form-check-inline mr-2">
+                                    <input type="radio" name="inline-radios" id="inlineRadio1" value="option1" class="form-check-input" checked /><label for="inlineRadio1" class="form-check-label">Reporte diario</label
+                  >
+                </div>
+                <div class="form-check form-check-inline mr-2">
+                  <input
+                    type="radio"
+                    name="inline-radios"
+                    id="inlineRadio2"
+                    value="option2"
+                    class="form-check-input"
+                  /><label for="inlineRadio2" class="form-check-label"
+                    >Reporte semanal</label
+                  >
+                </div>
+                <div class="form-check form-check-inline mr-1">
+                  <input
+                    type="radio"
+                    name="inline-radios"
+                    id="inlineRadio3"
+                    value="option3"
+                    class="form-check-input"
+                  /><label for="inlineRadio3" class="form-check-label"
+                    >Reporte mensual</label
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <table class="table table-striped mt-4">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombre y apellido</th>
+                <th scope="col">Nivel de confianza</th>
+                <th scope="col">Edad</th>
+                <th scope="col">Sexo</th>
+                <th scope="col">Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>
+                  <div style="display: flex; align-items: center">
+                    <div
+                      class="circle-image mr-2"
+                      style="
+                        background-image: url('https://image.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg');
+                      "
+                    ></div>
+                    Alexander De Azevedo
+                  </div>
+                </td>
+                <td>Nivel 2</td>
+                <td>25 años</td>
+                <td>Masculino</td>
+                <td><button class="btn btn-primary">Ver grabación</button></td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>
+                  <div style="display: flex; align-items: center">
+                    <div
+                      class="circle-image mr-2"
+                      style="
+                        background-image: url('../../../assets/img/avatars/5.jpg');
+                      "
+                    ></div>
+                    Usuario desconocido
+                  </div>
+                </td>
+                <td></td>
+                <td>22 - 28 años</td>
+                <td>Femenino</td>
+                <td>
+                  <button class="btn btn-primary">Ver grabación</button>
+                  <button class="btn btn-success">
+                    Añadir a nivel de confianza
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>
+                  <div style="display: flex; align-items: center">
+                    <div
+                      class="circle-image mr-2"
+                      style="
+                        background-image: url('../../../assets/img/avatars/6.jpg');
+                      "
+                    ></div>
+                    Oraly Rodriguez
+                  </div>
+                </td>
+                <td>Nivel 1</td>
+                <td>21 años</td>
+                <td>Femenino</td>
+                <td>
+                  <button class="btn btn-primary">Ver grabación</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Si NO se genera un reporte mostrar esta vista-->
+      <!--
+          <div class="card">
+              <div class="card-body text-center">
+                  <h5>No hay información a mostrar, genera un reporte.</h5>
+              </div>
+          </div>
+          -->
+    </div>
+  </div>
 </div>
