@@ -75,6 +75,192 @@
                 </div>
             </div>
         </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4>Nivel 2</h4>
+                            <p class="mb-0">
+                                Personas que frecuentan los alrededores del recinto como personal de aseo, vecinos, etc.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre completo</th>
+                                    <th>Edad</th>
+                                    <th>Sexo</th>
+                                    <th>Foto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let rostro of rostros; let i = index">
+                                    <ng-container *ngIf="rostro.confidenceLevels == '61944adc61d3554be0974f64' ">
+                                        <td>{{rostro.name}} {{rostro.surname}}</td>
+                                        <td>{{rostro.age}}</td>
+                                        <td>{{rostro.gender}}</td>
+                                        <td>
+                                            <ng-container *ngIf="rostro.image;else other_content">
+                                                <div class="image-confidence-level" [ngStyle]="{
+                      'background-image': 'url(http://localhost:8000/api/get-image-face/' + rostro.image + ')'
+                    }"></div>
+                                            </ng-container>
+                                            <ng-template #other_content>
+                                                <div class="image-confidence-level" style="
+                            background-image: url('../../../assets/img/avatars/default.png');
+                          "></div>
+                                            </ng-template>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-success" (click)="editUser(EditUser, rostro)">
+                        <i class="fa fa-edit fa-lg"></i>
+                      </button>
+                                            <button class="btn btn-danger" (click)="deleteFace(rostro._id)">
+                        <i class="fa fa-trash-o fa-lg"></i>
+                      </button>
+                                        </td>
+                                    </ng-container>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <ng-container *ngIf="tableSize">
+                        <pagination [totalItems]="30"></pagination>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4>Nivel 3</h4>
+                            <p class="mb-0">
+                                Personas totalmente desconocidas pero no son consideradas como una amenaza.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre completo</th>
+                                    <th>Edad</th>
+                                    <th>Sexo</th>
+                                    <th>Foto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let rostro of rostros; let i = index">
+                                    <ng-container *ngIf="rostro.confidenceLevels == '61944adc61d3554be0974f64' ">
+                                        <td>{{rostro.name}} {{rostro.surname}}</td>
+                                        <td>{{rostro.age}}</td>
+                                        <td>{{rostro.gender}}</td>
+                                        <td>
+                                            <ng-container *ngIf="rostro.image;else other_content">
+                                                <div class="image-confidence-level" [ngStyle]="{
+                      'background-image': 'url(http://localhost:8000/api/get-image-face/' + rostro.image + ')'
+                    }"></div>
+                                            </ng-container>
+                                            <ng-template #other_content>
+                                                <div class="image-confidence-level" style="
+                            background-image: url('../../../assets/img/avatars/default.png');
+                          "></div>
+                                            </ng-template>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-success" (click)="editUser(EditUser, rostro)">
+                        <i class="fa fa-edit fa-lg"></i>
+                      </button>
+                                            <button class="btn btn-danger" (click)="deleteFace(rostro._id)">
+                        <i class="fa fa-trash-o fa-lg"></i>
+                      </button>
+                                        </td>
+                                    </ng-container>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <ng-container *ngIf="tableSize">
+                        <pagination [totalItems]="30"></pagination>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4>Nivel 4</h4>
+                            <p class="mb-0">
+                                Personas de confianza extrema como familiares y mejores amigos.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre completo</th>
+                                    <th>Edad</th>
+                                    <th>Sexo</th>
+                                    <th>Foto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let rostro of rostros; let i = index">
+                                    <ng-container *ngIf="rostro.confidenceLevels == '61944adc61d3554be0974f64' ">
+                                        <td>{{rostro.name}} {{rostro.surname}}</td>
+                                        <td>{{rostro.age}}</td>
+                                        <td>{{rostro.gender}}</td>
+                                        <td>
+                                            <ng-container *ngIf="rostro.image;else other_content">
+                                                <div class="image-confidence-level" [ngStyle]="{
+                    'background-image': 'url(http://localhost:8000/api/get-image-face/' + rostro.image + ')'
+                  }"></div>
+                                            </ng-container>
+                                            <ng-template #other_content>
+                                                <div class="image-confidence-level" style="
+                            background-image: url('../../../assets/img/avatars/default.png');
+                          "></div>
+                                            </ng-template>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-success" (click)="editUser(EditUser, rostro)">
+                        <i class="fa fa-edit fa-lg"></i>
+                      </button>
+                                            <button class="btn btn-danger" (click)="deleteFace(rostro._id)">
+                        <i class="fa fa-trash-o fa-lg"></i>
+                      </button>
+                                        </td>
+                                    </ng-container>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <ng-container *ngIf="tableSize">
+                        <pagination [totalItems]="30"></pagination>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 <!-- AGREGAR USUARIO-->
