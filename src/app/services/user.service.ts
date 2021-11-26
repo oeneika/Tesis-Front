@@ -71,7 +71,7 @@ export class UserService {
       environment.url.concat("verify"),
       {
         secret: secret,
-        token_secret: payload.temp_secret,
+        token_secret: payload,
       },
       {
         headers: this.headers,

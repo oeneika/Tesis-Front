@@ -1,80 +1,60 @@
-<div class="app-body" *ngIf="identity">
-  <main class="main d-flex align-items-center">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8 mx-auto">
-          <div class="card-group">
-            <div class="card p-4">
-              <div class="card-body">
-                <p>
-                  Hola
-                  <span style="text-transform: capitalize">{{ user.name }}</span
-                  >, a continuación te guíaremos en el proceso para activar la
-                  <strong>Autenticación en 2 pasos</strong> , ¡es muy sencillo!
-                </p>
-                <hr />
-                <p class="mb-4">
-                  Si configuras esta función, se te pedirá que introduzcas un
-                  código de inicio de sesión especial o que confirmes el intento
-                  de inicio de sesión cada vez que alguien intente acceder desde
-                  un navegador o dispositivo móvil que no reconozcamos.
-                </p>
-                <h4>Pasos a seguir a continuación</h4>
-                <ul>
-                  <li class="mb-3">
-                    Instala en un computador o dispositivo móvil de confianza,
-                    Google Authenticator.
-                  </li>
-                  <li class="mb-3">
-                    Añade una llave de autenticación o escanea un código QR en
-                    la aplicación que acabas de descargar.
-                  </li>
-                  <div class="row">
-                    <div class="col-sm-7">
-                      <li class="mb-3">
-                        (Opción 1 - Llave de autenticación): <br />
-                        Introduce una nombre fácil de recordar para el campo
-                        "Cuenta" y luego introduce la clave, la cual es:
-                        <strong>{{ secret }}</strong>
-                        <button
-                          (click)="copyContent()"
-                          class="btn btn-outline-secondary"
-                        >
-                          <i class="fa fa-copy"></i> Copiar
+<div class="app-body flow-login" *ngIf="identity">
+    <main class="main d-flex align-items-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card-group">
+                        <div class="card p-0 p-md-4">
+                            <div class="card-body">
+                                <p>
+                                    A continuación te guíaremos en el proceso para activar la
+                                    <strong>Autenticación en 2 pasos</strong> , ¡es muy sencillo!
+                                </p>
+                                <hr />
+                                <p class="mb-4">
+                                    Al configurar esta función, se te pedirá que introduzcas un código de inicio de sesión especial o que confirmes el intento de inicio de sesión cada vez que alguien intente acceder desde un navegador o dispositivo móvil que no reconozcamos.
+                                </p>
+                                <h4>Pasos a seguir a continuación</h4>
+                                <ul class="pasos-code">
+                                    <li class="mb-3">
+                                        Instala en un computador o dispositivo móvil de confianza, Google Authenticator.
+                                    </li>
+                                    <li class="mb-3">
+                                        Añade una llave de autenticación o escanea un código QR en la aplicación que acabas de descargar.
+                                    </li>
+                                    <div class="row">
+                                        <div class="col-sm-7">
+                                            <li class="mb-3">
+                                                (<strong>Opción 1</strong> - Llave de autenticación):
+                                                <br /> Introduce una nombre fácil de recordar para el campo "Cuenta" y luego introduce la clave, la cual es:
+                                                <strong>{{ secret }}</strong>
+                                                <button (click)="copyContent()" class="btn btn-outline-secondary mt-2 mb-2 w-100">
+                          <i class="fa fa-copy"></i> Copiar clave
                         </button>
-                        <br />
-                        Por ultimo, deja la opción por defecto "Basada en
-                        tiempo" y haz click en añadir.
-                      </li>
-                    </div>
-                    <div class="col-sm-5">
-                      <li class="mb-3">
-                        (Opción 2 - Código QR): <br />
-                        Escanea el siguiente código QR:
-                        <div
-                          class="codigo-qr"
-                          [ngStyle]="{
+                                                <br /> Por ultimo, deja la opción por defecto "Basada en tiempo" y haz click en añadir.
+                                            </li>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <li class="mb-3">
+                                                (<strong>Opción 2</strong> - Código QR): <br /> Escanea el siguiente código QR:
+                                                <div *ngIf="codeqr" class="codigo-qr" [ngStyle]="{
                             'background-image': 'url(' + codeqr + ')'
-                          }"
-                        ></div>
-                      </li>
-                    </div>
-                  </div>
-                </ul>
-                <div class="text-right">
-                  <a
-                    [routerLink]="['/verification-code', secret]"
-                    class="btn btn-primary"
-                  >
-                    >Continuar con el proceso
+                          }"></div>
+                                            </li>
+                                        </div>
+                                    </div>
+                                </ul>
+                                <div class="text-right">
+                                    <a [routerLink]="['/verification-code', secret]" class="btn btn-primary w-100">
+                    Continuar con el proceso
                     <i class="fa fa-arrow-right ml-2"></i
                   ></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </main>
+    </main>
 </div>

@@ -2,6 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { User } from "../../models/user";
 import { UserService } from "../../services/user.service";
 import { ActivatedRoute, Router } from "@angular/router";
+interface VerificationCodeForm {
+  token_secret: string;
+}
 
 @Component({
   selector: "app-verification-code",
@@ -13,13 +16,16 @@ export class VerficationCodeComponent implements OnInit {
   public identity;
   public token;
   public secret;
+  public errorMessage: Boolean = false;
+  formulario: VerificationCodeForm = {
+    token_secret: "",
+  };
 
   constructor(
     private _userService: UserService,
     private router: Router,
     private _route: ActivatedRoute
   ) {
-    this.user = new User("", "", "", "", "", {}, "", "", "", "ROLE_USER");
     this.secret = this._route.snapshot.paramMap.get("secret");
   }
 
@@ -29,13 +35,15 @@ export class VerficationCodeComponent implements OnInit {
   }
 
   public onSubmit() {
-    let payload = this.user;
+    let payload = this.formulario.token_secret;
     this._userService.VerificationCode(payload, this.secret).subscribe(
       (data) => {
         console.log(data);
         this.router.navigate(["/"]);
       },
-      (err) => {}
+      (err) => {
+        this.errorMessage = true;
+      }
     );
   }
 }
