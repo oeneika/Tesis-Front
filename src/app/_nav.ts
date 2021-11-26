@@ -20,7 +20,7 @@ export const navItems: INavData[] = [
         url: "/camera",
       },
       {
-        name: "Lista de cámaras en vivo",
+        name: "Cámaras en vivo",
         url: "/camera/list-cameras",
       },
       {
@@ -29,9 +29,9 @@ export const navItems: INavData[] = [
       },
     ],
   },
-    {
+  {
     name: "Grabaciones",
-    url: "/grabaciones",
+    url: "/recordings",
     icon: "icon-camrecorder",
   },
   {

@@ -89,6 +89,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: "recordings",
+        loadChildren: () =>
+          import("./views/recordings/recordings.module").then(
+            (m) => m.RecordingsModule
+          ),
+      },
+      {
         path: "camera",
         loadChildren: () =>
           import("./views/camera/camera.module").then((m) => m.CameraModule),

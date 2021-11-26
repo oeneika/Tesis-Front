@@ -1,283 +1,287 @@
 <div class="animated fadeIn pt-4">
-  <h1 class="mb-3">Reportes del sistema</h1>
-  <div class="card">
-     <div class="card-body">
-        <form action="">
-           <div class="row">
-              <div class="col-md-4">
-                 <div class="form-group">
-                    <label for="name">Selecciona la cámara</label>
-                    <select class="form-control">
-                       <option value="1">Cocina</option>
-                       <option value="2">Sala</option>
-                       <option value="3">Baño</option>
-                    </select>
-                 </div>
-              </div>
-              <div class="col-md-4">
-                 <div class="form-group">
-                    <label for="name">Selecciona rango de fechas y hora</label>
-                    <input type="text" placeholder="" class="form-control" [bsConfig]="{
-                       withTimepicker: true,
-                       rangeInputFormat: 'MMMM Do YYYY, h:mm:ss a',
-                       dateInputFormat: 'MMMM Do YYYY, h:mm:ss a'
-                       }" bsDaterangepicker />
-                 </div>
-              </div>
-              <div class="col-md-4">
-                 <div class="form-group"></div>
-                 <button class="btn btn-primary w-100" style="margin-top: 14px">
-                 Generar Reporte
-                 </button>
-              </div>
-           </div>
-        </form>
-     </div>
-  </div>
-  <div class="row">
-     <div class="col-md-12">
-        <!-- Si se genera un reporte mostrar esta vista-->
-        <div class="card">
-           <div class="card-body">
-              <div class="row">
-                 <div class="col-md-12">
-                    <h5>
-                       Reporte personalizado del 10/11/2021 al 14/11/2021 en cámara "Cocina"
-                    </h5>
-                 </div>
-              </div>
-              <table class="table table-striped mt-4">
-                 <thead>
-                    <tr>
-                       <th scope="col">#</th>
-                       <th scope="col">Nombre y apellido</th>
-                       <th scope="col">Nivel de confianza</th>
-                       <th scope="col">Edad</th>
-                       <th scope="col">Sexo</th>
-                       <th scope="col">Acción</th>
-                    </tr>
-                 </thead>
-                 <tbody>
-                    <tr>
-                       <th scope="row">1</th>
-                       <td>
-                          <div style="display: flex; align-items: center">
-                             <div class="circle-image mr-2" style="
-                                background-image: url('https://image.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg');
-                                "></div>
-                             Sergio Gomez
-                          </div>
-                       </td>
-                       <td>Nivel 2</td>
-                       <td>25 años</td>
-                       <td>Masculino</td>
-                       <td></td>
-                    </tr>
-                    <tr>
-                       <th scope="row">2</th>
-                       <td>
-                          <div style="display: flex; align-items: center">
-                             <div class="circle-image mr-2" style="
-                                background-image: url('../../../assets/img/avatars/8.jpg');
-                                "></div>
-                             Usuario desconocido
-                          </div>
-                       </td>
-                       <td></td>
-                       <td>22 - 28 años</td>
-                       <td>Masculino</td>
-                       <td>
-                          <button class="btn btn-success">
-                          Añadir a nivel de confianza
-                          </button>
-                       </td>
-                    </tr>
-                 </tbody>
-              </table>
-           </div>
-        </div>
-        <!-- Si NO se genera un reporte mostrar esta vista-->
-        <!--
-           <div class="card">
-               <div class="card-body text-center">
-                   <h5>No hay información a mostrar, genera un reporte.</h5>
-               </div>
-           </div>
-           -->
-     </div>
-  </div>
-  <div class="row">
-     <div class="col-md-12">
-        <!-- Si se genera un reporte mostrar esta vista-->
-        <div class="card">
-           <div class="card-body">
-              <div class="row">
-                 <div class="col-md-6">
-                    <h5>Reporte diario</h5>
-                 </div>
-                 <div class="col-md-6">
-                    <div class="col-md-12 col-form-label" style="text-align: right">
-                       <div id="inline-radios" class="form-check form-check-inline mr-2">
-                          <input type="radio" name="inline-radios" id="inlineRadio1" value="option1" class="form-check-input" checked /><label for="inlineRadio1" class="form-check-label">Reporte diario</label
-                             >
-                       </div>
-                       <div class="form-check form-check-inline mr-2">
-                          <input
-                             type="radio"
-                             name="inline-radios"
-                             id="inlineRadio2"
-                             value="option2"
-                             class="form-check-input"
-                             /><label for="inlineRadio2" class="form-check-label"
-                             >Reporte semanal</label
-                             >
-                       </div>
-                       <div class="form-check form-check-inline mr-1">
-                          <input
-                             type="radio"
-                             name="inline-radios"
-                             id="inlineRadio3"
-                             value="option3"
-                             class="form-check-input"
-                             /><label for="inlineRadio3" class="form-check-label"
-                             >Reporte mensual</label
-                             >
-                       </div>
+    <h1 class="mb-3">Reportes del sistema</h1>
+    <div class="card">
+        <div class="card-body">
+            <form action="">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="name">Selecciona la cámara</label>
+                            <select class="form-control">
+                <option value="1">Cocina</option>
+                <option value="2">Sala</option>
+                <option value="3">Baño</option>
+              </select>
+                        </div>
                     </div>
-                 </div>
-              </div>
-              <table class="table table-striped mt-4">
-                 <thead>
-                    <tr>
-                       <th scope="col">#</th>
-                       <th scope="col">Nombre y apellido</th>
-                       <th scope="col">Nivel de confianza</th>
-                       <th scope="col">Edad</th>
-                       <th scope="col">Sexo</th>
-                       <th scope="col">Acción</th>
-                    </tr>
-                 </thead>
-                 <tbody>
-                    <tr>
-                       <th scope="row">1</th>
-                       <td>
-                          <div style="display: flex; align-items: center">
-                             <div
-                                class="circle-image mr-2"
-                                style="
-                                background-image: url('../../../assets/img/avatars/2.jpg');
-                                "
-                                ></div>
-                             Adriana Bustillos
-                          </div>
-                       </td>
-                       <td>Nivel 2</td>
-                       <td>35 años</td>
-                       <td>Femenino</td>
-                       <td></td>
-                    </tr>
-                    <tr>
-                       <th scope="row">2</th>
-                       <td>
-                          <div style="display: flex; align-items: center">
-                             <div
-                                class="circle-image mr-2"
-                                style="
-                                background-image: url('../../../assets/img/avatars/5.jpg');
-                                "
-                                ></div>
-                             Usuario desconocido
-                          </div>
-                       </td>
-                       <td></td>
-                       <td>22 - 28 años</td>
-                       <td>Femenino</td>
-                       <td>
-                          <button class="btn btn-success">
-                          Añadir a nivel de confianza
-                          </button>
-                       </td>
-                    </tr>
-                    <tr>
-                       <th scope="row">3</th>
-                       <td>
-                          <div style="display: flex; align-items: center">
-                             <div
-                                class="circle-image mr-2"
-                                style="
-                                background-image: url('../../../assets/img/avatars/6.jpg');
-                                "
-                                ></div>
-                             Oraly Rodriguez
-                          </div>
-                       </td>
-                       <td>Nivel 1</td>
-                       <td>21 años</td>
-                       <td>Femenino</td>
-                       <td></td>
-                    </tr>
-                    <tr>
-                       <th scope="row">4</th>
-                       <td>
-                          <div style="display: flex; align-items: center">
-                             <div
-                                class="circle-image mr-2"
-                                style="
-                                background-image: url('https://cdnnmundo1.img.sputniknews.com/img/07e4/0c/1f/1094001723_0:95:1201:773_600x0_80_0_0_916e047bc0eee3a6891bfdc0d6a79911.png');
-                                "
-                                ></div>
-                             Iris Ilarraza
-                          </div>
-                       </td>
-                       <td>Nivel 1</td>
-                       <td>50 años</td>
-                       <td>Femenino</td>
-                       <td></td>
-                    </tr>
-                    <tr>
-                       <th scope="row">5</th>
-                       <td>
-                          <div style="display: flex; align-items: center">
-                             <div
-                                class="circle-image mr-2"
-                                style="
-                                background-image: url('../../../assets/img/avatars/7.jpg');
-                                "
-                                ></div>
-                             Carlos Arteaga
-                          </div>
-                       </td>
-                       <td>Nivel 4</td>
-                       <td>36 años</td>
-                       <td>Masculino</td>
-                       <td></td>
-                    </tr>
-                 </tbody>
-              </table>
-              <ul class="pagination">
-                 <li class="page-item">
-                    <a href="#" class="page-link">Anterior</a>
-                 </li>
-                 <li class="page-item active">
-                    <a href="#" class="page-link">1</a>
-                 </li>
-                 <li class="page-item"><a href="#" class="page-link">2</a></li>
-                 <li class="page-item"><a href="#" class="page-link">3</a></li>
-                 <li class="page-item"><a href="#" class="page-link">4</a></li>
-                 <li class="page-item">
-                    <a href="#" class="page-link">Siguiente</a>
-                 </li>
-              </ul>
-           </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="name">Selecciona rango de fechas y hora</label>
+                            <input type="text" placeholder="" class="form-control" [bsConfig]="{
+                  withTimepicker: true,
+                  rangeInputFormat: 'MMMM Do YYYY, h:mm:ss a',
+                  dateInputFormat: 'MMMM Do YYYY, h:mm:ss a'
+                }" bsDaterangepicker />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group"></div>
+                        <button class="btn btn-primary w-100" style="margin-top: 14px">
+              Generar Reporte
+            </button>
+                    </div>
+                </div>
+            </form>
         </div>
-        <!-- Si NO se genera un reporte mostrar esta vista-->
-        <!--
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Si se genera un reporte mostrar esta vista-->
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5>
+                                Reporte personalizado del 10/11/2021 al 14/11/2021 en cámara "Cocina"
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped mt-4">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nombre y apellido</th>
+                                    <th scope="col">Nivel de confianza</th>
+                                    <th scope="col">Edad</th>
+                                    <th scope="col">Sexo</th>
+                                    <th scope="col">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>
+                                        <div style="display: flex; align-items: center">
+                                            <div class="circle-image mr-2" style="
+                          background-image: url('https://image.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg');
+                        "></div>
+                                            Sergio Gomez
+                                        </div>
+                                    </td>
+                                    <td>Nivel 2</td>
+                                    <td>25 años</td>
+                                    <td>Masculino</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>
+                                        <div style="display: flex; align-items: center">
+                                            <div class="circle-image mr-2" style="
+                          background-image: url('../../../assets/img/avatars/8.jpg');
+                        "></div>
+                                            Usuario desconocido
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                    <td>22 - 28 años</td>
+                                    <td>Masculino</td>
+                                    <td>
+                                        <button class="btn btn-success">
+                      Añadir a nivel de confianza
+                    </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Si NO se genera un reporte mostrar esta vista-->
+            <!--
            <div class="card">
                <div class="card-body text-center">
                    <h5>No hay información a mostrar, genera un reporte.</h5>
                </div>
            </div>
            -->
-     </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Si se genera un reporte mostrar esta vista-->
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Reporte diario</h5>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-form-label">
+                                <div id="inline-radios" class="form-check form-check-inline mr-2">
+                                    <input type="radio" name="inline-radios" id="inlineRadio1" value="option1" class="form-check-input" checked /><label for="inlineRadio1" class="form-check-label">Reporte diario</label
+                  >
+                </div>
+                <div class="form-check form-check-inline mr-2">
+                  <input
+                    type="radio"
+                    name="inline-radios"
+                    id="inlineRadio2"
+                    value="option2"
+                    class="form-check-input"
+                  /><label for="inlineRadio2" class="form-check-label"
+                    >Reporte semanal</label
+                  >
+                </div>
+                <div class="form-check form-check-inline mr-1">
+                  <input
+                    type="radio"
+                    name="inline-radios"
+                    id="inlineRadio3"
+                    value="option3"
+                    class="form-check-input"
+                  /><label for="inlineRadio3" class="form-check-label"
+                    >Reporte mensual</label
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped mt-4">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Nombre y apellido</th>
+                  <th scope="col">Nivel de confianza</th>
+                  <th scope="col">Edad</th>
+                  <th scope="col">Sexo</th>
+                  <th scope="col">Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>
+                    <div style="display: flex; align-items: center">
+                      <div
+                        class="circle-image mr-2"
+                        style="
+                          background-image: url('../../../assets/img/avatars/2.jpg');
+                        "
+                      ></div>
+                      Adriana Bustillos
+                    </div>
+                  </td>
+                  <td>Nivel 2</td>
+                  <td>35 años</td>
+                  <td>Femenino</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>
+                    <div style="display: flex; align-items: center">
+                      <div
+                        class="circle-image mr-2"
+                        style="
+                          background-image: url('../../../assets/img/avatars/5.jpg');
+                        "
+                      ></div>
+                      Usuario desconocido
+                    </div>
+                  </td>
+                  <td></td>
+                  <td>22 - 28 años</td>
+                  <td>Femenino</td>
+                  <td>
+                    <button class="btn btn-success">
+                      Añadir a nivel de confianza
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td>
+                    <div style="display: flex; align-items: center">
+                      <div
+                        class="circle-image mr-2"
+                        style="
+                          background-image: url('../../../assets/img/avatars/6.jpg');
+                        "
+                      ></div>
+                      Oraly Rodriguez
+                    </div>
+                  </td>
+                  <td>Nivel 1</td>
+                  <td>21 años</td>
+                  <td>Femenino</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">4</th>
+                  <td>
+                    <div style="display: flex; align-items: center">
+                      <div
+                        class="circle-image mr-2"
+                        style="
+                          background-image: url('https://cdnnmundo1.img.sputniknews.com/img/07e4/0c/1f/1094001723_0:95:1201:773_600x0_80_0_0_916e047bc0eee3a6891bfdc0d6a79911.png');
+                        "
+                      ></div>
+                      Iris Ilarraza
+                    </div>
+                  </td>
+                  <td>Nivel 1</td>
+                  <td>50 años</td>
+                  <td>Femenino</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row">5</th>
+                  <td>
+                    <div style="display: flex; align-items: center">
+                      <div
+                        class="circle-image mr-2"
+                        style="
+                          background-image: url('../../../assets/img/avatars/7.jpg');
+                        "
+                      ></div>
+                      Carlos Arteaga
+                    </div>
+                  </td>
+                  <td>Nivel 4</td>
+                  <td>36 años</td>
+                  <td>Masculino</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <ul class="pagination">
+            <li class="page-item">
+              <a href="#" class="page-link">Anterior</a>
+            </li>
+            <li class="page-item active">
+              <a href="#" class="page-link">1</a>
+            </li>
+            <li class="page-item"><a href="#" class="page-link">2</a></li>
+            <li class="page-item"><a href="#" class="page-link">3</a></li>
+            <li class="page-item"><a href="#" class="page-link">4</a></li>
+            <li class="page-item">
+              <a href="#" class="page-link">Siguiente</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- Si NO se genera un reporte mostrar esta vista-->
+      <!--
+           <div class="card">
+               <div class="card-body text-center">
+                   <h5>No hay información a mostrar, genera un reporte.</h5>
+               </div>
+           </div>
+           -->
+    </div>
   </div>
 </div>

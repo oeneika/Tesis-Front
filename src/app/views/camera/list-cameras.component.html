@@ -1,7 +1,14 @@
 <section class="principal">
-    <div class="row">
-        <div class="col-sm-12">
+    <div class="row mb-4">
+        <div class="col-md-6">
             <h1 class="mb-3">Mis cámaras</h1>
+        </div>
+        <div class="col-md-6">
+            <div class="text-right">
+                <button class="btn btn-primary botones" (click)="openModal(template)">
+          Agregar colaboradores
+        </button>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -12,7 +19,9 @@
                         <h2>Cocina</h2>
                     </div>
                     <div class="card-body">
-                        <div class="camera-preview" style="background-image: url('https://aws.admagazine.com/prod/designs/v1/assets/767x384/95264.jpg')"></div>
+                        <div class="camera-preview" style="
+                background-image: url('https://aws.admagazine.com/prod/designs/v1/assets/767x384/95264.jpg');
+              "></div>
                         <div class="row">
                             <div class="col-3">
                                 <i class="icon-user icons font-2xl mt-3 mr-2"></i>
@@ -39,7 +48,9 @@
                         <h2>Baño</h2>
                     </div>
                     <div class="card-body">
-                        <div class="camera-preview" style="background-image: url('https://cr.epaenlinea.com/pub/media/version20200605/catalog/category/2442245_ban_05.jpg')"></div>
+                        <div class="camera-preview" style="
+                background-image: url('https://cr.epaenlinea.com/pub/media/version20200605/catalog/category/2442245_ban_05.jpg');
+              "></div>
                         <div class="row">
                             <div class="col-3">
                                 <i class="icon-user icons font-2xl mt-3 mr-2"></i>
@@ -61,3 +72,71 @@
         </div>
     </div>
 </section>
+
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Agregar colaboradores</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <form #cameraForm="ngForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="name">Correo electrónico</label>
+                        <input type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <h5>Colaboradores invitados</h5>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped mt-4">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Correo electrónico</th>
+                                    <th scope="col">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>alexander_deazevedo@gmail.com</td>
+                                    <td>
+                                        <button class="btn btn-danger">
+                      <i class="fa fa-trash-o fa-lg"></i>
+                    </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>oralyrodriguez7@gmail.com</td>
+                                    <td>
+                                        <button class="btn btn-danger">
+                      <i class="fa fa-trash-o fa-lg"></i>
+                    </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td>maurovolpe@gmail.com</td>
+                                    <td>
+                                        <button class="btn btn-danger">
+                      <i class="fa fa-trash-o fa-lg"></i>
+                    </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="submit" class="btn btn-primary" value="Agregar" />
+        </div>
+    </form>
+</ng-template>
