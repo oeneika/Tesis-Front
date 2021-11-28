@@ -91,6 +91,9 @@ button {
         width: 100%;
         height: 400px;
     }
+    .radiobuttons-dashboard{
+        text-align: right;
+    }
 }
 
 a .card h2,
@@ -121,6 +124,13 @@ a {
 
 .funciones-basicas {
     padding: 0 90px;
+}
+
+@media (max-width: 767px){
+    .block-mobile{
+        display: block;
+        margin-bottom: 10px;
+    }
 }
 
 @media (max-width: 480px) {

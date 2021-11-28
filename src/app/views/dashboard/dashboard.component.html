@@ -88,7 +88,7 @@
                                     <td>22 - 28 años</td>
                                     <td>Masculino</td>
                                     <td>
-                                        <button class="btn btn-success">
+                                        <button class="btn btn-success" (click)="openModal(AddUser)">
                       Añadir a nivel de confianza
                     </button>
                                     </td>
@@ -118,12 +118,12 @@
                             <h5>Reporte diario</h5>
                         </div>
                         <div class="col-md-6">
-                            <div class="col-form-label">
-                                <div id="inline-radios" class="form-check form-check-inline mr-2">
+                            <div class="col-form-label radiobuttons-dashboard">
+                                <div id="inline-radios" class="form-check form-check-inline mr-2 block-mobile">
                                     <input type="radio" name="inline-radios" id="inlineRadio1" value="option1" class="form-check-input" checked /><label for="inlineRadio1" class="form-check-label">Reporte diario</label
                   >
                 </div>
-                <div class="form-check form-check-inline mr-2">
+                <div class="form-check form-check-inline mr-2 block-mobile">
                   <input
                     type="radio"
                     name="inline-radios"
@@ -134,7 +134,7 @@
                     >Reporte semanal</label
                   >
                 </div>
-                <div class="form-check form-check-inline mr-1">
+                <div class="form-check form-check-inline mr-1 block-mobile">
                   <input
                     type="radio"
                     name="inline-radios"
@@ -196,7 +196,7 @@
                   <td>22 - 28 años</td>
                   <td>Femenino</td>
                   <td>
-                    <button class="btn btn-success">
+                    <button class="btn btn-success" (click)="openModal(AddUser)">
                       Añadir a nivel de confianza
                     </button>
                   </td>
@@ -285,3 +285,88 @@
     </div>
   </div>
 </div>
+
+ <!-- AGREGAR USUARIO-->
+ <ng-template #AddUser>
+  <div class="modal-header">
+     <h4 class="modal-title pull-left">Agregar usuario</h4>
+     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+     <span aria-hidden="true">&times;</span>
+     </button>
+  </div>
+  <form #AddUserForm="ngForm" (ngSubmit)="onSubmit()">
+  <div class="modal-body">
+     <ng-container *ngIf="niveles && niveles.length">
+        <div class="row">
+           <div class="col-sm-6">
+              <div class="form-group">
+                 <label for="name">Nombre</label>
+                 <input type="text" class="form-control" #name="ngModel" name="name" [(ngModel)]="face.name" required />
+              </div>
+           </div>
+           <div class="col-sm-6">
+              <div class="form-group">
+                 <label for="name">Apellido</label>
+                 <input type="text" class="form-control" #surname="ngModel" name="surname" [(ngModel)]="face.surname" required />
+              </div>
+           </div>
+        </div>
+        <div class="row">
+           <div class="col-sm-6">
+              <div class="form-group">
+                 <label for="name">Edad</label>
+                 <input type="text" class="form-control" #age="ngModel" name="age" [(ngModel)]="face.age" required />
+              </div>
+           </div>
+           <div class="col-sm-6">
+              <div class="form-group">
+                 <label for="name">Sexo</label>
+              </div>
+              <div class="mb-2 form-check form-check-inline">
+                 <input class="form-check-input" type="radio" #gender="ngModel" name="gender" [(ngModel)]="face.gender" id="masculino" value="Masculino" required checked />
+                 <label class="form-check-label" for="masculino">Masculino</label>
+              </div>
+              <div class="mb-2 form-check form-check-inline">
+                 <input class="form-check-input" type="radio" #gender="ngModel" name="gender" [(ngModel)]="face.gender" id="femenino" value="Femenino" />
+                 <label class="form-check-label" for="femenino">Femenino</label>
+              </div>
+           </div>
+        </div>
+        <div class="row">
+           <div class="col-sm-12">
+              <label for="confidenceLevels">Niveles de confianza</label>
+              <select class="form-control" #confidenceLevels="ngModel" name="confidenceLevels" [(ngModel)]="face.confidenceLevels">
+              <option class="placeholder" [value]="null" disabled>
+                 Seleccione
+              </option>
+              <option
+              *ngFor="let confidence of niveles; let i = index"
+              [value]="confidence._id"
+              >
+              {{ confidence.title }}
+              </option>
+              </select>
+           </div>
+        </div>
+        <div class="row">
+           <div class="col-sm-12">
+              <div class="form-group row">
+                 <label class="col-md-12 col-form-label" for="file-input">Retrato del usuario</label
+                    >
+                 <div class="col-md-12">
+                    <input
+                       type="file"
+                       placeholder="Subir imagen..."
+                       (change)="fileChangeEvent($event)"
+                       />
+                 </div>
+              </div>
+           </div>
+        </div>
+     </ng-container>
+  </div>
+  <div class="modal-footer">
+     <input type="submit" class="btn btn-primary" value="Agregar" />
+  </div>
+  </form>
+</ng-template>

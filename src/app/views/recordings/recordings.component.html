@@ -1,5 +1,5 @@
 <section class="principal" *ngIf="identity">
-    <h1 class="mb-3">Grabaciones</h1>
+    <h1 class="mb-3">Grabaciones guardadas</h1>
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -16,44 +16,19 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Cámara (Sala) - 19:10:26</td>
+                                    <td><button style="font-weight: bold; color: #3f51b5;" (click)="openRecordings(OpenUser, 1)">Cámara (Sala)</button></td>
                                     <td>28 segundos</td>
                                     <td>19/10/2021</td>
                                     <td>
-                                        <button class="btn btn-info botones" (click)="openRecordings(OpenUser, 1)">
-                      <i class="fa fa-eye fa-lg"></i> Ver
-                    </button>
                                         <button class="btn btn-success botones">
-                      <i class="fa fa-download fa-lg"></i> Descargar
-                    </button>
+                                            <i class="fa fa-download fa-lg"></i> Descargar
+                                        </button>
+                                        <button class="btn btn-danger botones">
+                                            <i class="fa fa-trash fa-lg"></i>
+                                        </button>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>Cámara (Cocina) - 19:10:26</td>
-                                    <td>25 segundos</td>
-                                    <td>17/10/2021</td>
-                                    <td>
-                                        <button class="btn btn-info botones" (click)="openRecordings(OpenUser, 1)">
-                      <i class="fa fa-eye fa-lg"></i> Ver
-                    </button>
-                                        <button class="btn btn-success botones">
-                      <i class="fa fa-download fa-lg"></i> Descargar
-                    </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Cámara (Estacionamiento) - 19:10:26</td>
-                                    <td>20 segundos</td>
-                                    <td>16/10/2021</td>
-                                    <td>
-                                        <button class="btn btn-info botones">
-                      <i class="fa fa-eye fa-lg"></i> Ver
-                    </button>
-                                        <button class="btn btn-success botones">
-                      <i class="fa fa-download fa-lg"></i> Descargar
-                    </button>
-                                    </td>
-                                </tr>
+                                
                             </tbody>
                         </table>
                     </div>
@@ -69,14 +44,15 @@
 
 <ng-template #OpenUser>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">Cámara (Sala) - 19:10:26</h4>
+        <h4 class="modal-title pull-left">Cámara (Sala)</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
     </div>
     <div class="modal-body">
-        <div class="camera-live" style="
-        background-image: url('https://aws.admagazine.com/prod/designs/v1/assets/767x384/95264.jpg');
-      "></div>
+        <video width="100%" height="400" controls>
+            <source src="../../../assets/video/video-prueba.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
     </div>
 </ng-template>

@@ -1,7 +1,7 @@
 <section class="principal">
     <div class="row mb-4">
         <div class="col-md-6">
-            <h1 class="mb-3">Mis cámaras</h1>
+            <h1 class="mb-3">Mis cámaras en vivo</h1>
         </div>
         <div class="col-md-6">
             <div class="text-right">
@@ -80,9 +80,22 @@
       <span aria-hidden="true">&times;</span>
     </button>
     </div>
-    <form #cameraForm="ngForm" (ngSubmit)="onSubmit()">
-        <div class="modal-body">
+
+    <div class="modal-body">
+        <form #cameraForm="ngForm" (ngSubmit)="onSubmit()">
             <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="name">Nombre</label>
+                        <input type="text" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="name">Apellido</label>
+                        <input type="text" class="form-control" />
+                    </div>
+                </div>
                 <div class="col-sm-12">
                     <div class="form-group">
                         <label for="name">Correo electrónico</label>
@@ -90,53 +103,53 @@
                     </div>
                 </div>
                 <div class="col-sm-12">
-                    <h5>Colaboradores invitados</h5>
-
-                    <div class="table-responsive">
-                        <table class="table table-striped mt-4">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Correo electrónico</th>
-                                    <th scope="col">Acción</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>alexander_deazevedo@gmail.com</td>
-                                    <td>
-                                        <button class="btn btn-danger">
-                      <i class="fa fa-trash-o fa-lg"></i>
-                    </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>oralyrodriguez7@gmail.com</td>
-                                    <td>
-                                        <button class="btn btn-danger">
-                      <i class="fa fa-trash-o fa-lg"></i>
-                    </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>maurovolpe@gmail.com</td>
-                                    <td>
-                                        <button class="btn btn-danger">
-                      <i class="fa fa-trash-o fa-lg"></i>
-                    </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <input type="submit" class="btn btn-primary w-100" value="Agregar" />
                 </div>
             </div>
+        </form>
+        <div class="mt-4">
+            <h5>Colaboradores invitados</h5>
+
+            <div class="table-responsive">
+                <table class="table table-striped mt-4">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Correo electrónico</th>
+                            <th scope="col">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>alexander_deazevedo@gmail.com</td>
+                            <td>
+                                <button class="btn btn-danger">
+                  <i class="fa fa-trash-o fa-lg"></i>
+                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>oralyrodriguez7@gmail.com</td>
+                            <td>
+                                <button class="btn btn-danger">
+                  <i class="fa fa-trash-o fa-lg"></i>
+                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>maurovolpe@gmail.com</td>
+                            <td>
+                                <button class="btn btn-danger">
+                  <i class="fa fa-trash-o fa-lg"></i>
+                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="modal-footer">
-            <input type="submit" class="btn btn-primary" value="Agregar" />
-        </div>
-    </form>
+    </div>
 </ng-template>
