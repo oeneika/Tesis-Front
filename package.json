@@ -59,7 +59,7 @@
     "flag-icon-css": "^3.5.0",
     "font-awesome": "^4.7.0",
     "ng2-charts": "^2.4.2",
-    "ngx-bootstrap": "^6.2.0",
+    "ngx-bootstrap": "^7.1.2",
     "ngx-clipboard": "^14.0.1",
     "ngx-cookie-service": "^11.0.2",
     "ngx-perfect-scrollbar": "^10.1.0",

@@ -14,17 +14,19 @@
               </select>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <div class="form-group">
                             <label for="name">Selecciona rango de fechas y hora</label>
-                            <input type="text" placeholder="" class="form-control" [bsConfig]="{
-                  withTimepicker: true,
-                  rangeInputFormat: 'MMMM Do YYYY, h:mm:ss a',
-                  dateInputFormat: 'MMMM Do YYYY, h:mm:ss a'
-                }" bsDaterangepicker />
+                            <input type="text"
+                                placeholder="Daterangepicker"
+                                class="form-control"
+                                [bsConfig]="{withTimepicker: true, rangeInputFormat : 'MMMM Do YYYY, h:mm:ss a', dateInputFormat: 'MMMM Do YYYY, h:mm:ss a'}"
+                                bsDaterangepicker>
+                                <timepicker name="fieldName" ngDefaultControl [(ngModel)]="time" [ngModelOptions]="{standalone: true}"></timepicker>
+                                <!-- <pre class="alert alert-info">Time is: {{time}}</pre> -->
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group"></div>
                         <button class="btn btn-primary w-100" style="margin-top: 14px">
               Generar Reporte

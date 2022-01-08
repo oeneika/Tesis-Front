@@ -5,7 +5,7 @@ import { LocationStrategy, HashLocationStrategy } from "@angular/common";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { HttpClientModule } from "@angular/common/http";
 import { ClipboardModule } from "ngx-clipboard";
-import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
+import { BsDatepickerConfig, BsDatepickerModule } from "ngx-bootstrap/datepicker";
 import { PerfectScrollbarModule } from "ngx-perfect-scrollbar";
 import { PERFECT_SCROLLBAR_CONFIG } from "ngx-perfect-scrollbar";
 import { PerfectScrollbarConfigInterface } from "ngx-perfect-scrollbar";
@@ -51,6 +51,7 @@ import { ChartsModule } from "ng2-charts";
 import { WebcamComponent } from "./webcam/webcam.component";
 import { ServiceWorkerModule } from "@angular/service-worker";
 import { environment } from "../environments/environment";
+import { TimepickerModule } from "ngx-bootstrap/timepicker";
 
 const config: SocketIoConfig = {
   url: environment.shortURL + "/socket.io/?EIO=3&transport=polling",
@@ -73,6 +74,7 @@ const APP_CONTAINERS = [DefaultLayoutComponent];
     FormsModule,
     AppSidebarModule,
     BsDatepickerModule.forRoot(),
+    TimepickerModule.forRoot(),
     PerfectScrollbarModule,
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
@@ -101,6 +103,7 @@ const APP_CONTAINERS = [DefaultLayoutComponent];
       useClass: HashLocationStrategy,
     },
     IconSetService,
+    BsDatepickerConfig
   ],
   bootstrap: [AppComponent],
 })
