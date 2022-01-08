@@ -26,7 +26,8 @@
               "node_modules/font-awesome/css/font-awesome.css",
               "node_modules/simple-line-icons/dist/styles/simple-line-icons.css",
               "node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
-              "src/scss/style.scss"
+              "src/scss/style.scss",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [

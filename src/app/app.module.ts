@@ -3,7 +3,7 @@ import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { LocationStrategy, HashLocationStrategy } from "@angular/common";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { HttpClientModule } from "@angular/common/http";
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { ClipboardModule } from "ngx-clipboard";
 import { BsDatepickerConfig, BsDatepickerModule } from "ngx-bootstrap/datepicker";
 import { PerfectScrollbarModule } from "ngx-perfect-scrollbar";
@@ -52,6 +52,9 @@ import { WebcamComponent } from "./webcam/webcam.component";
 import { ServiceWorkerModule } from "@angular/service-worker";
 import { environment } from "../environments/environment";
 import { TimepickerModule } from "ngx-bootstrap/timepicker";
+import { ToastrModule } from 'ngx-toastr';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { MyInterceptor } from "./services/interceptor.service";
 
 const config: SocketIoConfig = {
   url: environment.shortURL + "/socket.io/?EIO=3&transport=polling",
@@ -73,6 +76,7 @@ const APP_CONTAINERS = [DefaultLayoutComponent];
     AppHeaderModule,
     FormsModule,
     AppSidebarModule,
+    NgxSpinnerModule,
     BsDatepickerModule.forRoot(),
     TimepickerModule.forRoot(),
     PerfectScrollbarModule,
@@ -80,6 +84,7 @@ const APP_CONTAINERS = [DefaultLayoutComponent];
     TabsModule.forRoot(),
     ChartsModule,
     IconModule,
+    ToastrModule.forRoot(),
     IconSetModule.forRoot(),
     ServiceWorkerModule.register("ngsw-worker.js", {
       enabled: environment.production,
@@ -102,6 +107,7 @@ const APP_CONTAINERS = [DefaultLayoutComponent];
       provide: LocationStrategy,
       useClass: HashLocationStrategy,
     },
+    { provide: HTTP_INTERCEPTORS, useClass: MyInterceptor, multi: true },
     IconSetService,
     BsDatepickerConfig
   ],

@@ -22,7 +22,8 @@ export class DashboardComponent implements OnInit {
     public tableSize;
 
 
-  constructor(private modalService: BsModalService, private _confidenceLevels: ConfidenceLevelsService,private _faceService: FaceService,private _userService: UserService,){
+  constructor(private modalService: BsModalService, private _confidenceLevels: ConfidenceLevelsService,private _faceService: FaceService,
+    private _userService: UserService){
       this.face = new Face("", "", "", "", "", "", "", "");
       this.token = this._userService.getToken();
       this.identity = this._userService.getIdentity();
@@ -30,7 +31,7 @@ export class DashboardComponent implements OnInit {
       
   }
   ngOnInit(){
-    this.getConfidenceLevels()
+    this.getConfidenceLevels();
   }
 
   openModal(template: TemplateRef<any>) {
