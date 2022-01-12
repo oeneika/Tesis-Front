@@ -28,20 +28,35 @@ export class YourCodeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.identity = this._userService.getIdentity();
-    this.token = this._userService.getToken();
-    this._userService.getUser(this.identity).subscribe(
-      (data) => {
-        this.usuario = data.user;
-        this.user = this.usuario;
-        this.secret = this.usuario.temp_secreto.secret;
-        this.codeqr = this.usuario.temp_secreto.qr;
-      },
-      (err) => {}
-    );
+    this.identity = this._userService.identity;
+    this.token = this._userService.token;
+    if (this.identity) {
+      this._userService.getUser(this.identity).subscribe(
+        (data) => {
+          this.usuario = data.user;
+          this.user = this.usuario;
+          this.secret = this.usuario.temp_secreto.secret;
+          this.codeqr = this.usuario.temp_secreto.qr;
+        },
+        (err) => {}
+      );
+    }
   }
 
   copyContent() {
     this._clipboardService.copyFromContent(this.usuario.temp_secreto.secret);
+  }
+
+  /**
+   * sethAuth
+   */
+  public sethAuth(twoSteps: boolean) {
+    this._userService.setAuth({hasTwoStepsAuth: twoSteps, hasSetTwoSteps: true}).subscribe(
+      (response: any) => {
+        localStorage.setItem("hasTwoStepsAuth", JSON.stringify(twoSteps));
+        localStorage.setItem("hasSetTwoSteps", JSON.stringify(true));
+        this.router.navigate(['/']);
+      }
+    );
   }
 }

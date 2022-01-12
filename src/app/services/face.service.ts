@@ -2,16 +2,15 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "../../environments/environment";
 import { Observable } from "rxjs";
+import { UserService } from "./user.service";
 
 @Injectable()
 export class FaceService {
   public url: string;
-  public identity;
-  public token;
-
+  public userService = new UserService(this._http);
   public headersAuthorization = new HttpHeaders()
     .set("content-type", "application/json")
-    .set("Authorization", this.getToken())
+    .set("Authorization", this.userService.token)
     .set("Access-Control-Allow-Origin", "*");
 
   constructor(protected _http: HttpClient) {
@@ -54,15 +53,4 @@ export class FaceService {
     });
   }
 
-  //Obtener Token
-  getToken() {
-    let token = JSON.parse(localStorage.getItem("token"));
-
-    if (token != "undefined") {
-      this.token = token;
-    } else {
-      this.token = null;
-    }
-    return this.token;
-  }
 }

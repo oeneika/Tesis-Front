@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { User } from "../../models/user";
 import { UserService } from "../../services/user.service";
 import { Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-login",
@@ -12,50 +13,41 @@ export class LoginComponent implements OnInit {
   public user: User;
   public identity;
   public token;
-  public errorLogin = false;
 
-  constructor(private _userService: UserService, private router: Router) {
+  constructor(private _userService: UserService, private router: Router, private toastr: ToastrService) {
     this.user = new User("", "", "", "", "", {}, "", "", "", "ROLE_USER");
     localStorage.removeItem("identity");
     localStorage.removeItem("token");
+    localStorage.removeItem("secret");
+    localStorage.removeItem("hasTwoStepsAuth");
+    localStorage.removeItem("hasSetTwoSteps");
+    localStorage.removeItem("isTwoStepsAuth");
     localStorage.clear();
   }
 
   ngOnInit() {
-    this.identity = this._userService.getIdentity();
-    this.token = this._userService.getToken();
+    this.identity = this._userService.identity;
+    this.token = this._userService.token;
   }
 
   public onSubmit() {
-    this._userService.signIn(this.user).subscribe(
-      (data) => {
-        let identity = data["id"];
-        this.identity = identity;
-        //Crear elemento en el localstorage
-        localStorage.setItem("identity", JSON.stringify(identity));
-        //Conseguir el token
-        this._userService.signIn(this.user, "true").subscribe(
-          (data) => {
-            let token = data["token"];
-            this.token = token;
-            localStorage.setItem("token", JSON.stringify(token));
-            let secret = data["secret"];
-            this.router.navigate([`/verification-code/${secret}`]);
-          },
-          (err) => {
-            var error = <any>err;
-            if (error != null) {
-              this.errorLogin = true;
+    if (this.user.email && this.user.password) {
+          this._userService.signIn(this.user, "true").subscribe(
+            (data: any) => {
+              localStorage.setItem("identity", JSON.stringify(data.id));
+              localStorage.setItem("token", JSON.stringify(data.token));
+              localStorage.setItem("secret", JSON.stringify(data.secret));
+              localStorage.setItem("hasTwoStepsAuth", JSON.stringify(data.hasTwoStepsAuth));
+              localStorage.setItem("hasSetTwoSteps", JSON.stringify(data.hasSetTwoSteps));
+              this.router.navigate(['/']);
             }
-          }
-        );
-      },
-      (err) => {
-        var error = <any>err;
-        if (error != null) {
-          this.errorLogin = true;
-        }
-      }
-    );
+          );
+    } else if (!this.user.email && this.user.password) {
+      this.toastr.error('El correo es un campo obligatorio.');
+    } else if (this.user.email && !this.user.password) {
+      this.toastr.error('La contraseña es un campo obligatorio.');
+    } else {
+      this.toastr.error('Todos los campos son obligatorios.');
+    }
   }
 }

@@ -31,8 +31,8 @@ export class DefaultLayoutComponent implements OnInit {
     private router: Router
   ) {
     this.user = new User("", "", "", "", "", {}, "", "", "", "ROLE_USER");
-    this.identity = this._userService.getIdentity();
-    this.token = this._userService.getToken();
+    this.identity = this._userService.identity;
+    this.token = this._userService.token;
   }
 
   ngOnInit() {
@@ -79,6 +79,7 @@ export class DefaultLayoutComponent implements OnInit {
   logout() {
     localStorage.removeItem("identity");
     localStorage.removeItem("token");
+    localStorage.removeItem("secret");
     localStorage.clear();
     this.router.navigate(["/login"]);
   }

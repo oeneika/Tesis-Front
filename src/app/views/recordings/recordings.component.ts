@@ -17,7 +17,7 @@ export class RecordingsComponent implements OnInit {
     private _userService: UserService,
     private modalService: BsModalService
   ) {
-    this.identity = this._userService.getIdentity();
+    this.identity = this._userService.identity;
   }
 
   ngOnInit() {

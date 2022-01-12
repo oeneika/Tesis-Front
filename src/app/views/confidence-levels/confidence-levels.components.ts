@@ -34,8 +34,8 @@ export class ConfidenceLevelsComponent implements OnInit {
     private _confidenceLevels: ConfidenceLevelsService,
     private _faceService: FaceService
   ) {
-    this.identity = this._userService.getIdentity();
-    this.token = this._userService.getToken();
+    this.identity = this._userService.identity;
+    this.token = this._userService.token;
     this.face = new Face("", "", "", "", "", "", "", "");
     this.url = environment.url;
   }

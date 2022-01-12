@@ -7,8 +7,6 @@ import { Observable } from "rxjs";
 @Injectable()
 export class UserService {
   public url: string;
-  public identity;
-  public token;
 
   public headers = new HttpHeaders()
     .set("content-type", "application/json")
@@ -16,7 +14,7 @@ export class UserService {
 
   public headersAuthorization = new HttpHeaders()
     .set("content-type", "application/json")
-    .set("Authorization", this.getToken())
+    .set("Authorization", this.token)
     .set("Access-Control-Allow-Origin", "*");
 
   constructor(protected _http: HttpClient) {
@@ -28,10 +26,7 @@ export class UserService {
     if (gethash != null) {
       user_to_login.gethash = gethash;
     }
-    let json = JSON.stringify(user_to_login);
-    let params = json;
-
-    return this._http.post(environment.url.concat("login"), params, {
+    return this._http.post(environment.url.concat("login"), JSON.stringify(user_to_login), {
       headers: this.headers,
     });
   }
@@ -79,25 +74,37 @@ export class UserService {
     );
   }
 
-  getIdentity() {
-    let identity = JSON.parse(localStorage.getItem("identity"));
-
-    if (identity != "undefined") {
-      this.identity = identity;
-    } else {
-      this.identity = null;
-    }
-    return this.identity;
+  /**
+   * setAuth
+   */
+  public setAuth(payload: any): Observable<any> {
+    return this._http.put(environment.url.concat('set-authentication/', this.identity), payload, {
+      headers: this.headersAuthorization,
+    });
   }
 
-  getToken() {
-    let token = JSON.parse(localStorage.getItem("token"));
-
-    if (token != "undefined") {
-      this.token = token;
-    } else {
-      this.token = null;
-    }
-    return this.token;
+  public get identity() {
+    return JSON.parse(localStorage.getItem("identity") ? localStorage.getItem("identity") : null);
   }
+
+  public get token() {
+    return JSON.parse(localStorage.getItem("token") ? localStorage.getItem("token") : null);
+  }
+  
+  public get secret() {
+    return JSON.parse(localStorage.getItem("secret") ? localStorage.getItem("secret") : null);
+  }
+  
+  public get hasTwoStepsAuth() {
+    return JSON.parse(localStorage.getItem("hasTwoStepsAuth") ? localStorage.getItem("hasTwoStepsAuth") : null);
+  }
+  
+  public get hasSetTwoSteps() {
+    return JSON.parse(localStorage.getItem("hasSetTwoSteps") ? localStorage.getItem("hasSetTwoSteps") : null);
+  }
+
+  public get isTwoStepsAuth() {
+    return JSON.parse(localStorage.getItem("isTwoStepsAuth") ? localStorage.getItem("isTwoStepsAuth") : null);
+  }
+
 }

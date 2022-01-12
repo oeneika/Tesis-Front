@@ -32,7 +32,7 @@ export class MyInterceptor implements HttpInterceptor {
         console.log('Error: ', error);
         if (this.isValidReq(req) && error?.error?.message) {
             const message = error?.error?.message;
-            this.toastr.error(message);
+            this.toastr.error(message, null);
         } else if (!error?.error?.message) {
             const message = error?.message;
             this.toastr.error('Hay un problema en la conexión con el servidor, contacte a un administrador.');

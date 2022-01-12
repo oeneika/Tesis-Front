@@ -30,19 +30,16 @@ export class VerficationCodeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.identity = this._userService.getIdentity();
-    this.token = this._userService.getToken();
+    this.identity = this._userService.identity;
+    this.token = this._userService.token;
   }
 
   public onSubmit() {
     let payload = this.formulario.token_secret;
     this._userService.VerificationCode(payload, this.secret).subscribe(
       (data) => {
-        console.log(data);
+        localStorage.setItem("isTwoStepsAuth", JSON.stringify(true));
         this.router.navigate(["/"]);
-      },
-      (err) => {
-        this.errorMessage = true;
       }
     );
   }

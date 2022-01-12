@@ -25,8 +25,8 @@ export class DashboardComponent implements OnInit {
   constructor(private modalService: BsModalService, private _confidenceLevels: ConfidenceLevelsService,private _faceService: FaceService,
     private _userService: UserService){
       this.face = new Face("", "", "", "", "", "", "", "");
-      this.token = this._userService.getToken();
-      this.identity = this._userService.getIdentity();
+      this.token = this._userService.token;
+      this.identity = this._userService.identity;
       this.url = environment.url;
       
   }

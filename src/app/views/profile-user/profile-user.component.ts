@@ -20,8 +20,8 @@ export class ProfilePageComponent implements OnInit {
   public url: string;
 
   constructor(private _userService: UserService, private router: Router) {
-    this.identity = this._userService.getIdentity();
-    this.token = this._userService.getToken();
+    this.identity = this._userService.identity;
+    this.token = this._userService.token;
     this.url = environment.url;
   }
 

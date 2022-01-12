@@ -11,13 +11,20 @@ import { RegisterComponent } from "./views/register/register.component";
 import { WebcamComponent } from "./webcam/webcam.component";
 import { VerficationCodeComponent } from "./views/verification-code/verification-code.component";
 import { YourCodeComponent } from "./views/verification-code/your-code.component";
+import { AuthenticationGuard } from "./guards/authentication.guard";
+import { TwoStepsAuthenticationGuard } from "./guards/2-steps-authentication.guard";
 
 export const routes: Routes = [
-  {
-    path: "",
-    redirectTo: "dashboard",
-    pathMatch: "full",
-  },
+  // {
+  //   path: "",
+  //   redirectTo: "dashboard",
+  //   pathMatch: "full",
+  // },
+  // {
+  //   path: "/",
+  //   redirectTo: "dashboard",
+  //   pathMatch: "full",
+  // },
   {
     path: "404",
     component: P404Component,
@@ -45,6 +52,7 @@ export const routes: Routes = [
     data: {
       title: "Your verification code",
     },
+    canActivate: [AuthenticationGuard]
   },
   {
     path: "verification-code/:secret",
@@ -52,6 +60,7 @@ export const routes: Routes = [
     data: {
       title: "Verification code",
     },
+    canActivate: [AuthenticationGuard]
   },
   {
     path: "webcam",
@@ -74,6 +83,11 @@ export const routes: Routes = [
       title: "Home",
     },
     children: [
+      {
+        path: "",
+        redirectTo: "dashboard",
+        pathMatch: "full",
+      },
       {
         path: "profile-user",
         loadChildren: () =>
@@ -143,8 +157,10 @@ export const routes: Routes = [
         path: "widgets",
         loadChildren: () =>
           import("./views/widgets/widgets.module").then((m) => m.WidgetsModule),
-      },
+      }
     ],
+    canActivateChild: [TwoStepsAuthenticationGuard],
+    canActivate: [TwoStepsAuthenticationGuard]
   },
   { path: "**", component: P404Component },
 ];

@@ -44,11 +44,13 @@
                                         </div>
                                     </div>
                                 </ul>
-                                <div class="text-right">
-                                    <a [routerLink]="['/verification-code', secret]" class="btn btn-primary w-100">
+                                <div class="text-right row">
+                                    <a (click)="sethAuth(true)" class="btn btn-primary w-100">
                     Continuar con el proceso
                     <i class="fa fa-arrow-right ml-2"></i
                   ></a>
+                                    <a (click)="sethAuth(false)" class="btn btn-secondary mt-2 w-100">
+                    En otro momento...</a>
                                 </div>
                             </div>
                         </div>

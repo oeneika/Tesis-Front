@@ -9,7 +9,7 @@
                                 <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
                                     <h1 class="text-center mb-4">Iniciar sesión</h1>
                                     <alert type="danger" *ngIf="errorLogin">
-                                        <strong>¡Hubo un error!</strong> Intenta nuevamente iniciar sesión.
+                                        <strong>¡Hubo un error!</strong> {{errorLogin}}
                                     </alert>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">

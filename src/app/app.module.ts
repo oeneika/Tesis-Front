@@ -55,6 +55,7 @@ import { TimepickerModule } from "ngx-bootstrap/timepicker";
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MyInterceptor } from "./services/interceptor.service";
+import { UserService } from "./services/user.service";
 
 const config: SocketIoConfig = {
   url: environment.shortURL + "/socket.io/?EIO=3&transport=polling",
@@ -109,7 +110,8 @@ const APP_CONTAINERS = [DefaultLayoutComponent];
     },
     { provide: HTTP_INTERCEPTORS, useClass: MyInterceptor, multi: true },
     IconSetService,
-    BsDatepickerConfig
+    BsDatepickerConfig,
+    UserService
   ],
   bootstrap: [AppComponent],
 })
