@@ -4,6 +4,7 @@ import { User } from "../../models/user";
 import { UserService } from "../../services/user.service";
 import { COUNTRIES } from "../../utils/select.util";
 import { environment } from "../../../environments/environment";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-profile-page",
@@ -18,8 +19,9 @@ export class ProfilePageComponent implements OnInit {
   public paises = COUNTRIES;
   public photo_default = "../../../assets/img/avatars/default.png";
   public url: string;
+  public filesToUpload: Array<File>;
 
-  constructor(private _userService: UserService, private router: Router) {
+  constructor(private _userService: UserService, private router: Router, private toastr: ToastrService) {
     this.identity = this._userService.identity;
     this.token = this._userService.token;
     this.url = environment.url;
@@ -52,7 +54,6 @@ export class ProfilePageComponent implements OnInit {
     this._userService.updatedUser(payload).subscribe(
       (data) => {
         this.usuario = data.userUpdated;
-        localStorage.setItem("identity", JSON.stringify(this.identity));
         //subir la imagen
         if (!this.filesToUpload) {
           //redirección
@@ -80,15 +81,21 @@ export class ProfilePageComponent implements OnInit {
     );
   }
 
-  public filesToUpload: Array<File>;
-  //Método de subir imagen
-  fileChangeEvent(fileInput: any) {
-    //Recoge los archivos que se pasan por input
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-    console.log(this.filesToUpload);
+  public fileChangeEvent(fileInput: any) {
+    const files = <Array<File>>fileInput.target.files;
+    const supportedFormats = ['image/jpeg', 'image/jpg', 'image/png'];
+    console.log('photo', files[0]);
+    if (!supportedFormats.find(type =>  type == files[0].type)) {
+      this.toastr.error('El formato de la imagen debe ser correcto (jpg o png)');
+    } else if (files[0].size > 2024000) {
+      this.toastr.error('El tamaño de la imagen es muy grande, no debe exceder los 2MB');
+    } else {
+      this.filesToUpload = files;
+      this.toastr.success('Imagen cargada con éxito');
+    }
   }
 
-  makeFileRequest(url: string, params: Array<string>, file: Array<File>) {
+  public makeFileRequest(url: string, params: Array<string>, file: Array<File>) {
     //pasar el token del usu identificado
     var token = this.token;
 
