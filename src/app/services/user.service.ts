@@ -26,9 +26,13 @@ export class UserService {
     if (gethash != null) {
       user_to_login.gethash = gethash;
     }
-    return this._http.post(environment.url.concat("login"), JSON.stringify(user_to_login), {
-      headers: this.headers,
-    });
+    return this._http.post(
+      environment.url.concat("login"),
+      JSON.stringify(user_to_login),
+      {
+        headers: this.headers,
+      }
+    );
   }
 
   //Usuario entra al sistema
@@ -78,33 +82,50 @@ export class UserService {
    * setAuth
    */
   public setAuth(payload: any): Observable<any> {
-    return this._http.put(environment.url.concat('set-authentication/', this.identity), payload, {
-      headers: this.headersAuthorization,
-    });
+    return this._http.put(
+      environment.url.concat("set-authentication/", this.identity),
+      payload,
+      {
+        headers: this.headersAuthorization,
+      }
+    );
   }
 
   public get identity() {
-    return JSON.parse(localStorage.getItem("identity") ? localStorage.getItem("identity") : null);
+    return JSON.parse(
+      localStorage.getItem("identity") ? localStorage.getItem("identity") : null
+    );
   }
 
   public get token() {
-    return JSON.parse(localStorage.getItem("token") ? localStorage.getItem("token") : null);
+    return localStorage.getItem("token") || null;
   }
-  
+
   public get secret() {
-    return JSON.parse(localStorage.getItem("secret") ? localStorage.getItem("secret") : null);
+    return JSON.parse(
+      localStorage.getItem("secret") ? localStorage.getItem("secret") : null
+    );
   }
-  
+
   public get hasTwoStepsAuth() {
-    return JSON.parse(localStorage.getItem("hasTwoStepsAuth") ? localStorage.getItem("hasTwoStepsAuth") : null);
+    return localStorage.getItem("hasTwoStepsAuth")
+      ? JSON.parse(localStorage.getItem("hasTwoStepsAuth"))
+      : null;
   }
-  
+
   public get hasSetTwoSteps() {
-    return JSON.parse(localStorage.getItem("hasSetTwoSteps") ? localStorage.getItem("hasSetTwoSteps") : null);
+    return JSON.parse(
+      localStorage.getItem("hasSetTwoSteps")
+        ? localStorage.getItem("hasSetTwoSteps")
+        : null
+    );
   }
 
   public get isTwoStepsAuth() {
-    return JSON.parse(localStorage.getItem("isTwoStepsAuth") ? localStorage.getItem("isTwoStepsAuth") : null);
+    return JSON.parse(
+      localStorage.getItem("isTwoStepsAuth")
+        ? localStorage.getItem("isTwoStepsAuth")
+        : null
+    );
   }
-
 }

@@ -14,13 +14,19 @@
         <div class="col-sm-7">
             <div class="card">
                 <div class="card-body" align="center">
-                    <app-app-video-player [stream]="user" *ngFor="let user of listUser"></app-app-video-player>
+                    <ng-container *ngIf="recording">
+                        <app-app-video-player [stream]="user" *ngFor="let user of listUser"></app-app-video-player>
+                    </ng-container>
                     <div class="row mt-3">
                         <div class="col-md-6 mb-3">
-                            <button class="btn btn-primary w-100">Iniciar grabación</button>
+                            <button class="btn btn-primary w-100" [ngClass]="{
+                                'disabled': recording
+                            }" (click)="record(true)" [disabled]="recording">Iniciar grabación</button>
                         </div>
                         <div class="col-md-6">
-                            <button class="btn btn-primary w-100 disabled" disabled>
+                            <button class="btn btn-primary w-100" [ngClass]="{
+                                'disabled': !recording
+                            }" (click)="record(false)" [disabled]="!recording">
                 Detener grabación
               </button>
                         </div>

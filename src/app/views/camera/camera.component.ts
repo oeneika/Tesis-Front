@@ -12,7 +12,9 @@ export class CameraComponent implements OnInit {
   roomName: string;
   currentStream: any;
   listUser: Array<any> = [];
-  statusCamera: Boolean = false;
+  statusCamera: Boolean = true;
+
+  recording = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,6 +32,10 @@ export class CameraComponent implements OnInit {
   }
 
   //multiples cuartos donde cada uno envia un video
+
+  record(start: boolean) {
+    this.recording = start;
+  }
 
   initPeer = () => {
     const { peer } = this.peerService;
