@@ -7,6 +7,8 @@
                     Coloque el dispositivo de cámara cerca de los objetos de interés (1-2 metros) para asegurar que el reconocimiento facial funcione.
                 </li>
             </ul>
+            <!-- Esto hay que borrarlo-->
+            <button style="font-weight: bold; color: #3f51b5;" (click)="openRecordings(OpenUser, 1)">Modal</button>
             <p></p>
         </div>
     </div>
@@ -27,8 +29,8 @@
                             <button class="btn btn-primary w-100" [ngClass]="{
                                 'disabled': !recording
                             }" (click)="record(false)" [disabled]="!recording">
-                Detener grabación
-              </button>
+                                Detener grabación
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -45,14 +47,6 @@
                 </div>
                 <div class="card-body">
                     <form action="">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="name">Nombre de la cámara</label>
-                                    <input type="text" placeholder="Ej: Cocina de la casa" class="form-control" />
-                                </div>
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <h5 class="mb-3">
@@ -74,8 +68,8 @@
                         <div class="row mt-4">
                             <div class="col-md-12">
                                 <button class="btn btn-success w-100">
-                  Guardar configuración
-                </button>
+                                Guardar configuración
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -84,3 +78,58 @@
         </div>
     </div>
 </section>
+
+<!-- 
+<ng-template #OpenUser>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Nueva cámara</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+        <form action="">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="name">Nombre de la cámara</label>
+                        <input type="text" placeholder="Ej: Cocina de la casa" class="form-control" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn btn-primary" value="Guardar" />
+     </div>
+</ng-template>
+-->
+
+
+<ng-template #OpenUser>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Se ha detectado una persona desconocida</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="bg-foto-screenshot" style="background-image: url('https://img.freepik.com/foto-gratis/retrato-mujer-caucasica-sonriendo_53876-24998.jpg?size=626&ext=jpg');"></div>
+        <h5>Caracteristicas</h5>
+        <div class="row">
+            <div class="col-6 col-md-4">
+                <p><strong>Sexo:</strong> Femenino</p>
+            </div>
+            <div class="col-6 col-md-4">
+                <p><strong>Edad:</strong> 25 años</p>
+            </div>
+            <div class="col-6 col-md-4">
+                <p><strong>Expresión facial:</strong> Feliz</p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn btn-warning" value="Ignorar" />
+        <input type="submit" class="btn btn-primary" value="Añadir a niveles de confianza" />
+     </div>
+</ng-template>

@@ -1,7 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { WebSocketService } from "../../services/web-socket.service";
 import { PeerService } from "../../services/peer.service";
+import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 
 @Component({
   selector: "app-camera",
@@ -13,13 +14,15 @@ export class CameraComponent implements OnInit {
   currentStream: any;
   listUser: Array<any> = [];
   statusCamera: Boolean = true;
+  modalRef: BsModalRef;
 
   recording = false;
 
   constructor(
     private route: ActivatedRoute,
     private webSocketService: WebSocketService,
-    private peerService: PeerService
+    private peerService: PeerService,
+    private modalService: BsModalService
   ) {
     this.roomName = route.snapshot.paramMap.get("id");
   }
@@ -114,5 +117,16 @@ export class CameraComponent implements OnInit {
     } else {
       this.statusCamera = false;
     }
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, {
+      class: "modal-lg modal-dialog-centered",
+    });
+  }
+
+  openRecordings(x, recordings) {
+    this.openModal(x);
+    //this.face = user;
   }
 }
