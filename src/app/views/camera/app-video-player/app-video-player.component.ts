@@ -1,6 +1,7 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import * as faceapi from 'face-api.js';
 import { FaceDetection } from 'face-api.js';
+declare var MediaRecorder: any;
 
 @Component({
   selector: 'app-app-video-player',
@@ -12,6 +13,7 @@ export class AppVideoPlayerComponent implements OnInit {
   @ViewChild("video", { static: false }) video: ElementRef;
   @ViewChild("canvas", { static: false }) canvasRef: ElementRef;
   @ViewChild("capture", { static: false }) captureRef: ElementRef;
+  @ViewChild("prueba", { static: false }) prueba: ElementRef;
   @Input() stream: any;
   //https://rushipanchariya.medium.com/how-to-use-face-api-js-for-face-detection-in-video-or-image-using-angular-fca1e4bef797
 
@@ -41,12 +43,40 @@ export class AppVideoPlayerComponent implements OnInit {
 
   startVideo() {
     this.videoInput = this.video.nativeElement;
-    navigator.getUserMedia(
-      { video: {}, audio: false },
-      (stream) => (this.videoInput.srcObject = stream),
-      (err) => console.log(err)
-    );
+    const p = navigator.mediaDevices.getUserMedia({ audio: false, video: true });
+    p.then((mediaStream: MediaStream) => {
+      this.video.nativeElement.srcObject = mediaStream;
+      this.recordVideo(mediaStream);
+    });
     this.detect_Faces();
+    p.catch(function(err) { console.log(err.name); }); // always check for errors at the end.
+  }
+
+  /**
+   * recordVideo
+   */
+  public recordVideo(mediaStream: MediaStream) {
+    const mr =  new MediaRecorder(mediaStream);
+    let chunks = [];
+    mr.start();
+    mr.ondataavailable = (e) => {
+        chunks.push(e.data);
+    };
+    mr.onstop = () => {
+        const blob = new Blob(chunks, { type: "video/mp4" });
+        chunks = [];
+        const recordedMedia = document.createElement("video");
+        recordedMedia.controls = true;
+        const recordedMediaURL = URL.createObjectURL(blob);
+        recordedMedia.src = recordedMediaURL;
+        const downloadButton = document.createElement("a");
+        downloadButton.download = "Recorded-Media";
+        downloadButton.href = recordedMediaURL;
+        downloadButton.innerText = "Download it!";
+        downloadButton.onclick = () => {
+            URL.revokeObjectURL(recordedMediaURL); 
+        };
+    };
   }
 
   async detect_Faces() {
@@ -87,6 +117,7 @@ export class AppVideoPlayerComponent implements OnInit {
           faceapi.draw.drawDetections(this.canvas, this.resizedDetections);
           faceapi.draw.drawFaceLandmarks(this.canvas, this.resizedDetections);
           faceapi.draw.drawFaceExpressions(this.canvas, this.resizedDetections);
+          console.log('nojoda');
         }, 100);
       });
   }
@@ -106,6 +137,14 @@ export class AppVideoPlayerComponent implements OnInit {
     if (this.image1 && this.image2) {
       this.compateImage();
     }
+    const frame = canvas.getContext('2d').getImageData(0, 0, this.videoInput.offsetWidth, this.videoInput.offsetHeight);
+    const length = frame.data.length;
+    const data = frame.data;
+    const video = document.getElementById('video');
+    video.addEventListener('play', (event: any)=>{
+      console.log('Ok', event);
+    });
+    
   }
 
   private compateImage() {

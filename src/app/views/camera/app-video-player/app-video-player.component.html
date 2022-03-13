@@ -4,7 +4,7 @@
 
 
 <div class="wrapper-video" *ngIf="stream">
-    <video [srcObject]="stream" #video autoplay muted></video>
+    <video [srcObject]="stream" id="video" #video autoplay muted></video>
     <div #canvas class="video-player__canvas"></div>
 </div>
 
