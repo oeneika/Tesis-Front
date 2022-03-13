@@ -3,6 +3,7 @@
         <div class="col-md-6">
             <h1 class="mb-3">Mis cámaras en vivo</h1>
         </div>
+        <!-- 
         <div class="col-md-6">
             <div class="text-right">
                 <button class="btn btn-primary botones" (click)="openModal(template)">
@@ -10,65 +11,38 @@
         </button>
             </div>
         </div>
+        -->
     </div>
     <div class="row">
-        <div class="col-sm-4">
-            <a routerLink="/camera/camera-details">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Cocina</h2>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre de la cámara</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><button routerLink="/camera/camera-details" style="font-weight: bold; color: #3f51b5;">Cocina</button></td>
+                                </tr>
+                                <tr>
+                                    <td><button routerLink="/camera/camera-details" style="font-weight: bold; color: #3f51b5;">Sala</button></td>
+                                </tr>
+                                <tr>
+                                    <td><button routerLink="/camera/camera-details" style="font-weight: bold; color: #3f51b5;">Baño</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="card-body">
-                        <div class="camera-preview" style="
-                background-image: url('https://aws.admagazine.com/prod/designs/v1/assets/767x384/95264.jpg');
-              "></div>
-                        <div class="row">
-                            <div class="col-3">
-                                <i class="icon-user icons font-2xl mt-3 mr-2"></i>
-                                <h5 class="d-inline">5</h5>
-                            </div>
-                            <div class="col-4">
-                                <i class="icon-settings icons font-2xl mt-3 mr-2"></i>
-                                <h5 class="d-inline">Baja</h5>
-                            </div>
 
-                            <div class="col-5">
-                                <i class="icon-camera icons font-2xl mt-3 mr-2"></i>
-                                <h5 class="d-inline">Frontal</h5>
-                            </div>
-                        </div>
-                    </div>
+                    <ng-container *ngIf="tableSize">
+                        <pagination [totalItems]="30"></pagination>
+                    </ng-container>
                 </div>
-            </a>
-        </div>
-        <div class="col-sm-4">
-            <a routerLink="/camera/camera-details">
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Baño</h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="camera-preview" style="
-                background-image: url('https://cr.epaenlinea.com/pub/media/version20200605/catalog/category/2442245_ban_05.jpg');
-              "></div>
-                        <div class="row">
-                            <div class="col-3">
-                                <i class="icon-user icons font-2xl mt-3 mr-2"></i>
-                                <h5 class="d-inline">5</h5>
-                            </div>
-                            <div class="col-4">
-                                <i class="icon-settings icons font-2xl mt-3 mr-2"></i>
-                                <h5 class="d-inline">Baja</h5>
-                            </div>
-
-                            <div class="col-5">
-                                <i class="icon-camera icons font-2xl mt-3 mr-2"></i>
-                                <h5 class="d-inline">Frontal</h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
+            </div>
         </div>
     </div>
 </section>
