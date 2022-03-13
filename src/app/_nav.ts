@@ -23,10 +23,11 @@ export const navItems: INavData[] = [
         name: "Mis cámaras en vivo",
         url: "/camera/list-cameras",
       },
+      /*
       {
         name: "Compartidas conmigo",
         url: "/camera/camera-shared-with-me",
-      },
+      },*/
     ],
   },
   {

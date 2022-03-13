@@ -1,6 +1,8 @@
 import { Component, OnInit, TemplateRef } from "@angular/core";
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import { ConfidenceLevelsService } from "../../services/confidence-levels.service";
+import { CamerasService } from "../../services/cameras.service";
+import { ReportsService } from "../../services/reports.service"
 import { FaceService } from "../../services/face.service";
 import { Face } from "../../models/face";
 import { environment } from "../../../environments/environment";
@@ -8,11 +10,15 @@ import { UserService } from "../../services/user.service";
 
 @Component({
   templateUrl: "dashboard.component.html",
-    providers: [ConfidenceLevelsService, FaceService, UserService],
+    providers: [ConfidenceLevelsService, FaceService, UserService, CamerasService, ReportsService],
 })
 export class DashboardComponent implements OnInit {
     modalRef: BsModalRef;
     public confidenceLevels: Array<any> = [];
+    public cameras: Array<any> = [];
+    public reportsbyDay: Array<any> = [];
+    public reportsbyWeek: Array<any> = [];
+    public reportsbyMonth: Array<any> = [];
     public niveles = [];
     public face: Face;
     public token;
@@ -22,7 +28,7 @@ export class DashboardComponent implements OnInit {
     public tableSize;
 
 
-  constructor(private modalService: BsModalService, private _confidenceLevels: ConfidenceLevelsService,private _faceService: FaceService,
+  constructor(private modalService: BsModalService, private _camerasService: CamerasService, private _confidenceLevels: ConfidenceLevelsService,private _faceService: FaceService, private _reportsService: ReportsService, 
     private _userService: UserService){
       this.face = new Face("", "", "", "", "", "", "", "");
       this.token = this._userService.token;
@@ -32,6 +38,8 @@ export class DashboardComponent implements OnInit {
   }
   ngOnInit(){
     this.getConfidenceLevels();
+    this.getCamerasByAdmin();
+    this.getFacesByCameraAndDay();
   }
 
   openModal(template: TemplateRef<any>) {
@@ -51,6 +59,61 @@ export class DashboardComponent implements OnInit {
       (err) => {}
     );
   }
+
+  getCamerasByAdmin() {
+    this._camerasService.getCamerasByAdmin(this.identity).subscribe(
+      (data) => {
+        if (data != null && data != "") {
+          this.cameras = data;
+        }
+      },
+      (err) => {
+        console.log("error");
+      }
+    );
+  }
+
+  //Reporte diario
+  getFacesByCameraAndDay(){
+    this._reportsService.getFacesByCameraAndDay(this.identity).subscribe(
+      (data) => {
+        if (data != null && data != "") {
+          this.reportsbyDay = data;
+        }
+      },
+      (err) => {
+        console.log("error");
+      }
+    );
+  }
+
+    //Reporte semanal
+    getFacesByCameraAndWeek(){
+      this._reportsService.getFacesByCameraAndWeek(this.identity).subscribe(
+        (data) => {
+          if (data != null && data != "") {
+            this.reportsbyWeek = data;
+          }
+        },
+        (err) => {
+          console.log("error");
+        }
+      );
+    }
+
+    //Reporte mensual
+    getFacesByCameraAndMonth(){
+      this._reportsService.getFacesByCameraAndMonth(this.identity).subscribe(
+        (data) => {
+          if (data != null && data != "") {
+            this.reportsbyMonth = data;
+          }
+        },
+        (err) => {
+          console.log("error");
+        }
+      );
+    }
 
     getFaces() {
     this._faceService.getFaceByUser(this.identity).subscribe(
