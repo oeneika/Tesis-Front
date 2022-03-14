@@ -7,6 +7,8 @@ import { FaceService } from "../../services/face.service";
 import { Face } from "../../models/face";
 import { environment } from "../../../environments/environment";
 import { UserService } from "../../services/user.service";
+import { take } from "rxjs/operators";
+import moment from "moment";
 
 @Component({
   templateUrl: "dashboard.component.html",
@@ -14,9 +16,13 @@ import { UserService } from "../../services/user.service";
 })
 export class DashboardComponent implements OnInit {
     modalRef: BsModalRef;
+    public selectedCamera: string = null;
+    public selectedFrequencyReport: string = 'daily';
+    public selectedRange: any;
     public confidenceLevels: Array<any> = [];
     public cameras: Array<any> = [];
     public reportsbyDay: Array<any> = [];
+    public reportsbyDate!: Array<any>;
     public reportsbyWeek: Array<any> = [];
     public reportsbyMonth: Array<any> = [];
     public niveles = [];
@@ -37,9 +43,11 @@ export class DashboardComponent implements OnInit {
       
   }
   ngOnInit(){
-    this.getConfidenceLevels();
+    // this.getConfidenceLevels();
     this.getCamerasByAdmin();
     this.getFacesByCameraAndDay();
+    this.getFacesByCameraAndMonth();
+    this.getFacesByCameraAndWeek();
   }
 
   openModal(template: TemplateRef<any>) {
@@ -60,59 +68,66 @@ export class DashboardComponent implements OnInit {
     );
   }
 
+  /**
+   * getFacesByCameraAndDate
+   */
+  public getFacesByCameraAndDate() {
+    this._reportsService.getFacesByCameraAndDate(this.selectedCamera, this.dateRange.from, this.dateRange.to).pipe(take(1)).subscribe((response: any) => {
+      this.reportsbyDate = response;
+    });
+  }
+
+  /**
+   * dateRange
+   */
+  public get dateRange(): any {
+    return this.selectedRange && this.selectedRange.length > 0 ? 
+    { from:  moment(this.selectedRange[0]).format('DD/MM/YYYY'), to: moment(this.selectedRange[1]).format('DD/MM/YYYY')} :
+    null;
+  }
+
+  /**
+   * report
+   */
+  public get report(): any {
+    switch (this.selectedFrequencyReport) {
+      case 'monthly':
+        return {list: this.reportsbyMonth, name: 'mensual'};
+      case 'daily':
+        return {list: this.reportsbyDay, name: 'diaria'};
+      case 'weekly':
+        return {list: this.reportsbyWeek, name: 'semanal'};
+    }
+
+
+  }
+
   getCamerasByAdmin() {
-    this._camerasService.getCamerasByAdmin(this.identity).subscribe(
-      (data) => {
-        if (data != null && data != "") {
-          this.cameras = data;
-        }
-      },
-      (err) => {
-        console.log("error");
-      }
-    );
+    // this._camerasService.getCamerasByAdmin(this.identity).pipe(take(1)).subscribe((response: any) => {
+    this._camerasService.getCameras().pipe(take(1)).subscribe((response: any) => {
+      this.cameras = response;
+    });
   }
 
   //Reporte diario
   getFacesByCameraAndDay(){
-    this._reportsService.getFacesByCameraAndDay(this.identity).subscribe(
-      (data) => {
-        if (data != null && data != "") {
-          this.reportsbyDay = data;
-        }
-      },
-      (err) => {
-        console.log("error");
-      }
-    );
+    this._reportsService.getFacesByCameraAndDay(this.identity).subscribe((response: any) => {
+        this.reportsbyDay = response;
+    });
   }
 
     //Reporte semanal
     getFacesByCameraAndWeek(){
-      this._reportsService.getFacesByCameraAndWeek(this.identity).subscribe(
-        (data) => {
-          if (data != null && data != "") {
-            this.reportsbyWeek = data;
-          }
-        },
-        (err) => {
-          console.log("error");
-        }
-      );
+      this._reportsService.getFacesByCameraAndWeek(this.identity).subscribe((response: any) => {
+        this.reportsbyWeek = response;
+    });
     }
 
     //Reporte mensual
     getFacesByCameraAndMonth(){
-      this._reportsService.getFacesByCameraAndMonth(this.identity).subscribe(
-        (data) => {
-          if (data != null && data != "") {
-            this.reportsbyMonth = data;
-          }
-        },
-        (err) => {
-          console.log("error");
-        }
-      );
+      this._reportsService.getFacesByCameraAndMonth(this.identity).subscribe((response: any) => {
+        this.reportsbyMonth = response;
+    });
     }
 
     getFaces() {

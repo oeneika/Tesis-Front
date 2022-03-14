@@ -23,4 +23,13 @@ export class RecordingsService {
         });
     }
 
+    /**
+     * getRecordings
+     */
+    public getRecordings(idAdmin: string): Observable<any> {
+      return this._http.get(environment.url + "get-videos/" + idAdmin, {
+        headers: this.headersAuthorization,
+      });
+    }
+
 }

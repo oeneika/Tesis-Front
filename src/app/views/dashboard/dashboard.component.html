@@ -2,15 +2,14 @@
     <h1 class="mb-3">Reportes del sistema</h1>
     <div class="card">
         <div class="card-body">
-            <form action="">
+            <!-- <form action=""> -->
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="name">Selecciona la cámara</label>
-                            <select class="form-control">
-                              <option value="1">Cocina</option>
-                              <option value="2">Sala</option>
-                              <option value="3">Baño</option>
+                            <select class="form-control" [(ngModel)]="selectedCamera">
+                              <option [value]="null">{{'Seleccione una cámara'}}</option>
+                              <option *ngFor="let camera of cameras" [value]="camera?._id">{{camera?.name}}</option>
                             </select>
                         </div>
                     </div>
@@ -21,19 +20,20 @@
                                 placeholder="Daterangepicker"
                                 class="form-control"
                                 [bsConfig]="{withTimepicker: true, rangeInputFormat : 'MMMM Do YYYY, h:mm:ss a', dateInputFormat: 'MMMM Do YYYY, h:mm:ss a'}"
+                                [(ngModel)]="selectedRange"
                                 bsDaterangepicker>
-                                <timepicker name="fieldName" ngDefaultControl [(ngModel)]="time" [ngModelOptions]="{standalone: true}"></timepicker>
+                                <timepicker name="fieldName" ngDefaultControl></timepicker>
                                 <!-- <pre class="alert alert-info">Time is: {{time}}</pre> -->
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group"></div>
-                        <button class="btn btn-primary w-100" style="margin-top: 14px">
+                        <button (click)="getFacesByCameraAndDate()" [disabled]="!selectedRange || !selectedCamera" class="btn btn-primary w-100" style="margin-top: 14px">
               Generar Reporte
             </button>
                     </div>
                 </div>
-            </form>
+            <!-- </form> -->
         </div>
     </div>
     <div class="row">
@@ -41,6 +41,13 @@
             <!-- Si se genera un reporte mostrar esta vista-->
             <div class="card">
                 <div class="card-body">
+                  <ng-container *ngIf="!reportsbyDate">
+                    <span class="no-text-msg">Seleccione una cámara, un rango de fechas y presione en <span style="color: #1B8EB7;">"Generar Reporte"</span> para verlos reportes asociados.</span>
+                  </ng-container>
+                  <ng-container *ngIf="reportsbyDate && reportsbyDate?.length === 0">
+                    <span class="no-text-msg">No existe data disponible para este reporte personalizado del {{dateRange?.to}} al {{dateRange?.from}} por favor ingrese diferentes parámetros.</span>
+                  </ng-container>
+                  <ng-container *ngIf="reportsbyDate && reportsbyDate?.length > 0">
                     <div class="row">
                         <div class="col-md-12">
                             <h5>
@@ -60,38 +67,24 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>
-                                        <div style="display: flex; align-items: center">
-                                            <div class="circle-image mr-2" style="
-                          background-image: url('https://image.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg');
-                        "></div>
-                                            Sergio Gomez
-                                        </div>
-                                    </td>
-                                    <td>Nivel 2</td>
-                                    <td>25 años</td>
-                                    <td>Masculino</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>
-                                        <div style="display: flex; align-items: center">
-                                            <div class="circle-image mr-2" style="
-                          background-image: url('../../../assets/img/avatars/8.jpg');
-                        "></div>
-                                            Usuario desconocido
-                                        </div>
-                                    </td>
-                                    <td></td>
-                                    <td>22 - 28 años</td>
-                                    <td>Masculino</td>
-                                </tr>
+                                  <tr *ngFor="let face of reportsbyDate; let i=index">
+                                      <th scope="row">{{ index + 1 }}</th>
+                                      <td>
+                                          <div style="display: flex; align-items: center">
+                                              <div class="circle-image mr-2" style="
+                            background-image: url('https://image.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg');
+                          "></div>
+                                              {{face?.face?.name}} {{face?.face?.surname}}
+                                          </div>
+                                      </td>
+                                      <td>Nivel {{face?.face?.confidenceLevels?.level}} 2</td>
+                                      <td>{{face?.face?.age}} años</td>
+                                      <td>{{face?.face?.gender}}</td>
+                                  </tr>
                             </tbody>
                         </table>
                     </div>
+                  </ng-container>
                 </div>
             </div>
             <!-- Si NO se genera un reporte mostrar esta vista-->
@@ -111,12 +104,12 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <h5>Reporte diario</h5>
+                            <h5>Reporte de frecuencia {{report?.name}}</h5>
                         </div>
                         <div class="col-md-6">
                             <div class="col-form-label radiobuttons-dashboard">
                                 <div id="inline-radios" class="form-check form-check-inline mr-2 block-mobile">
-                                    <input type="radio" name="inline-radios" id="inlineRadio1" value="option1" class="form-check-input" checked /><label for="inlineRadio1" class="form-check-label">Reporte diario</label
+                                    <input type="radio" name="inline-radios" id="inlineRadio1" value="daily" class="form-check-input" [(ngModel)]="selectedFrequencyReport" /><label for="inlineRadio1" class="form-check-label">Reporte diario</label
                   >
                 </div>
                 <div class="form-check form-check-inline mr-2 block-mobile">
@@ -124,7 +117,7 @@
                     type="radio"
                     name="inline-radios"
                     id="inlineRadio2"
-                    value="option2"
+                    value="weekly" [(ngModel)]="selectedFrequencyReport"
                     class="form-check-input"
                   /><label for="inlineRadio2" class="form-check-label"
                     >Reporte semanal</label
@@ -135,7 +128,7 @@
                     type="radio"
                     name="inline-radios"
                     id="inlineRadio3"
-                    value="option3"
+                    value="monthly" [(ngModel)]="selectedFrequencyReport"
                     class="form-check-input"
                   /><label for="inlineRadio3" class="form-check-label"
                     >Reporte mensual</label
@@ -144,111 +137,41 @@
               </div>
             </div>
           </div>
-          <div class="table-responsive">
-            <table class="table table-striped mt-4">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Nombre y apellido</th>
-                  <th scope="col">Nivel de confianza</th>
-                  <th scope="col">Edad</th>
-                  <th scope="col">Sexo</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">1</th>
-                  <td>
-                    <div style="display: flex; align-items: center">
-                      <div
-                        class="circle-image mr-2"
-                        style="
-                          background-image: url('../../../assets/img/avatars/2.jpg');
-                        "
-                      ></div>
-                      Adriana Bustillos
-                    </div>
-                  </td>
-                  <td>Nivel 2</td>
-                  <td>35 años</td>
-                  <td>Femenino</td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>
-                    <div style="display: flex; align-items: center">
-                      <div
-                        class="circle-image mr-2"
-                        style="
-                          background-image: url('../../../assets/img/avatars/5.jpg');
-                        "
-                      ></div>
-                      Usuario desconocido
-                    </div>
-                  </td>
-                  <td></td>
-                  <td>22 - 28 años</td>
-                  <td>Femenino</td>
-                </tr>
-                <tr>
-                  <th scope="row">3</th>
-                  <td>
-                    <div style="display: flex; align-items: center">
-                      <div
-                        class="circle-image mr-2"
-                        style="
-                          background-image: url('../../../assets/img/avatars/6.jpg');
-                        "
-                      ></div>
-                      Oraly Rodriguez
-                    </div>
-                  </td>
-                  <td>Nivel 1</td>
-                  <td>21 años</td>
-                  <td>Femenino</td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <th scope="row">4</th>
-                  <td>
-                    <div style="display: flex; align-items: center">
-                      <div
-                        class="circle-image mr-2"
-                        style="
-                          background-image: url('https://cdnnmundo1.img.sputniknews.com/img/07e4/0c/1f/1094001723_0:95:1201:773_600x0_80_0_0_916e047bc0eee3a6891bfdc0d6a79911.png');
-                        "
-                      ></div>
-                      Iris Ilarraza
-                    </div>
-                  </td>
-                  <td>Nivel 1</td>
-                  <td>50 años</td>
-                  <td>Femenino</td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <th scope="row">5</th>
-                  <td>
-                    <div style="display: flex; align-items: center">
-                      <div
-                        class="circle-image mr-2"
-                        style="
-                          background-image: url('../../../assets/img/avatars/7.jpg');
-                        "
-                      ></div>
-                      Carlos Arteaga
-                    </div>
-                  </td>
-                  <td>Nivel 4</td>
-                  <td>36 años</td>
-                  <td>Masculino</td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <ul class="pagination">
+          <ng-container *ngIf="report?.list && report?.list?.length === 0">
+            <span class="no-text-msg">No existe data disponible para el reporte de frecuencia <span style="color: #1B8EB7;">{{report?.name}}</span>, puede intentar con otra frecuencia.</span>
+          </ng-container>
+          <ng-container *ngIf="report?.list && report?.list?.length > 0">
+            <div class="table-responsive">
+              <table class="table table-striped mt-4">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombre y apellido</th>
+                    <th scope="col">Nivel de confianza</th>
+                    <th scope="col">Edad</th>
+                    <th scope="col">Sexo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let face of report?.list; let i=index">
+                      <th scope="row">{{ index + 1 }}</th>
+                      <td>
+                          <div style="display: flex; align-items: center">
+                              <div class="circle-image mr-2" style="
+            background-image: url('https://image.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg');
+          "></div>
+                              {{face?.face?.name}} {{face?.face?.surname}}
+                          </div>
+                      </td>
+                      <td>Nivel {{face?.face?.confidenceLevels?.level}} 2</td>
+                      <td>{{face?.face?.age}} años</td>
+                      <td>{{face?.face?.gender}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ng-container>
+          <ul *ngIf="report?.list && report?.list?.length > 0" class="pagination">
             <li class="page-item">
               <a href="#" class="page-link">Anterior</a>
             </li>

@@ -58,6 +58,7 @@
     "face-api.js": "^0.22.2",
     "flag-icon-css": "^3.5.0",
     "font-awesome": "^4.7.0",
+    "moment": "^2.29.1",
     "ng2-charts": "^2.4.2",
     "ngx-bootstrap": "^7.1.2",
     "ngx-clipboard": "^14.0.1",

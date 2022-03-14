@@ -10,3 +10,11 @@
 
 @import "~bootstrap/dist/css/bootstrap.min.css";
 @import '~ngx-toastr/toastr';
+
+.no-text-msg {
+    display: block;
+    font-size: 20px;
+    font-weight: 600;
+    width: 100%;
+    text-align: center;
+}

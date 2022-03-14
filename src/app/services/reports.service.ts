@@ -36,8 +36,8 @@ export class ReportsService {
     }
 
     //Formato: DD/MM/YYYY
-    public getFacesByCameraAndDate(idAdmin, initialDate, finalDate): Observable<any> {
-        return this._http.get(environment.url + "get-faces-by-camara-and-date/" + idAdmin + "?initialDate=" + initialDate + "&finalDate=" + finalDate, {
+    public getFacesByCameraAndDate(cameraId, initialDate, finalDate): Observable<any> {
+        return this._http.get(environment.url + "get-faces-by-camara-and-date/" + cameraId + "?initialDate=" + initialDate + "&finalDate=" + finalDate, {
           headers: this.headersAuthorization,
         });
     }

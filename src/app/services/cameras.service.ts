@@ -24,4 +24,13 @@ export class CamerasService {
         });
     }
 
+    /**
+     * getCameras
+     */
+    public getCameras() {
+      return this._http.get(environment.url + "get-cameras", {
+        headers: this.headersAuthorization,
+      });
+    }
+
 }

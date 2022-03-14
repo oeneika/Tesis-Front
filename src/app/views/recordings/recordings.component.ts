@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { UserService } from "../../services/user.service";
 import { RecordingsService } from "../../services/recordings.service";
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
+import { take } from "rxjs/operators";
 
 @Component({
   templateUrl: "recordings.component.html",
@@ -10,6 +11,8 @@ import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 })
 export class RecordingsComponent implements OnInit {
   public identity;
+  public recordings: any[] = [];
+  public recording: any;
   //public face: Face;
   modalRef: BsModalRef;
 
@@ -23,6 +26,7 @@ export class RecordingsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getRecordings();
     if (!this.identity) {
       this.router.navigate(["login"]);
     }
@@ -34,8 +38,17 @@ export class RecordingsComponent implements OnInit {
     });
   }
 
-  openRecordings(x, recordings) {
+  openRecordings(x, recording) {
     this.openModal(x);
-    //this.face = user;
+    this.recording = recording;
+  }
+
+  /**
+   * getRecordings
+   */
+  public getRecordings(): void {
+    this._recordingsService.getRecordings(this.identity).pipe(take(1)).subscribe((response:any) => {
+      this.recordings = response;
+    })
   }
 }
