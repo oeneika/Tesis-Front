@@ -6,6 +6,7 @@ import { ButtonsModule } from "ngx-bootstrap/buttons";
 import { RecordingsComponent } from "./recordings.component";
 import { RecordingsRoutingModule } from "./recordings-routing.module";
 import { ModalModule } from "ngx-bootstrap/modal";
+import { NgxPaginationModule } from "ngx-pagination";
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { ModalModule } from "ngx-bootstrap/modal";
     CommonModule,
     ButtonsModule.forRoot(),
     ModalModule.forRoot(),
+    NgxPaginationModule
   ],
   declarations: [RecordingsComponent],
 })

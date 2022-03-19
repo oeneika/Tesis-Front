@@ -27,7 +27,7 @@ export class RecordingsService {
      * getRecordings
      */
     public getRecordings(idAdmin: string): Observable<any> {
-      return this._http.get(environment.url + "get-videos/" + idAdmin, {
+      return this._http.get(environment.url + "get-videos-by-user/" + idAdmin, {
         headers: this.headersAuthorization,
       });
     }

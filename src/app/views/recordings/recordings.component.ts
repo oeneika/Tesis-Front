@@ -13,6 +13,7 @@ export class RecordingsComponent implements OnInit {
   public identity;
   public recordings: any[] = [];
   public recording: any;
+  public page:number = 1;
   //public face: Face;
   modalRef: BsModalRef;
 
@@ -50,5 +51,34 @@ export class RecordingsComponent implements OnInit {
     this._recordingsService.getRecordings(this.identity).pipe(take(1)).subscribe((response:any) => {
       this.recordings = response;
     })
+  }
+
+  /**
+   * downloadVideo
+   */
+  public downloadVideo(dataurl, filename): void {
+    console.log(...arguments)
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', dataurl, true);
+    xhr.responseType = 'blob';
+    xhr.onload = function() {
+      let urlCreator = window.URL || window.webkitURL;
+      let imageUrl = urlCreator.createObjectURL(this.response);
+      let tag = document.createElement('a');
+      tag.href = imageUrl;
+      tag.target = '_blank';
+      tag.download = filename;
+      document.body.appendChild(tag);
+      tag.click();
+      document.body.removeChild(tag);
+    };
+    xhr.send();
+  }
+
+  /**
+   * videSrc
+   */
+  public videoSrc(fileName: string): string {
+    return 'http://localhost:8000/api/get-video-file/'.concat(fileName);
   }
 }

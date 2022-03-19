@@ -2,7 +2,6 @@
     <h1 class="mb-3">Reportes del sistema</h1>
     <div class="card">
         <div class="card-body">
-            <!-- <form action=""> -->
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
@@ -33,7 +32,6 @@
             </button>
                     </div>
                 </div>
-            <!-- </form> -->
         </div>
     </div>
     <div class="row">
@@ -45,13 +43,13 @@
                     <span class="no-text-msg">Seleccione una cámara, un rango de fechas y presione en <span style="color: #1B8EB7;">"Generar Reporte"</span> para verlos reportes asociados.</span>
                   </ng-container>
                   <ng-container *ngIf="reportsbyDate && reportsbyDate?.length === 0">
-                    <span class="no-text-msg">No existe data disponible para este reporte personalizado del {{dateRange?.to}} al {{dateRange?.from}} por favor ingrese diferentes parámetros.</span>
+                    <span class="no-text-msg">No existe data disponible para este reporte personalizado del {{prettyDate(dateRange?.from)}} al {{prettyDate(dateRange?.to)}} por favor ingrese diferentes parámetros.</span>
                   </ng-container>
                   <ng-container *ngIf="reportsbyDate && reportsbyDate?.length > 0">
                     <div class="row">
                         <div class="col-md-12">
                             <h5>
-                                Reporte personalizado del 10/11/2021 al 14/11/2021 en cámara "Cocina"
+                                Reporte personalizado del {{prettyDate(dateRange?.from)}} al {{prettyDate(dateRange?.to)}} en cámara "{{selectedCameraName}}"
                             </h5>
                         </div>
                     </div>
@@ -67,13 +65,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                  <tr *ngFor="let face of reportsbyDate; let i=index">
-                                      <th scope="row">{{ index + 1 }}</th>
+                                  <tr *ngFor="let face of reportsbyDate | paginate: { id: 'reportsbyDate', itemsPerPage: 10, currentPage: page, totalItems: reportsbyDate?.length }; let i=index">
+                                      <th scope="row">{{ i + 1 }}</th>
                                       <td>
                                           <div style="display: flex; align-items: center">
-                                              <div class="circle-image mr-2" style="
-                            background-image: url('https://image.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg');
-                          "></div>
+                                              <div class="circle-image mr-2" style="background-image: url('{{imageFile(face?.image?.file)}}');"></div>
                                               {{face?.face?.name}} {{face?.face?.surname}}
                                           </div>
                                       </td>
@@ -84,17 +80,17 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="pagination-container"><pagination-controls
+                      id="reportsbyDate"
+                      (pageChange)="page = $event"
+                      autoHide="true"
+                      maxSize="5"
+                      responsive="true"
+                      previousLabel="Anterior"
+                      nextLabel="Siguiente"></pagination-controls></div>
                   </ng-container>
                 </div>
             </div>
-            <!-- Si NO se genera un reporte mostrar esta vista-->
-            <!--
-           <div class="card">
-               <div class="card-body text-center">
-                   <h5>No hay información a mostrar, genera un reporte.</h5>
-               </div>
-           </div>
-           -->
         </div>
     </div>
     <div class="row">
@@ -153,13 +149,11 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let face of report?.list; let i=index">
-                      <th scope="row">{{ index + 1 }}</th>
+                  <tr *ngFor="let face of report?.list | paginate: { id: 'reportsbyFreq', itemsPerPage: 10, currentPage: pageAlt, totalItems: report?.list?.length }; let i=index">
+                      <th scope="row">{{ i + 1 }}</th>
                       <td>
                           <div style="display: flex; align-items: center">
-                              <div class="circle-image mr-2" style="
-            background-image: url('https://image.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg');
-          "></div>
+                              <div class="circle-image mr-2" style="background-image: url('{{imageFile(face?.image?.file)}}');"></div>
                               {{face?.face?.name}} {{face?.face?.surname}}
                           </div>
                       </td>
@@ -170,8 +164,16 @@
                 </tbody>
               </table>
             </div>
+            <div class="pagination-container"><pagination-controls
+              id="reportsbyFreq"
+              (pageChange)="pageAlt = $event"
+              autoHide="true"
+              maxSize="5"
+              responsive="true"
+              previousLabel="Anterior"
+              nextLabel="Siguiente"></pagination-controls></div>
           </ng-container>
-          <ul *ngIf="report?.list && report?.list?.length > 0" class="pagination">
+          <!-- <ul *ngIf="report?.list && report?.list?.length > 0" class="pagination">
             <li class="page-item">
               <a href="#" class="page-link">Anterior</a>
             </li>
@@ -184,17 +186,9 @@
             <li class="page-item">
               <a href="#" class="page-link">Siguiente</a>
             </li>
-          </ul>
+          </ul> -->
         </div>
       </div>
-      <!-- Si NO se genera un reporte mostrar esta vista-->
-      <!--
-           <div class="card">
-               <div class="card-body text-center">
-                   <h5>No hay información a mostrar, genera un reporte.</h5>
-               </div>
-           </div>
-           -->
     </div>
   </div>
 </div>

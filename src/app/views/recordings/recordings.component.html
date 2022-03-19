@@ -19,12 +19,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let _recording of recordings">
-                                        <td><button style="font-weight: bold; color: #3f51b5;" (click)="open_Recordings(OpenUser, _recording)">{{_recording?.name}}</button></td>
+                                    <tr *ngFor="let _recording of recordings | paginate: { itemsPerPage: 10, currentPage: page, totalItems: recordings?.length }">
+                                        <td><button style="font-weight: bold; color: #3f51b5;" (click)="openRecordings(OpenUser, _recording)">{{_recording?.name}}</button></td>
                                         <td>{{_recording?.duration}}</td>
                                         <td>{{_recording?.size}}</td>
                                         <td>
-                                            <button (click)="URL.revokeObjectURL(recording?.file)" class="btn btn-success botones">
+                                            <button (click)="downloadVideo(videoSrc(_recording?.file), _recording?.file)" class="btn btn-success botones">
                                                 <i class="fa fa-download fa-lg"></i> Descargar
                                             </button>
                                             <button class="btn btn-danger botones">
@@ -36,9 +36,14 @@
                                 </tbody>
                             </table>
                         </div>
-                    </ng-container>
-                    <ng-container *ngIf="tableSize">
-                        <pagination [totalItems]="30"></pagination>
+                        
+                        <div class="pagination-container"><pagination-controls
+                            (pageChange)="page = $event"
+                            autoHide="true"
+                            maxSize="5"
+                            responsive="true"
+                            previousLabel="Anterior"
+                            nextLabel="Siguiente"></pagination-controls></div>
                     </ng-container>
                 </div>
             </div>
@@ -55,7 +60,7 @@
     </div>
     <div class="modal-body">
         <video width="100%" height="400" controls>
-            <source [src]="URL.createObjectURL(recording?.file)" type="video/mp4">
+            <source [src]="videoSrc(recording?.file)" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </div>

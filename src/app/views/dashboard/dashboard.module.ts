@@ -8,6 +8,7 @@ import { DashboardRoutingModule } from "./dashboard-routing.module";
 import { BsDatepickerModule } from "ngx-bootstrap/datepicker";
 import { ModalModule } from "ngx-bootstrap/modal";
 import { CommonModule } from '@angular/common'; 
+import { NgxPaginationModule } from "ngx-pagination";
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { CommonModule } from '@angular/common';
     ChartsModule,
     BsDropdownModule,
     ButtonsModule.forRoot(),
+    NgxPaginationModule,
     BsDatepickerModule.forRoot(),
         ModalModule.forRoot(),
   ],

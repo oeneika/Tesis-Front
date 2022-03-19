@@ -20,6 +20,8 @@ export class DashboardComponent implements OnInit {
     public selectedFrequencyReport: string = 'daily';
     public selectedRange: any;
     public confidenceLevels: Array<any> = [];
+    public page:number = 1;
+    public pageAlt:number = 1;
     public cameras: Array<any> = [];
     public reportsbyDay: Array<any> = [];
     public reportsbyDate!: Array<any>;
@@ -72,6 +74,8 @@ export class DashboardComponent implements OnInit {
    * getFacesByCameraAndDate
    */
   public getFacesByCameraAndDate() {
+    console.log(this.selectedRange, this.dateRange);
+    
     this._reportsService.getFacesByCameraAndDate(this.selectedCamera, this.dateRange.from, this.dateRange.to).pipe(take(1)).subscribe((response: any) => {
       this.reportsbyDate = response;
     });
@@ -82,8 +86,22 @@ export class DashboardComponent implements OnInit {
    */
   public get dateRange(): any {
     return this.selectedRange && this.selectedRange.length > 0 ? 
-    { from:  moment(this.selectedRange[0]).format('DD/MM/YYYY'), to: moment(this.selectedRange[1]).format('DD/MM/YYYY')} :
+    { from:  moment(this.selectedRange[0]).format(), to: moment(this.selectedRange[1]).format()} :
     null;
+  }
+
+  /**
+   * selectedCameraName
+   */
+  public get selectedCameraName(): string {
+    return this.cameras?.find(cam => cam._id === this.selectedCamera).name;
+  }
+
+  /**
+   * prettyDate
+date: string | date   */
+  public prettyDate(date: string | Date): string {
+    return moment(date).calendar();
   }
 
   /**
@@ -98,8 +116,13 @@ export class DashboardComponent implements OnInit {
       case 'weekly':
         return {list: this.reportsbyWeek, name: 'semanal'};
     }
+  }
 
-
+  /**
+   * imageFile
+   */
+  public imageFile(fileName: string): string {
+    return 'http://localhost:8000/api/get-image-file/'.concat(fileName);
   }
 
   getCamerasByAdmin() {
