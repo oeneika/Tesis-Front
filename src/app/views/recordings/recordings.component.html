@@ -13,15 +13,13 @@
                                 <thead>
                                     <tr>
                                         <th>Nombre de la grabación</th>
-                                        <th>Duración</th>
                                         <th>Tamaño</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let _recording of recordings | paginate: { itemsPerPage: 10, currentPage: page, totalItems: recordings?.length }">
-                                        <td><button style="font-weight: bold; color: #3f51b5;" (click)="openRecordings(OpenUser, _recording)">{{_recording?.name}}</button></td>
-                                        <td>{{_recording?.duration}}</td>
+                                        <td><button style="font-weight: bold; color: #3f51b5;" (click)="openRecordings(OpenUser, _recording)">{{_recording?.name}}.mp4</button></td>
                                         <td>{{_recording?.size}}</td>
                                         <td>
                                             <button (click)="downloadVideo(videoSrc(_recording?.file), _recording?.file)" class="btn btn-success botones">
@@ -53,7 +51,7 @@
 
 <ng-template #OpenUser>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">{{recording?.name}}</h4>
+        <h4 class="modal-title pull-left">{{recording?.name}}.mp4</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
     <span aria-hidden="true">&times;</span>
     </button>

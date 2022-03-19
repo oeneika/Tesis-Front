@@ -1,31 +1,23 @@
-// Angular
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-
-// Alert Component
-import { AlertModule } from 'ngx-bootstrap/alert';
-import { AlertsComponent } from './alerts.component';
-
-import { BadgesComponent } from './badges.component';
-
-// Modal Component
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { ModalsComponent } from './modals.component';
-
-// Notifications Routing
-import { NotificationsRoutingModule } from './notifications-routing.module';
+import { CommonModule } from "@angular/common";
+import { NgModule } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { BsDropdownModule } from "ngx-bootstrap/dropdown";
+import { ButtonsModule } from "ngx-bootstrap/buttons";
+import { NotificationsComponent } from "./notifications.component";
+import { NotificationsRoutingModule } from "./notifications-routing.module";
+import { ModalModule } from "ngx-bootstrap/modal";
+import { NgxPaginationModule } from "ngx-pagination";
 
 @NgModule({
   imports: [
-    CommonModule,
+    FormsModule,
     NotificationsRoutingModule,
-    AlertModule.forRoot(),
-    ModalModule.forRoot()
+    BsDropdownModule,
+    CommonModule,
+    ButtonsModule.forRoot(),
+    ModalModule.forRoot(),
+    NgxPaginationModule
   ],
-  declarations: [
-    AlertsComponent,
-    BadgesComponent,
-    ModalsComponent
-  ]
+  declarations: [NotificationsComponent],
 })
-export class NotificationsModule { }
+export class NotificationsModule {}

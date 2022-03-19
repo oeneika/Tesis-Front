@@ -31,6 +31,11 @@ export const navItems: INavData[] = [
     ],
   },
   {
+    name: "Notificaciones",
+    url: "/notifications",
+    icon: "icon-bell",
+  },
+  {
     name: "Grabaciones",
     url: "/recordings",
     icon: "icon-camrecorder",
