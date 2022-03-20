@@ -7,6 +7,9 @@ import { NotificationsComponent } from "./notifications.component";
 import { NotificationsRoutingModule } from "./notifications-routing.module";
 import { ModalModule } from "ngx-bootstrap/modal";
 import { NgxPaginationModule } from "ngx-pagination";
+import { NotificationService } from "../../services/notifications.service";
+import { CamerasService } from "../../services/cameras.service";
+import { UserService } from "../../services/user.service";
 
 @NgModule({
   imports: [
@@ -19,5 +22,6 @@ import { NgxPaginationModule } from "ngx-pagination";
     NgxPaginationModule
   ],
   declarations: [NotificationsComponent],
+  providers: [NotificationService, CamerasService, UserService]
 })
 export class NotificationsModule {}

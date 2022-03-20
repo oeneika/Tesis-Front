@@ -5,7 +5,7 @@ import { Observable } from "rxjs";
 import { UserService } from "./user.service";
 
 @Injectable()
-export class CamerasService {
+export class NotificationService {
   public url: string;
   public userService = new UserService(this._http);
   public headersAuthorization = new HttpHeaders()
@@ -17,18 +17,20 @@ export class CamerasService {
     this.url = environment.url;
   }
 
-    //Obtener Face
-    public getCamerasByUser(idUser): Observable<any> {
-        return this._http.get(environment.url + "get-cameras-by-user/" + idUser, {
-          headers: this.headersAuthorization,
-        });
+    /**
+     * updateNotificationStatus
+     */
+     public updateNotificationStatus(notificationId: string, seen: boolean) {
+      return this._http.put(environment.url.concat('update-notification/', notificationId), { 'seen': seen}, {
+        headers: this.headersAuthorization,
+      });
     }
 
     /**
-     * getCameras
+     * getNotificationsByUser
      */
-    public getCameras() {
-      return this._http.get(environment.url + "get-cameras", {
+    public getNotificationsByUser(userId: string) {
+      return this._http.get(environment.url.concat('notifications-by-user/', userId), {
         headers: this.headersAuthorization,
       });
     }

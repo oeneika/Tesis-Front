@@ -24,3 +24,9 @@
     justify-content: center;
     align-items: center;
 }
+
+.table th, .table td {
+    padding: 0.75rem;
+    vertical-align: middle;
+    border-top: 1px solid #c8ced3;
+}

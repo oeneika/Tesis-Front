@@ -17,20 +17,20 @@ export class ReportsService {
     this.url = environment.url;
   }
 
-    public getFacesByCameraAndMonth(idAdmin): Observable<any> {
-        return this._http.get(environment.url + "get-faces-by-camara-and-month/" + idAdmin, {
+    public getFacesByCameraAndMonth(cameraId: string): Observable<any> {
+        return this._http.get(environment.url + "get-faces-by-camara-and-month/" + cameraId, {
           headers: this.headersAuthorization,
         });
     }
 
-    public getFacesByCameraAndWeek(idAdmin): Observable<any> {
-        return this._http.get(environment.url + "get-faces-by-camara-and-week/" + idAdmin, {
+    public getFacesByCameraAndWeek(cameraId: string): Observable<any> {
+        return this._http.get(environment.url + "get-faces-by-camara-and-week/" + cameraId, {
             headers: this.headersAuthorization,
         });
     }
 
-    public getFacesByCameraAndDay(idAdmin): Observable<any> {
-        return this._http.get(environment.url + "get-faces-by-camara-and-day/" + idAdmin, {
+    public getFacesByCameraAndDay(cameraId: string): Observable<any> {
+        return this._http.get(environment.url + "get-faces-by-camara-and-day/" + cameraId, {
           headers: this.headersAuthorization,
         });
     }

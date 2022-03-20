@@ -6,9 +6,9 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="name">Selecciona la cámara</label>
-                            <select class="form-control" [(ngModel)]="selectedCamera">
+                            <select class="form-control" [(ngModel)]="selectedCamera" (change)="getReportsByFrequency()">
                               <option [value]="null">{{'Seleccione una cámara'}}</option>
-                              <option *ngFor="let camera of cameras" [value]="camera?._id">{{camera?.name}}</option>
+                              <option *ngFor="let camera of cameras" [value]="camera?.cameraId?._id">{{camera?.cameraId?.name}}</option>
                             </select>
                         </div>
                     </div>
@@ -18,7 +18,7 @@
                             <input type="text"
                                 placeholder="Daterangepicker"
                                 class="form-control"
-                                [bsConfig]="{withTimepicker: true, rangeInputFormat : 'MMMM Do YYYY, h:mm:ss a', dateInputFormat: 'MMMM Do YYYY, h:mm:ss a'}"
+                                [bsConfig]="{withTimepicker: false, rangeInputFormat : 'MMMM Do YYYY', dateInputFormat: 'MMMM Do YYYY'}"
                                 [(ngModel)]="selectedRange"
                                 bsDaterangepicker>
                                 <timepicker name="fieldName" ngDefaultControl></timepicker>
@@ -40,16 +40,16 @@
             <div class="card">
                 <div class="card-body">
                   <ng-container *ngIf="!reportsbyDate">
-                    <span class="no-text-msg">Seleccione una cámara, un rango de fechas y presione en <span style="color: #1B8EB7;">"Generar Reporte"</span> para verlos reportes asociados.</span>
+                    <span class="no-text-msg">Seleccione una cámara, un rango de fechas y presione en <span style="color: #1B8EB7;">"Generar Reporte"</span> para ver los reportes asociados.</span>
                   </ng-container>
                   <ng-container *ngIf="reportsbyDate && reportsbyDate?.length === 0">
-                    <span class="no-text-msg">No existe data disponible para este reporte personalizado del {{prettyDate(dateRange?.from)}} al {{prettyDate(dateRange?.to)}} por favor ingrese diferentes parámetros.</span>
+                    <span class="no-text-msg">No existe data disponible para este reporte personalizado del {{dateRange?.from}} al {{dateRange?.to}} por favor ingrese diferentes parámetros.</span>
                   </ng-container>
                   <ng-container *ngIf="reportsbyDate && reportsbyDate?.length > 0">
                     <div class="row">
                         <div class="col-md-12">
                             <h5>
-                                Reporte personalizado del {{prettyDate(dateRange?.from)}} al {{prettyDate(dateRange?.to)}} en cámara "{{selectedCameraName}}"
+                                Reporte personalizado del {{dateRange?.from}} al {{dateRange?.to}} en cámara "{{selectedCameraName}}"
                             </h5>
                         </div>
                     </div>
@@ -97,7 +97,12 @@
         <div class="col-md-12">
             <!-- Si se genera un reporte mostrar esta vista-->
             <div class="card">
+              <ng-container *ngIf="!selectedCamera">
                 <div class="card-body">
+                  <span class="no-text-msg">Seleccione una <span style="color: #1B8EB7;">cámara</span> para ver los reportes por frecuencia diaria, semanal o mensual.</span>
+                </div>
+              </ng-container>
+                <div *ngIf="selectedCamera" class="card-body">
                     <div class="row">
                         <div class="col-md-6">
                             <h5>Reporte de frecuencia {{report?.name}}</h5>

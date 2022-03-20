@@ -47,9 +47,17 @@ export class DashboardComponent implements OnInit {
   ngOnInit(){
     // this.getConfidenceLevels();
     this.getCamerasByAdmin();
-    this.getFacesByCameraAndDay();
-    this.getFacesByCameraAndMonth();
-    this.getFacesByCameraAndWeek();
+  }
+
+  /**
+   * getReportsByFrequency
+   */
+  public getReportsByFrequency() {
+    if (this.selectedCamera) {
+      this.getFacesByCameraAndDay();
+      this.getFacesByCameraAndMonth();
+      this.getFacesByCameraAndWeek();
+    }
   }
 
   openModal(template: TemplateRef<any>) {
@@ -86,7 +94,7 @@ export class DashboardComponent implements OnInit {
    */
   public get dateRange(): any {
     return this.selectedRange && this.selectedRange.length > 0 ? 
-    { from:  moment(this.selectedRange[0]).format(), to: moment(this.selectedRange[1]).format()} :
+    { from:  moment(this.selectedRange[0]).format('DD/MM/YYYY'), to: moment(this.selectedRange[1]).format('DD/MM/YYYY')} :
     null;
   }
 
@@ -94,14 +102,7 @@ export class DashboardComponent implements OnInit {
    * selectedCameraName
    */
   public get selectedCameraName(): string {
-    return this.cameras?.find(cam => cam._id === this.selectedCamera).name;
-  }
-
-  /**
-   * prettyDate
-date: string | date   */
-  public prettyDate(date: string | Date): string {
-    return moment(date).calendar();
+    return this.cameras?.find(cam => cam?.cameraId?._id === this.selectedCamera).cameraId?.name;
   }
 
   /**
@@ -126,29 +127,28 @@ date: string | date   */
   }
 
   getCamerasByAdmin() {
-    // this._camerasService.getCamerasByAdmin(this.identity).pipe(take(1)).subscribe((response: any) => {
-    this._camerasService.getCameras().pipe(take(1)).subscribe((response: any) => {
+    this._camerasService.getCamerasByUser(this.identity).pipe(take(1)).subscribe((response: any) => {
       this.cameras = response;
     });
   }
 
   //Reporte diario
   getFacesByCameraAndDay(){
-    this._reportsService.getFacesByCameraAndDay(this.identity).subscribe((response: any) => {
+    this._reportsService.getFacesByCameraAndDay(this.selectedCamera).subscribe((response: any) => {
         this.reportsbyDay = response;
     });
   }
 
     //Reporte semanal
     getFacesByCameraAndWeek(){
-      this._reportsService.getFacesByCameraAndWeek(this.identity).subscribe((response: any) => {
+      this._reportsService.getFacesByCameraAndWeek(this.selectedCamera).subscribe((response: any) => {
         this.reportsbyWeek = response;
     });
     }
 
     //Reporte mensual
     getFacesByCameraAndMonth(){
-      this._reportsService.getFacesByCameraAndMonth(this.identity).subscribe((response: any) => {
+      this._reportsService.getFacesByCameraAndMonth(this.selectedCamera).subscribe((response: any) => {
         this.reportsbyMonth = response;
     });
     }
