@@ -2,20 +2,22 @@
     <div class="row">
         <div class="col-sm-12">
             <h1 class="mb-3">Grabación en vivo</h1>
-            <ul class="pasos-code">
-                <li>
-                    Coloque el dispositivo de cámara cerca de los objetos de interés (1-2 metros) para asegurar que el reconocimiento facial funcione.
-                </li>
-            </ul>
-            <!-- Esto hay que borrarlo-->
-            <button style="font-weight: bold; color: #3f51b5;" (click)="openRecordings(OpenUser, 1)">Modal</button>
-            <p></p>
+            <p>1. Antes de iniciar la grabación, por favor añada un nombre a la cámara de vigilancia.</p>
+            <p>2. Coloque el dispositivo de cámara cerca de los objetos de interés (1-2 metros) para asegurar que el reconocimiento facial funcione.</p>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-7">
+        <div class="col-sm-8">
             <div class="card">
                 <div class="card-body" align="center">
+                    <ng-container *ngIf="!recording">
+                        <div class="camara-background">
+                            <div class="">
+                                <i class="icon-camera icons d-block mb-2" style="font-size: 3rem; color: #686868;"></i>
+                            </div>
+
+                        </div>
+                    </ng-container>
                     <ng-container *ngIf="recording">
                         <app-app-video-player [stream]="user" *ngFor="let user of listUser"></app-app-video-player>
                     </ng-container>
@@ -36,74 +38,46 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-5">
+        <div class="col-md-4">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-12">
-                            <h2>Funcionalidades</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <form action="">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h5 class="mb-3">
-                                    Cámara: {{ changeStatus ? "Frontal" : "Trasera" }}
-                                </h5>
-                                <button class="btn btn-primary w-100 mb-3 mb-md-0" (click)="changeStatus()">
-                  Girar cámara <i class="icon-refresh icons font-2xl"></i>
-                </button>
-                            </div>
-                            <div class="col-md-6">
-                                <h5 class="mb-3">Resolución</h5>
-                                <select name="" id="" class="form-control">
-                  <option value="">Baja</option>
-                  <option value="">Media</option>
-                  <option value="">Alta</option>
-                </select>
-                            </div>
-                        </div>
-                        <div class="row mt-4">
-                            <div class="col-md-12">
-                                <button class="btn btn-success w-100">
-                                Guardar configuración
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                <div class="card-body" align="center">
+                    <p *ngIf="camera.name" class="mb-0">Nombre de la cámara: {{camera.name}}</p>
+                    <button  *ngIf="!camera.name" class="btn btn-primary w-100 mb-3" (click)="showModal()">Nombre de cámara</button>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- 
-<ng-template #OpenUser>
-    <div class="modal-header">
-        <h4 class="modal-title pull-left">Nueva cámara</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-    </div>
-    <div class="modal-body">
-        <form action="">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label for="name">Nombre de la cámara</label>
-                        <input type="text" placeholder="Ej: Cocina de la casa" class="form-control" />
+<div *ngIf="isModalShown" [config]="{ show: true }" (onHidden)="onHidden()" bsModal #autoShownModal="bs-modal"
+     class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-auto-name">
+  <div class="modal-dialog modal-md modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title pull-left">Nueva cámara</h4>
+            <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="hideModal()">
+                <span aria-hidden="true" class="visually-hidden">&times;</span>
+            </button>
+        </div>
+        <form #newCameraForm="ngForm" (ngSubmit)="onSubmit()">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="name">Nombre de la cámara</label>
+                            <input type="text" placeholder="Ej: Cocina de la casa" class="form-control" #name="ngModel" name="name" [(ngModel)]="camera.name" required/>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-primary" value="Guardar" />
+            </div>
         </form>
     </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn btn-primary" value="Guardar" />
-     </div>
-</ng-template>
--->
+  </div>
+</div>
+
 
 
 <ng-template #OpenUser>

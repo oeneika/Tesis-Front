@@ -17,6 +17,16 @@ export class CamerasService {
     this.url = environment.url;
   }
 
+    //Agregar Face
+    addCamera(camera): Observable<any> {
+      let json = JSON.stringify(camera);
+      let params = json;
+      return this._http.post(environment.url.concat("save-camera"), params, {
+        headers: this.headersAuthorization,
+      });
+
+    }
+
     //Obtener Face
     public getCamerasByUser(idUser): Observable<any> {
         return this._http.get(environment.url + "get-cameras-by-user/" + idUser, {
@@ -24,13 +34,14 @@ export class CamerasService {
         });
     }
 
-    /**
-     * getCameras
-     */
-    public getCameras() {
-      return this._http.get(environment.url + "get-cameras", {
+    public getCamera(idCamera): Observable<any> {
+      return this._http.get(environment.url + "get-camera/" + idCamera, {
         headers: this.headersAuthorization,
       });
+    }
+
+    public get idCamera() {
+      return localStorage.getItem("idCamera") || null;
     }
 
 }

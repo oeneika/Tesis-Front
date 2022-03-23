@@ -30,7 +30,6 @@ export class AppVideoPlayerComponent implements OnInit {
   image2;
 
   async ngOnInit() {
-    console.log(navigator.mediaDevices);
     navigator.mediaDevices.enumerateDevices().then(promise => console.log(promise))
     await Promise.all([
       faceapi.nets.tinyFaceDetector.loadFromUri("../../assets/models"),
@@ -106,6 +105,7 @@ export class AppVideoPlayerComponent implements OnInit {
           );
           if (this.resizedDetections.length > 0 && this.captureCheck) {
             // En el campo resizedDetection esta toda la info de edad genero y toda la mierda, tambien donde esta la cara de la gente para ver si recortas.
+            console.log(this.resizedDetections);
             this.capture();
             if (this.image1 && this.image2) {
               this.captureCheck = false;
@@ -117,7 +117,6 @@ export class AppVideoPlayerComponent implements OnInit {
           faceapi.draw.drawDetections(this.canvas, this.resizedDetections);
           faceapi.draw.drawFaceLandmarks(this.canvas, this.resizedDetections);
           faceapi.draw.drawFaceExpressions(this.canvas, this.resizedDetections);
-          console.log('nojoda');
         }, 100);
       });
   }

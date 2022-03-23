@@ -127,7 +127,6 @@ export class ConfidenceLevelsComponent implements OnInit {
   onSubmit() {
     let payload = this.face;
     payload.user = this.identity;
-    console.log(payload);
     this._faceService.addFace(payload).subscribe(
       (data) => {
         this.face = data.face;

@@ -1,43 +1,82 @@
-import { Component, OnInit, TemplateRef } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { WebSocketService } from "../../services/web-socket.service";
 import { PeerService } from "../../services/peer.service";
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
+import { ModalDirective } from 'ngx-bootstrap/modal';
+import { Camera } from "../../models/camera";
+import { CamerasService } from "../../services/cameras.service";
+import { UserService } from "../../services/user.service";
+import { ToastrService } from "ngx-toastr";
+
 
 @Component({
   selector: "app-camera",
   templateUrl: "camera.component.html",
-  providers: [],
+  providers: [CamerasService],
 })
 export class CameraComponent implements OnInit {
+  public camera: Camera;
   roomName: string;
   currentStream: any;
   listUser: Array<any> = [];
   statusCamera: Boolean = true;
   modalRef: BsModalRef;
-
   recording = false;
+  public identity;
+  public idCamera;
+  public cameras = [];
 
+  @ViewChild('autoShownModal', { static: false }) autoShownModal?: ModalDirective;
+  isModalShown = false;
+ 
   constructor(
     private route: ActivatedRoute,
     private webSocketService: WebSocketService,
     private peerService: PeerService,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private _cameraService: CamerasService,
+    private _userService: UserService,
+    private toastr: ToastrService
+    
   ) {
+    this.identity = this._userService.identity;
     this.roomName = route.snapshot.paramMap.get("id");
+    this.camera = new Camera("", "", false, false, "");
+    this.idCamera = this._cameraService.idCamera;
   }
 
   ngOnInit() {
-    console.log("hola desde debug");
-    this.checkMediaDevices();
-    this.initPeer();
-    this.initSocket();
+    if(!this._cameraService.idCamera){
+      this.showModal();
+    }
+    this.getCamera();
   }
 
-  //multiples cuartos donde cada uno envia un video
+  public getCamera() {
+    let id = this._cameraService.idCamera?.replace(/['"]+/g, '');
+    if (id){
+      this._cameraService.getCamera(id).subscribe(
+        (data) => {
+          this.camera = data;
+          console.log(this.cameras);
+        },
+        (err) => {}
+      );
+    }
+
+  }
 
   record(start: boolean) {
-    this.recording = start;
+
+    if(this.camera.name == '' || this.camera.name == null){
+      this.toastr.error('Debe añadirle un nombre a la cámara para iniciar la grabación.')
+    }else{
+      this.checkMediaDevices();
+      this.initPeer();
+      this.initSocket();
+      this.recording = start;
+    }
   }
 
   initPeer = () => {
@@ -128,5 +167,36 @@ export class CameraComponent implements OnInit {
   openRecordings(x, recordings) {
     this.openModal(x);
     //this.face = user;
+  }
+
+  showModal(): void {
+    this.isModalShown = true;
+  }
+ 
+  hideModal(): void {
+    this.autoShownModal?.hide();
+  }
+ 
+  onHidden(): void {
+    this.isModalShown = false;
+  }
+
+
+  public onSubmit() {
+    let payload = this.camera;
+    payload.administratorId = this.identity;
+    this._cameraService.addCamera(payload).subscribe(
+      (data) => {
+        this.camera = data;
+        this.camera = new Camera(data._id,data.name, data.power, data.turn_screen, this.identity);
+        localStorage.setItem("idCamera", JSON.stringify(data._id));
+        this.hideModal();
+        this.toastr.success('Cámara creada exitosamente');
+        this.getCamera();
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 }
