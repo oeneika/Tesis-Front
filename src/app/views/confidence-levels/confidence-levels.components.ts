@@ -54,7 +54,7 @@ export class ConfidenceLevelsComponent implements OnInit {
       (data) => {
         if (data != null && data != "") {
           this.confidenceLevels = data;
-          this.niveles = this.confidenceLevels;
+          console.log(this.confidenceLevels);
         }
       },
       (err) => {}
