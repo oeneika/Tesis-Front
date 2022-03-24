@@ -6,6 +6,7 @@ import { ConfidenceLevelsService } from "../../services/confidence-levels.servic
 import { environment } from "../../../environments/environment";
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import { Face } from "../../models/face";
+import { take } from "rxjs/operators";
 
 @Component({
   selector: "app-confidence-levels",
@@ -21,7 +22,6 @@ export class ConfidenceLevelsComponent implements OnInit {
   public niveles = [];
   public photo_default = "../../../assets/img/avatars/default.png";
   public url: string;
-  public rostros = [];
   public page = 1;
   public count = 0;
   public tableSize;
@@ -41,36 +41,20 @@ export class ConfidenceLevelsComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (!this.identity) {
-      this.router.navigate(["login"]);
-    }
-
-    this.getConfidenceLevels();
     this.getFaces();
   }
 
-  getConfidenceLevels() {
-    this._confidenceLevels.getConfidenceLevels().subscribe(
-      (data) => {
-        if (data != null && data != "") {
-          this.confidenceLevels = data;
-          console.log(this.confidenceLevels);
-        }
-      },
-      (err) => {}
-    );
+  public getConfidenceLevels(faces: any[]) {
+    this._confidenceLevels.getConfidenceLevels().subscribe((levels: any[]) => {
+      levels.map(level => {
+        level.faces = faces.filter((face: any) => face?.confidenceLevels === level?._id);
+      });
+      this.confidenceLevels = levels;
+    });
   }
 
-  getFaces() {
-    this._faceService.getFaceByUser(this.identity).subscribe(
-      (data) => {
-        if (data != null && data != "") {
-          this.rostros = data;
-          this.tableSize = this.rostros.length;
-        }
-      },
-      (err) => {}
-    );
+  public getFaces() {
+    this._faceService.getFaceByUser(this.identity).pipe(take(1)).subscribe((response: any) => this.getConfidenceLevels(response));
   }
 
   //Abrir modal
