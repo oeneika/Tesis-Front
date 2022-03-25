@@ -7,6 +7,7 @@ import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import { Face } from "../../models/face";
 import { take } from "rxjs/operators";
 import { Console } from "console";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-confidence-levels",
@@ -30,7 +31,8 @@ export class ConfidenceLevelsComponent implements OnInit {
     private _userService: UserService,
     private modalService: BsModalService,
     private _confidenceLevels: ConfidenceLevelsService,
-    private _faceService: FaceService
+    private _faceService: FaceService,
+    private toastr: ToastrService
   ) {
     this.identity = this._userService.identity;
     this.token = this._userService.token;
@@ -44,8 +46,10 @@ export class ConfidenceLevelsComponent implements OnInit {
 
   public getConfidenceLevels(faces: any[]) {
     this._confidenceLevels.getConfidenceLevels().subscribe((levels: any[]) => {
-      levels.map(level => {
+      levels.map((level: any, i: number) => {
         level.faces = faces.filter((face: any) => face?.confidenceLevels === level?._id);
+        level.paginationId = 'facesLevel' + (i + 1);
+        level.currentPage = 1;
       });
       this.confidenceLevels = levels;
     });
@@ -96,6 +100,7 @@ export class ConfidenceLevelsComponent implements OnInit {
           ).then((result: any) => {
             this.face.image = result.image;
             localStorage.setItem("identity", JSON.stringify(this.identity));
+            this.toastr.success('El usuario ha sido editado con éxito.');
           });
         }
 
@@ -123,6 +128,7 @@ export class ConfidenceLevelsComponent implements OnInit {
           ).then((result: any) => {
             this.face.image = result.image;
             localStorage.setItem("identity", JSON.stringify(this.identity));
+            this.toastr.success('El usuario ha sido agregado con éxito.');
           });
         }
         this.face = new Face("", "", "", "", "", "", "", "");

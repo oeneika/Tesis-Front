@@ -8,6 +8,7 @@ import { ConfidenceLevelsRoutingModule } from "./confidence-levels-routing.modul
 import { BsDropdownModule } from "ngx-bootstrap/dropdown";
 import { PaginationModule } from "ngx-bootstrap/pagination";
 import { ModalModule } from "ngx-bootstrap/modal";
+import { NgxPaginationModule } from "ngx-pagination";
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { ModalModule } from "ngx-bootstrap/modal";
     BsDropdownModule.forRoot(),
     PaginationModule.forRoot(),
     ModalModule.forRoot(),
+    NgxPaginationModule
   ],
   declarations: [ConfidenceLevelsComponent],
 })

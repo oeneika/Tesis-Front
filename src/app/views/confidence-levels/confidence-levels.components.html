@@ -13,7 +13,7 @@
     </div>
     <div class="row">
       <ng-container *ngFor="let level of confidenceLevels; let i = index">
-        <div *ngIf="level?.faces?.length > 0" class="col-sm-6">
+        <div class="col-sm-6">
            <div class="card">
               <div class="card-header">
                  <div class="row">
@@ -26,49 +26,59 @@
                  </div>
               </div>
               <div class="card-body">
-                 <div class="table-responsive">
-                    <table class="table">
-                       <thead>
-                          <tr>
-                             <th>Nombre</th>
-                             <th>Edad</th>
-                             <th>Sexo</th>
-                             <th>Foto</th>
-                             <th>Acciones</th>
+                <ng-container *ngIf="level?.faces?.length === 0">
+                  <span class="no-text-msg">Actualmente no existen usuarios para este nivel de confianza, presione el botón <span style="color: #1B8EB7;">"Agregar Usuario"</span> para agregar nuevos usuarios a sus niveles de confianza.</span>
+                </ng-container>
+                <ng-container *ngIf="level?.faces?.length > 0">
+                  <div class="table-responsive">
+                     <table class="table">
+                        <thead>
+                           <tr>
+                              <th>Nombre</th>
+                              <th>Edad</th>
+                              <th>Sexo</th>
+                              <th>Foto</th>
+                              <th>Acciones</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let face of level?.faces | paginate: { id: level?.paginationId, itemsPerPage: 5, currentPage: level?.currentPage, totalItems: report?.list?.length }; let j = index">
+                              <td>{{face?.name}} {{face?.surname}}</td>
+                              <td>{{face?.age}}</td>
+                              <td>{{face?.gender}}</td>
+                              <td>
+                                  <ng-container *ngIf="face?.image;else other_content">
+                                    <div class="image-confidence-level" [ngStyle]="{
+                                        'background-image': 'url(http://localhost:8000/api/get-image-face/' + face?.image + ')'
+                                        }"></div>
+                                  </ng-container>
+                                  <ng-template #other_content>
+                                    <div class="image-confidence-level" style="
+                                        background-image: url('../../../assets/img/avatars/default.png');
+                                        "></div>
+                                  </ng-template>
+                              </td>
+                              <td>
+                                  <button class="btn btn-success" (click)="editUser(EditUser, face)">
+                                  <i class="fa fa-edit fa-lg"></i>
+                                  </button>
+                                  <button class="btn btn-danger" (click)="deleteFace(face?._id)">
+                                  <i class="fa fa-trash-o fa-lg"></i>
+                                  </button>
+                              </td>
                           </tr>
-                       </thead>
-                       <tbody>
-                         <tr *ngFor="let face of level?.faces; let i = index">
-                             <td>{{face?.name}} {{face?.surname}}</td>
-                             <td>{{face?.age}}</td>
-                             <td>{{face?.gender}}</td>
-                             <td>
-                                 <ng-container *ngIf="face?.image;else other_content">
-                                   <div class="image-confidence-level" [ngStyle]="{
-                                       'background-image': 'url(http://localhost:8000/api/get-image-face/' + face?.image + ')'
-                                       }"></div>
-                                 </ng-container>
-                                 <ng-template #other_content>
-                                   <div class="image-confidence-level" style="
-                                       background-image: url('../../../assets/img/avatars/default.png');
-                                       "></div>
-                                 </ng-template>
-                             </td>
-                             <td>
-                                 <button class="btn btn-success" (click)="editUser(EditUser, face)">
-                                 <i class="fa fa-edit fa-lg"></i>
-                                 </button>
-                                 <button class="btn btn-danger" (click)="deleteFace(face?._id)">
-                                 <i class="fa fa-trash-o fa-lg"></i>
-                                 </button>
-                             </td>
-                         </tr>
-                       </tbody>
-                    </table>
-                 </div>
-                 <ng-container *ngIf="tableSize">
-                    <pagination [totalItems]="30"></pagination>
-                 </ng-container>
+                        </tbody>
+                     </table>
+                  </div>
+                  <div class="pagination-container"><pagination-controls
+                    [id]="level?.paginationId"
+                    (pageChange)="level.currentPage = $event"
+                    autoHide="true"
+                    maxSize="5"
+                    responsive="true"
+                    previousLabel="Anterior"
+                    nextLabel="Siguiente"></pagination-controls></div>
+                </ng-container>
               </div>
            </div>
         </div>
@@ -124,15 +134,16 @@
           <div class="row">
              <div class="col-sm-12">
                 <label for="confidenceLevels">Niveles de confianza</label>
-                <select class="form-control" #confidenceLevels="ngModel" name="confidenceLevels" [(ngModel)]="face.confidenceLevels">
-                  <ng-container *ngIf='confidenceLevels && confidenceLevels.length'>
-                     <option
-                     *ngFor="let level of confidenceLevels; let i = index"
-                     [value]="level._id"
-                     >
-                     {{ level.title }}
-                     </option>
-                  </ng-container>
+                <select class="form-control" name="confidenceLevels" [(ngModel)]="face.confidenceLevels">
+                  <option class="placeholder" [value]="null" disabled>
+                     Seleccione
+                  </option>
+                  <option
+                  *ngFor="let level of confidenceLevels; let i = index"
+                  [value]="level._id"
+                  >
+                  {{ level.title }}
+                  </option>
                 </select>
              </div>
           </div>
@@ -222,19 +233,16 @@
              <div class="row">
                 <div class="col-sm-12">
                    <label for="confidenceLevels">Niveles de confianza</label>
-                   <select class="form-control" #confidenceLevels="ngModel" name="confidenceLevels" [(ngModel)]="face.confidenceLevels">
+                   <select class="form-control" name="confidenceLevels" [(ngModel)]="face.confidenceLevels">
                    <option class="placeholder" [value]="null" disabled>
                       Seleccione
                    </option>
-                   <ng-container *ngIf='confidenceLevels && confidenceLevels.length'>
                      <option
-                     *ngFor="let confidence of confidenceLevels; let i = index"
-                     [value]="confidence?._id"
-                     >
-                     {{confidence?.title}}
-                     </option>
-                   </ng-container>
-                   
+                    *ngFor="let confidence of confidenceLevels; let i = index"
+                    [value]="confidence?._id"
+                    >
+                    {{confidence?.title}}
+                    </option>
                    </select>
                 </div>
              </div>
