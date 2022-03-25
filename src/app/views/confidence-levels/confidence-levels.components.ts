@@ -1,5 +1,4 @@
 import { Component, OnInit, TemplateRef } from "@angular/core";
-import { Router } from "@angular/router";
 import { UserService } from "../../services/user.service";
 import { FaceService } from "../../services/face.service";
 import { ConfidenceLevelsService } from "../../services/confidence-levels.service";
@@ -7,6 +6,7 @@ import { environment } from "../../../environments/environment";
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import { Face } from "../../models/face";
 import { take } from "rxjs/operators";
+import { Console } from "console";
 
 @Component({
   selector: "app-confidence-levels",
@@ -19,7 +19,6 @@ export class ConfidenceLevelsComponent implements OnInit {
   public token;
   modalRef: BsModalRef;
   public confidenceLevels: Array<any> = [];
-  public niveles = [];
   public photo_default = "../../../assets/img/avatars/default.png";
   public url: string;
   public page = 1;
@@ -28,7 +27,6 @@ export class ConfidenceLevelsComponent implements OnInit {
   public returnedArray: string[];
 
   constructor(
-    private router: Router,
     private _userService: UserService,
     private modalService: BsModalService,
     private _confidenceLevels: ConfidenceLevelsService,

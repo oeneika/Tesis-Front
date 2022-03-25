@@ -85,7 +85,7 @@
     </div>
     <form #AddUserForm="ngForm" (ngSubmit)="onSubmit()">
     <div class="modal-body">
-       <ng-container *ngIf="niveles && niveles.length">
+       <ng-container *ngIf="confidenceLevels && confidenceLevels.length">
           <div class="row">
              <div class="col-sm-6">
                 <div class="form-group">
@@ -125,15 +125,14 @@
              <div class="col-sm-12">
                 <label for="confidenceLevels">Niveles de confianza</label>
                 <select class="form-control" #confidenceLevels="ngModel" name="confidenceLevels" [(ngModel)]="face.confidenceLevels">
-                <option class="placeholder" [value]="null" disabled>
-                   Seleccione
-                </option>
-                <option
-                *ngFor="let confidence of niveles; let i = index"
-                [value]="confidence._id"
-                >
-                {{ confidence.title }}
-                </option>
+                  <ng-container *ngIf='confidenceLevels && confidenceLevels.length'>
+                     <option
+                     *ngFor="let level of confidenceLevels; let i = index"
+                     [value]="level._id"
+                     >
+                     {{ level.title }}
+                     </option>
+                  </ng-container>
                 </select>
              </div>
           </div>
@@ -175,7 +174,7 @@
     <div class="modal-body">
        <form #EditUserForm="ngForm" (ngSubmit)="onSubmitEdit()">
        <div class="modal-body">
-          <ng-container *ngIf="niveles && niveles.length">
+          <ng-container *ngIf="confidenceLevels && confidenceLevels.length">
              <div class="row">
                 <div class="col-sm-6">
                    <div class="form-group">
@@ -227,12 +226,15 @@
                    <option class="placeholder" [value]="null" disabled>
                       Seleccione
                    </option>
-                   <option
-                   *ngFor="let confidence of niveles; let i = index"
-                   [value]="confidence._id"
-                   >
-                   {{ confidence.title }}
-                   </option>
+                   <ng-container *ngIf='confidenceLevels && confidenceLevels.length'>
+                     <option
+                     *ngFor="let confidence of confidenceLevels; let i = index"
+                     [value]="confidence?._id"
+                     >
+                     {{confidence?.title}}
+                     </option>
+                   </ng-container>
+                   
                    </select>
                 </div>
              </div>
