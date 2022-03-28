@@ -32,7 +32,7 @@ export class AppVideoPlayerComponent implements OnInit {
   async ngOnInit() {
     navigator.mediaDevices.enumerateDevices().then(promise => console.log(promise))
     await Promise.all([
-      faceapi.nets.tinyFaceDetector.loadFromUri("../../assets/models"),
+      faceapi.nets.ssdMobilenetv1.loadFromUri("../../assets/models"),
       await faceapi.nets.faceLandmark68Net.loadFromUri("../../assets/models"),
       await faceapi.nets.faceRecognitionNet.loadFromUri("../../assets/models"),
       await faceapi.nets.faceExpressionNet.loadFromUri("../../assets/models"),
@@ -95,7 +95,7 @@ export class AppVideoPlayerComponent implements OnInit {
           this.detection = await faceapi
             .detectAllFaces(
               this.videoInput,
-              new faceapi.TinyFaceDetectorOptions()
+              new faceapi.SsdMobilenetv1Options()
             ).withFaceLandmarks()
             .withFaceExpressions()
             .withAgeAndGender();
