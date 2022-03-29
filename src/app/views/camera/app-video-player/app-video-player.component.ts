@@ -12,6 +12,7 @@ export class AppVideoPlayerComponent implements OnInit {
 
   @ViewChild("video", { static: false }) video: ElementRef;
   @ViewChild("canvas", { static: false }) canvasRef: ElementRef;
+  @ViewChild("canvas2", { static: false }) canvasRef2: ElementRef;
   @ViewChild("capture", { static: false }) captureRef: ElementRef;
   @ViewChild("prueba", { static: false }) prueba: ElementRef;
   @Input() stream: any;
@@ -51,6 +52,11 @@ export class AppVideoPlayerComponent implements OnInit {
     p.catch(function(err) { console.log(err.name); }); // always check for errors at the end.
   }
 
+  captures() {
+    const context = this.canvasRef2.nativeElement.getContext('2d');
+    context.drawImage(this.videoInput, 0, 0, 640, 480);
+  }
+
   /**
    * recordVideo
    */
@@ -73,7 +79,7 @@ export class AppVideoPlayerComponent implements OnInit {
         downloadButton.href = recordedMediaURL;
         downloadButton.innerText = "Download it!";
         downloadButton.onclick = () => {
-            URL.revokeObjectURL(recordedMediaURL); 
+            URL.revokeObjectURL(recordedMediaURL);
         };
     };
   }
@@ -105,11 +111,7 @@ export class AppVideoPlayerComponent implements OnInit {
           );
           if (this.resizedDetections.length > 0 && this.captureCheck) {
             // En el campo resizedDetection esta toda la info de edad genero y toda la mierda, tambien donde esta la cara de la gente para ver si recortas.
-            console.log(this.resizedDetections);
             this.capture();
-            if (this.image1 && this.image2) {
-              this.captureCheck = false;
-            }
           }
           this.canvas
             .getContext("2d")
@@ -134,7 +136,7 @@ export class AppVideoPlayerComponent implements OnInit {
     }
 
     if (this.image1 && this.image2) {
-      this.compateImage();
+      this.compateImage(this.image1, this.image2) >= 0.6 ? console.log('nuevo rostro', this.resizedDetections, this.compateImage(this.image1, this.image2)) : console.log('Rostro conocido', this.resizedDetections, this.compateImage(this.image1, this.image2));
     }
     const frame = canvas.getContext('2d').getImageData(0, 0, this.videoInput.offsetWidth, this.videoInput.offsetHeight);
     const length = frame.data.length;
@@ -143,13 +145,13 @@ export class AppVideoPlayerComponent implements OnInit {
     video.addEventListener('play', (event: any)=>{
       console.log('Ok', event);
     });
-    
+
   }
 
-  private compateImage() {
+  private compateImage(img1, img2) {
     const distance = faceapi.utils.round(
-      faceapi.euclideanDistance(this.image1, this.image2)
+      faceapi.euclideanDistance(img1, img2)
     );
-    console.log(distance);
+    return distance;
   }
 }
