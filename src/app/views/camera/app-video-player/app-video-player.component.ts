@@ -175,37 +175,51 @@ export class AppVideoPlayerComponent implements OnInit {
     }
 
     this.recognitions = [].concat(_recognitions);
+    if (_recognitions.length === 0) {
+      this.sendNotification(this.detection[0], null, true)
+    }
     await this.detectFaces();
   }
 
-  private sendNotification(detection: any, recognition: any) {
-    const faceExpression = { points: 0, exp: null }
+  private sendNotification(detection: any, recognition: any, unknown?: boolean) {
+    const faceExpression = { points: 0, exp: null };
     for (const expression in detection?.expressions) {
       if (Object.prototype.hasOwnProperty.call(detection?.expressions, expression)) {
         detection?.expressions[expression] > faceExpression.points ? (faceExpression.points = detection?.expressions[expression]) && (faceExpression.exp = expression) : undefined;
       }
     }
-    const canvas: HTMLCanvasElement = this.captureRef.nativeElement;
-    canvas.setAttribute('width', this.videoInput.offsetWidth);
-    canvas.setAttribute('height', this.videoInput.offsetHeight);
-    canvas.getContext('2d').drawImage(this.videoInput, 0, 0, this.videoInput.offsetWidth, this.videoInput.offsetHeight);
-    canvas.toBlob(
-                    blob => {
-                      console.log('File: ', new File([blob], recognition?.user.concat('.jpg')));
-                      this.notificationService.createNotification({
-                      gender: detection.gender,
-                      age: Math.round(detection.age),
-                      // imagen: new File([blob], recognition?.user.concat('.jpg')),
-                      imagen: new File([blob], recognition?.user.concat('.jpg')),
-                      camera: this.cameraId,
-                      user: recognition?.user,
-                      facialExpression: this.expressions[faceExpression.exp]
-                    }).pipe(take(1)).subscribe(() => this.toastr);
-                    },
-                    "image/jpeg",
-                    0.01 /* quality */
-                );
-
+    if (!unknown) {
+      const canvas: HTMLCanvasElement = this.captureRef.nativeElement;
+      canvas.setAttribute('width', this.videoInput.offsetWidth);
+      canvas.setAttribute('height', this.videoInput.offsetHeight);
+      canvas.getContext('2d').drawImage(this.videoInput, 0, 0, this.videoInput.offsetWidth, this.videoInput.offsetHeight);
+      canvas.toBlob(
+                      blob => {
+                        console.log('File: ', new File([blob], recognition?.user.concat('.jpg')));
+                        this.notificationService.createNotification({
+                        gender: detection.gender,
+                        age: Math.round(detection.age),
+                        // imagen: new File([blob], recognition?.user.concat('.jpg')),
+                        imagen: null,
+                        camera: this.cameraId,
+                        user: recognition?.user,
+                        facialExpression: this.expressions[faceExpression.exp]
+                      }).pipe(take(1)).subscribe(() => this.toastr);
+                      },
+                      "image/jpeg",
+                      0.01 /* quality */
+                  );
+    } else {
+      this.notificationService.createNotification({
+      gender: detection.gender,
+      age: Math.round(detection.age),
+      // imagen: new File([blob], recognition?.user.concat('.jpg')),
+      imagen: null,
+      camera: this.cameraId,
+      user: recognition?.user,
+      facialExpression: this.expressions[faceExpression.exp]
+    }).pipe(take(1)).subscribe(() => this.toastr);
+    }
   }
   private async imgComparison (img1, img2): Promise<number> {
     try {
