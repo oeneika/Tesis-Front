@@ -33,3 +33,19 @@ video {
     right: 0;
     bottom: 0;
 }
+
+.face-recognition {
+  width: 100%;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #1B8EB7;
+}
+
+.face-recognition-message {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21px;
+  color: #ffffff;
+}

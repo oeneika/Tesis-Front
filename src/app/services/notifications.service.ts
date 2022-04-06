@@ -9,13 +9,22 @@ export class NotificationService {
   public url: string;
   public userService = new UserService(this._http);
   public headersAuthorization = new HttpHeaders()
-    .set("content-type", "application/json")
+    .set("content-type", "multipart/form-data")
     .set("Authorization", this.userService.token)
     .set("Access-Control-Allow-Origin", "*");
 
   constructor(protected _http: HttpClient) {
     this.url = environment.url;
   }
+
+    /**
+     * createNotification
+     */
+     public createNotification(notification: any) {
+      return this._http.post(environment.url.concat('notification/'), notification, {
+        headers: this.headersAuthorization,
+      });
+    }
 
     /**
      * updateNotificationStatus

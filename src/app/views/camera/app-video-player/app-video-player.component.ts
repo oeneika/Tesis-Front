@@ -1,6 +1,12 @@
 import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import * as faceapi from 'face-api.js';
 import { FaceDetection } from 'face-api.js';
+import { ToastrService } from 'ngx-toastr';
+import { resolve } from 'path';
+import { take } from 'rxjs/operators';
+import { FaceService } from '../../../services/face.service';
+import { NotificationService } from '../../../services/notifications.service';
+import { UserService } from '../../../services/user.service';
 declare var MediaRecorder: any;
 
 @Component({
@@ -10,15 +16,21 @@ declare var MediaRecorder: any;
 })
 export class AppVideoPlayerComponent implements OnInit {
 
+  public faces: any[] = [];
+  public expressions: any = { 'angry': 'Molesto', 'disgusted': 'Asqueado', 'fearful': 'Atemorizado', 'happy': 'Feliz', 'neutral': 'Neutral', 'sad': 'Triste', 'surprised': 'Sorprendido' };
+  public identity;
   @ViewChild("video", { static: false }) video: ElementRef;
   @ViewChild("canvas", { static: false }) canvasRef: ElementRef;
-  @ViewChild("canvas2", { static: false }) canvasRef2: ElementRef;
   @ViewChild("capture", { static: false }) captureRef: ElementRef;
   @ViewChild("prueba", { static: false }) prueba: ElementRef;
+  @Input() cameraId: any;
   @Input() stream: any;
   //https://rushipanchariya.medium.com/how-to-use-face-api-js-for-face-detection-in-video-or-image-using-angular-fca1e4bef797
-
-  constructor(private elRef: ElementRef) {}
+  public recognitions: any[] = [];
+  constructor(private elRef: ElementRef, private _faceService: FaceService, private _userService: UserService, private notificationService: NotificationService, private toastr: ToastrService) {
+    this.identity = this._userService.identity;
+    this.loadFaces();
+  }
   detection: any;
   resizedDetections: any;
   canvas: any;
@@ -31,7 +43,7 @@ export class AppVideoPlayerComponent implements OnInit {
   image2;
 
   async ngOnInit() {
-    navigator.mediaDevices.enumerateDevices().then(promise => console.log(promise))
+    navigator.mediaDevices.enumerateDevices();
     await Promise.all([
       faceapi.nets.ssdMobilenetv1.loadFromUri("../../assets/models"),
       await faceapi.nets.faceLandmark68Net.loadFromUri("../../assets/models"),
@@ -41,6 +53,13 @@ export class AppVideoPlayerComponent implements OnInit {
     ]).then(() => this.startVideo());
   }
 
+  /**
+   * loadFaces
+   */
+  public loadFaces() {
+    this._faceService.getFaceByUser(this.identity).pipe(take(1)).subscribe((response: any) => this.faces = response);
+  }
+
   startVideo() {
     this.videoInput = this.video.nativeElement;
     const p = navigator.mediaDevices.getUserMedia({ audio: false, video: true });
@@ -48,13 +67,8 @@ export class AppVideoPlayerComponent implements OnInit {
       this.video.nativeElement.srcObject = mediaStream;
       this.recordVideo(mediaStream);
     });
-    this.detect_Faces();
+    this.onVideoPlay();
     p.catch(function(err) { console.log(err.name); }); // always check for errors at the end.
-  }
-
-  captures() {
-    const context = this.canvasRef2.nativeElement.getContext('2d');
-    context.drawImage(this.videoInput, 0, 0, 640, 480);
   }
 
   /**
@@ -84,7 +98,7 @@ export class AppVideoPlayerComponent implements OnInit {
     };
   }
 
-  async detect_Faces() {
+  async onVideoPlay() {
     this.elRef.nativeElement
       .querySelector("video")
       .addEventListener("play", async () => {
@@ -97,61 +111,123 @@ export class AppVideoPlayerComponent implements OnInit {
           height: this.videoInput.offsetHeight,
         };
         faceapi.matchDimensions(this.canvas, this.displaySize);
-        setInterval(async () => {
-          this.detection = await faceapi
-            .detectAllFaces(
-              this.videoInput,
-              new faceapi.SsdMobilenetv1Options()
-            ).withFaceLandmarks()
-            .withFaceExpressions()
-            .withAgeAndGender();
-          this.resizedDetections  = faceapi.resizeResults(
-            this.detection,
-            this.displaySize
-          );
-          if (this.resizedDetections.length > 0 && this.captureCheck) {
-            // En el campo resizedDetection esta toda la info de edad genero y toda la mierda, tambien donde esta la cara de la gente para ver si recortas.
-            this.capture();
-          }
-          this.canvas
-            .getContext("2d")
-            .clearRect(0, 0, this.canvas.width, this.canvas.height);
-          faceapi.draw.drawDetections(this.canvas, this.resizedDetections);
-          faceapi.draw.drawFaceLandmarks(this.canvas, this.resizedDetections);
-          faceapi.draw.drawFaceExpressions(this.canvas, this.resizedDetections);
-        }, 100);
+        await this.detectFaces();
       });
   }
 
-  private async capture() {
+  private async detectFaces() {
+    this.detection = await faceapi
+      .detectAllFaces(
+        this.videoInput,
+        new faceapi.SsdMobilenetv1Options()
+      ).withFaceLandmarks()
+      .withFaceExpressions()
+      .withAgeAndGender();
+    this.resizedDetections  = faceapi.resizeResults(
+      this.detection,
+      this.displaySize
+    );
+    if (this.resizedDetections.length > 0 && this.captureCheck) {
+      // En el campo resizedDetection esta toda la info de edad genero y toda la mierda, tambien donde esta la cara de la gente para ver si recortas.
+      this.capture(this.detection);
+    }
+    this.canvas
+      .getContext("2d")
+      .clearRect(0, 0, this.canvas.width, this.canvas.height);
+    faceapi.draw.drawDetections(this.canvas, this.resizedDetections);
+    faceapi.draw.drawFaceLandmarks(this.canvas, this.resizedDetections);
+    faceapi.draw.drawFaceExpressions(this.canvas, this.resizedDetections);
+  }
+
+  private capture(detection: any[]) {
+    console.log(this.videoInput);
+    this.compareFaces(this.videoInput, detection);
     const canvas: HTMLCanvasElement = this.captureRef.nativeElement;
     canvas.setAttribute('width', this.videoInput.offsetWidth);
     canvas.setAttribute('height', this.videoInput.offsetHeight);
     canvas.getContext('2d').drawImage(this.videoInput, 0, 0, this.videoInput.offsetWidth, this.videoInput.offsetHeight);
-    // let image_data_url = canvas.toDataURL('image/jpeg');
-    if (this.image1) {
-      this.image2 =  await faceapi.computeFaceDescriptor(canvas);
-    } else {
-      this.image1 = await faceapi.computeFaceDescriptor(canvas);
-    }
-
-    if (this.image1 && this.image2) {
-      this.compateImage(this.image1, this.image2) >= 0.6 ? console.log('nuevo rostro', this.resizedDetections, this.compateImage(this.image1, this.image2)) : console.log('Rostro conocido', this.resizedDetections, this.compateImage(this.image1, this.image2));
-    }
     const frame = canvas.getContext('2d').getImageData(0, 0, this.videoInput.offsetWidth, this.videoInput.offsetHeight);
     const length = frame.data.length;
     const data = frame.data;
     const video = document.getElementById('video');
     video.addEventListener('play', (event: any)=>{
-      console.log('Ok', event);
+      // console.log('Ok', event);
     });
 
   }
 
-  private compateImage(img1, img2) {
-    const distance = faceapi.utils.round(
-      faceapi.euclideanDistance(img1, img2)
-    );
-    return distance;
+  private async compareFaces(capturedFace: any, detection: any[]) {
+    const _recognitions = [];
+    for (const detect of detection) {
+      let recognition = { user: null, msg: null, distance: 1 };
+      for (const face of this.faces) {
+        if (face?.image) {
+          const distance = await this.imgComparison('http://localhost:8000/api/get-image-face/'.concat(face.image), capturedFace ? capturedFace : this.videoInput);
+          if (distance <= 0.6 && distance < recognition.distance) {
+            recognition.distance = distance;
+            recognition.msg = 'Se reconoció a '.concat(face?.name, ' ', face?.surname);
+            recognition.user = face?._id;
+            console.log(distance, recognition);
+          }
+        }
+      }
+      recognition.user? _recognitions.push(recognition) && this.sendNotification(detect, recognition) :  undefined;
+    }
+
+    this.recognitions = [].concat(_recognitions);
+    await this.detectFaces();
   }
+
+  private sendNotification(detection: any, recognition: any) {
+    const faceExpression = { points: 0, exp: null }
+    for (const expression in detection?.expressions) {
+      if (Object.prototype.hasOwnProperty.call(detection?.expressions, expression)) {
+        detection?.expressions[expression] > faceExpression.points ? (faceExpression.points = detection?.expressions[expression]) && (faceExpression.exp = expression) : undefined;
+      }
+    }
+    const canvas: HTMLCanvasElement = this.captureRef.nativeElement;
+    canvas.setAttribute('width', this.videoInput.offsetWidth);
+    canvas.setAttribute('height', this.videoInput.offsetHeight);
+    canvas.getContext('2d').drawImage(this.videoInput, 0, 0, this.videoInput.offsetWidth, this.videoInput.offsetHeight);
+    canvas.toBlob(
+                    blob => {
+                      console.log('File: ', new File([blob], recognition?.user.concat('.jpg')));
+                      this.notificationService.createNotification({
+                      gender: detection.gender,
+                      age: Math.round(detection.age),
+                      // imagen: new File([blob], recognition?.user.concat('.jpg')),
+                      imagen: new File([blob], recognition?.user.concat('.jpg')),
+                      camera: this.cameraId,
+                      user: recognition?.user,
+                      facialExpression: this.expressions[faceExpression.exp]
+                    }).pipe(take(1)).subscribe(() => this.toastr);
+                    },
+                    "image/jpeg",
+                    0.01 /* quality */
+                );
+
+  }
+  private async imgComparison (img1, img2): Promise<number> {
+    try {
+      let img;
+      await faceapi.fetchImage(img1).then(res => img = res);
+      const reference = await faceapi.detectSingleFace(img, new faceapi.SsdMobilenetv1Options()).withFaceLandmarks().withFaceDescriptor();
+
+      if (!reference) {
+        return 1;
+      }
+
+      const faceMatcher = new faceapi.FaceMatcher(reference)
+      const results = await faceapi.detectAllFaces(img2, new faceapi.SsdMobilenetv1Options()).withFaceLandmarks().withFaceDescriptors();
+      let match = 1;
+      results.forEach(fd => {
+        const bestMatch = faceMatcher.findBestMatch(fd.descriptor)
+        match =  match > bestMatch?.distance ? bestMatch?.distance : match;
+      });
+      return match;
+    } catch (error) {
+      return 1;
+    }
+  }
+
 }

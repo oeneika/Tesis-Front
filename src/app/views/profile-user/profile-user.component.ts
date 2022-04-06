@@ -65,9 +65,7 @@ export class ProfilePageComponent implements OnInit {
           ).then((result: any) => {
             this.user.image = result.image;
             localStorage.setItem("identity", JSON.stringify(this.identity));
-            console.log(this.user);
             this.setPhoto();
-
             let image_path = this.url + "get-image-file/" + this.user.image;
             document
               .getElementById("image-logged")
@@ -84,7 +82,7 @@ export class ProfilePageComponent implements OnInit {
   public fileChangeEvent(fileInput: any) {
     const files = <Array<File>>fileInput.target.files;
     const supportedFormats = ['image/jpeg', 'image/jpg', 'image/png'];
-    console.log('photo', files[0]);
+    console.log('photo', files);
     if (!supportedFormats.find(type =>  type == files[0].type)) {
       this.toastr.error('El formato de la imagen debe ser correcto (jpg o png)');
     } else if (files[0].size > 2024000) {

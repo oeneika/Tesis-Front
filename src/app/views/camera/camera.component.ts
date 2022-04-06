@@ -29,7 +29,7 @@ export class CameraComponent implements OnInit {
 
   @ViewChild('autoShownModal', { static: false }) autoShownModal?: ModalDirective;
   isModalShown = false;
- 
+
   constructor(
     private route: ActivatedRoute,
     private webSocketService: WebSocketService,
@@ -38,12 +38,12 @@ export class CameraComponent implements OnInit {
     private _cameraService: CamerasService,
     private _userService: UserService,
     private toastr: ToastrService
-    
+
   ) {
     this.identity = this._userService.identity;
     this.roomName = route.snapshot.paramMap.get("id");
     this.camera = new Camera("", "", false, false, "");
-    this.idCamera = this._cameraService.idCamera;
+    this.idCamera = this._cameraService.idCamera?.replace(/['"]+/g, '');
   }
 
   ngOnInit() {
@@ -54,6 +54,7 @@ export class CameraComponent implements OnInit {
   }
 
   public getCamera() {
+    console.log(this.idCamera)
     let id = this._cameraService.idCamera?.replace(/['"]+/g, '');
     if (id){
       this._cameraService.getCamera(id).subscribe(
@@ -172,11 +173,11 @@ export class CameraComponent implements OnInit {
   showModal(): void {
     this.isModalShown = true;
   }
- 
+
   hideModal(): void {
     this.autoShownModal?.hide();
   }
- 
+
   onHidden(): void {
     this.isModalShown = false;
   }

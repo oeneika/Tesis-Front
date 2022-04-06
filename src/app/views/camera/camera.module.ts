@@ -9,6 +9,8 @@ import { ListCamerasComponent } from "./list-cameras.component";
 import { AppVideoPlayerComponent } from './app-video-player/app-video-player.component'
 import { CameraRoutingModule } from "./camera-routing.module";
 import { ModalModule } from "ngx-bootstrap/modal";
+import { FaceService } from "../../services/face.service";
+import { NotificationService } from "../../services/notifications.service";
 
 @NgModule({
   imports: [
@@ -18,10 +20,11 @@ import { ModalModule } from "ngx-bootstrap/modal";
     ModalModule.forRoot(),
   ],
   declarations: [
-    CameraComponent, 
-    CameraDetailsComponent, 
+    CameraComponent,
+    CameraDetailsComponent,
     ListCamerasComponent,
     AppVideoPlayerComponent
   ],
+  providers:[FaceService, NotificationService]
 })
 export class CameraModule {}
