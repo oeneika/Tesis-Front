@@ -176,7 +176,8 @@ export class AppVideoPlayerComponent implements OnInit {
 
     this.recognitions = [].concat(_recognitions);
     if (_recognitions.length === 0) {
-      this.sendNotification(this.detection[0], null, true)
+      this.sendNotification(this.detection[0], null, true);
+      this.recognitions.push({ msg: 'Alerta! Rostro desconocido' });
     }
     await this.detectFaces();
   }
