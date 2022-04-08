@@ -9,7 +9,7 @@ export class NotificationService {
   public url: string;
   public userService = new UserService(this._http);
   public headersAuthorization = new HttpHeaders()
-    .set("content-type", "multipart/form-data")
+    .set("content-type", "application/json")
     .set("Authorization", this.userService.token)
     .set("Access-Control-Allow-Origin", "*");
 

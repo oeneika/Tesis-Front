@@ -53,4 +53,13 @@ export class FaceService {
     });
   }
 
+    /**
+     * createImage
+     */
+     public createFaceImage(faceImage: any) {
+      return this._http.post(environment.url.concat('face-image/'), faceImage, {
+        headers: this.headersAuthorization,
+      });
+    }
+
 }

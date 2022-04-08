@@ -1,10 +1,13 @@
 import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import * as faceapi from 'face-api.js';
 import { FaceDetection } from 'face-api.js';
+import moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-import { resolve } from 'path';
+import { forkJoin } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 import { FaceService } from '../../../services/face.service';
+import { ImageService } from '../../../services/images.service';
 import { NotificationService } from '../../../services/notifications.service';
 import { UserService } from '../../../services/user.service';
 declare var MediaRecorder: any;
@@ -27,7 +30,7 @@ export class AppVideoPlayerComponent implements OnInit {
   @Input() stream: any;
   //https://rushipanchariya.medium.com/how-to-use-face-api-js-for-face-detection-in-video-or-image-using-angular-fca1e4bef797
   public recognitions: any[] = [];
-  constructor(private elRef: ElementRef, private _faceService: FaceService, private _userService: UserService, private notificationService: NotificationService, private toastr: ToastrService) {
+  constructor(private elRef: ElementRef, private _faceService: FaceService, private _userService: UserService, private notificationService: NotificationService, private toastr: ToastrService, private _imageService: ImageService) {
     this.identity = this._userService.identity;
     this.loadFaces();
   }
@@ -159,7 +162,7 @@ export class AppVideoPlayerComponent implements OnInit {
   private async compareFaces(capturedFace: any, detection: any[]) {
     const _recognitions = [];
     for (const detect of detection) {
-      let recognition = { user: null, msg: null, distance: 1 };
+      let recognition = { user: null, msg: null, distance: 1, face: null };
       for (const face of this.faces) {
         if (face?.image) {
           const distance = await this.imgComparison('http://localhost:8000/api/get-image-face/'.concat(face.image), capturedFace ? capturedFace : this.videoInput);
@@ -167,11 +170,12 @@ export class AppVideoPlayerComponent implements OnInit {
             recognition.distance = distance;
             recognition.msg = 'Se reconoció a '.concat(face?.name, ' ', face?.surname);
             recognition.user = face?._id;
+            recognition.face = face
             console.log(distance, recognition);
           }
         }
       }
-      recognition.user? _recognitions.push(recognition) && this.sendNotification(detect, recognition) :  undefined;
+      recognition.user && (_recognitions.findIndex(user => user?.user === recognition?.user) === -1)? _recognitions.push(recognition) && this.sendNotification(detect, recognition) :  undefined;
     }
 
     this.recognitions = [].concat(_recognitions);
@@ -179,49 +183,48 @@ export class AppVideoPlayerComponent implements OnInit {
       this.sendNotification(this.detection[0], null, true);
       this.recognitions.push({ msg: 'Alerta! Rostro desconocido' });
     }
-    await this.detectFaces();
+    // await this.detectFaces();
   }
 
-  private sendNotification(detection: any, recognition: any, unknown?: boolean) {
+  private sendNotification(detection: any, recognition: any, unknown?: boolean | false) {
     const faceExpression = { points: 0, exp: null };
     for (const expression in detection?.expressions) {
       if (Object.prototype.hasOwnProperty.call(detection?.expressions, expression)) {
         detection?.expressions[expression] > faceExpression.points ? (faceExpression.points = detection?.expressions[expression]) && (faceExpression.exp = expression) : undefined;
       }
     }
-    if (!unknown) {
+    // if (!unknown) {
       const canvas: HTMLCanvasElement = this.captureRef.nativeElement;
       canvas.setAttribute('width', this.videoInput.offsetWidth);
       canvas.setAttribute('height', this.videoInput.offsetHeight);
       canvas.getContext('2d').drawImage(this.videoInput, 0, 0, this.videoInput.offsetWidth, this.videoInput.offsetHeight);
       canvas.toBlob(
-                      blob => {
-                        console.log('File: ', new File([blob], recognition?.user.concat('.jpg')));
-                        this.notificationService.createNotification({
-                        gender: detection.gender,
-                        age: Math.round(detection.age),
-                        // imagen: new File([blob], recognition?.user.concat('.jpg')),
-                        imagen: null,
-                        camera: this.cameraId,
-                        user: recognition?.user,
-                        facialExpression: this.expressions[faceExpression.exp]
-                      }).pipe(take(1)).subscribe(() => this.toastr);
-                      },
-                      "image/jpeg",
-                      0.01 /* quality */
-                  );
-    } else {
-      this.notificationService.createNotification({
-      gender: detection.gender,
-      age: Math.round(detection.age),
-      // imagen: new File([blob], recognition?.user.concat('.jpg')),
-      imagen: null,
-      camera: this.cameraId,
-      user: recognition?.user,
-      facialExpression: this.expressions[faceExpression.exp]
-    }).pipe(take(1)).subscribe(() => this.toastr);
-    }
+        _blob => {
+          const name = recognition?.user ? recognition?.user : 'unknownuser';
+          const imgFD = new FormData();
+          imgFD.append('name', name.concat(moment().format('DD-MM-yyyy-HH-mm-ss'),'.png'));
+          imgFD.append('imagen', new File([_blob], name.concat(moment().format('DD-MM-yyyy-HH-mm-ss'),'.png')), name.concat(moment().format('DD-MM-yyyy-HH-mm-ss'),'.png'));
+          forkJoin([this._imageService.createImage(imgFD), this._faceService.addFace({
+            name: recognition?.face?.name,
+            surname: recognition?.face?.surname,
+            user: recognition?.user,
+            gender: detection.gender,
+            age: Math.round(detection.age),
+            unknown: unknown
+          })]).pipe(take(1)).subscribe((response: any) => {
+            console.log(response);
+            this._faceService.createFaceImage({
+              facialExpression: this.expressions[faceExpression.exp],
+              image: response[0]?.image?._id,
+              face: response[1]?.face?._id
+            }).subscribe(res => {console.log('Creado malandramente'); this.toastr.success('Todo malandro nene');});
+          });
+        },
+        "image/png",
+        0.01 /* quality */
+    );
   }
+
   private async imgComparison (img1, img2): Promise<number> {
     try {
       let img;
