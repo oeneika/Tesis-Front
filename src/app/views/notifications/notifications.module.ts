@@ -10,6 +10,8 @@ import { NgxPaginationModule } from "ngx-pagination";
 import { NotificationService } from "../../services/notifications.service";
 import { CamerasService } from "../../services/cameras.service";
 import { UserService } from "../../services/user.service";
+import { ConfidenceLevelsService } from "../../services/confidence-levels.service";
+import { FaceService } from "../../services/face.service";
 
 @NgModule({
   imports: [
@@ -22,6 +24,6 @@ import { UserService } from "../../services/user.service";
     NgxPaginationModule
   ],
   declarations: [NotificationsComponent],
-  providers: [NotificationService, CamerasService, UserService]
+  providers: [NotificationService, CamerasService, UserService, ConfidenceLevelsService, FaceService]
 })
 export class NotificationsModule {}

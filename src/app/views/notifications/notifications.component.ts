@@ -6,17 +6,23 @@ import { take } from "rxjs/operators";
 import { CamerasService } from "../../services/cameras.service";
 import { NotificationService } from "../../services/notifications.service";
 import moment from "moment";
+import { Face } from "../../models/face";
+import { ConfidenceLevelsService } from "../../services/confidence-levels.service";
+import { FaceService } from "../../services/face.service";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   templateUrl: "notifications.component.html",
   providers: [UserService, ],
 })
 export class NotificationsComponent implements OnInit {
+  public face: Face;
   public identity;
   public notifications: any[];
   public recording: any;
+  public confidenceLevels: Array<any> = [];
   public cameras: any[] = [];
-  // public 
+  // public
   public page:number = 1;
   //public face: Face;
   modalRef: BsModalRef;
@@ -25,8 +31,11 @@ export class NotificationsComponent implements OnInit {
     private router: Router,
     private _userService: UserService,
     private _cameraService: CamerasService,
+    private _confidenceLevels: ConfidenceLevelsService,
+    private _faceService: FaceService,
+    private _toastr: ToastrService,
     private _notificationService: NotificationService,
-    private modalService: BsModalService, 
+    private modalService: BsModalService,
   ) {
     this.identity = this._userService.identity;
   }
@@ -34,6 +43,13 @@ export class NotificationsComponent implements OnInit {
   ngOnInit() {
     this._cameraService.getCamerasByUser(this.identity).subscribe((success: any) => {
       this.cameras = success;
+      this.getConfidenceLevels();
+    });
+  }
+
+  public getConfidenceLevels() {
+    this._confidenceLevels.getConfidenceLevels().subscribe((levels: any[]) => {
+      this.confidenceLevels = levels;
       this.getNotifications();
     });
   }
@@ -46,7 +62,7 @@ export class NotificationsComponent implements OnInit {
       this.notifications = response;
     });
   }
-  
+
   /**
    * selectedCameraName
    */
@@ -58,7 +74,7 @@ export class NotificationsComponent implements OnInit {
    * imageFile
    */
    public imageFile(fileName: string): string {
-    return 'http://localhost:8000/api/get-image-file/'.concat(fileName);
+    return 'http://localhost:8000/api/get-image/'.concat(fileName);
   }
 
   /**
@@ -72,7 +88,6 @@ export class NotificationsComponent implements OnInit {
    * downloadImage
    */
    public downloadImage(dataurl, filename): void {
-    console.log(...arguments)
     let xhr = new XMLHttpRequest();
     xhr.open('GET', dataurl, true);
     xhr.responseType = 'blob';
@@ -98,10 +113,33 @@ export class NotificationsComponent implements OnInit {
 
   openNotification(x, notification: any) {
     this.recording = notification;
+    this.face = new Face('', '', '', this.recording.age, this.recording.gender, '', '', this.recording.user);
     notification?.seen ? this.openModal(x): this._notificationService.updateNotificationStatus(notification?._id, true).subscribe((response: any) => {
       this.openModal(x);
       this.getNotifications();
-    })
+    });
+  }
+
+  public get isUnknown (): boolean {
+    return !!this.face && !this.face._id;
+  }
+
+  /**
+   * addToConfidenceLevels
+   */
+  public addToConfidenceLevels() {
+    if (this.face.surname && this.face.name && this.face.confidenceLevels) {
+      this._faceService.addFace(this.face).subscribe(
+        (data) => {
+          this.face = data.face;
+          this.modalRef.hide();
+          this._toastr.success('Rostro agregado satisfactoriamente a los niveles de confianza')
+        },
+        (err) => {}
+      );
+    } else {
+      this._toastr.error('Todos los campos son requeridos');
+    }
   }
 
 }

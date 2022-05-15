@@ -12,6 +12,9 @@ export class FaceService {
     .set("content-type", "application/json")
     .set("Authorization", this.userService.token)
     .set("Access-Control-Allow-Origin", "*");
+  public headersAuthorizationFormData = new HttpHeaders()
+    .set("Authorization", this.userService.token)
+    .set("Access-Control-Allow-Origin", "*");
 
   constructor(protected _http: HttpClient) {
     this.url = environment.url;
@@ -58,7 +61,7 @@ export class FaceService {
      */
      public createFaceImage(faceImage: any) {
       return this._http.post(environment.url.concat('face-image/'), faceImage, {
-        headers: this.headersAuthorization,
+        headers: this.headersAuthorizationFormData,
       });
     }
 

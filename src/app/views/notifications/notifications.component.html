@@ -22,7 +22,7 @@
                                 <tbody>
                                     <tr *ngFor="let notification of notifications | paginate: { itemsPerPage: 10, currentPage: page, totalItems: notifications?.length }; let i=index">
                                         <td>
-                                            <div style="width: 100px;height: 100px; border-radius: 10px; background-size: cover; background-position: center;" style="background-image: url('{{imageFile(notification?.file)}}');">
+                                            <div style="width: 100px;height: 100px; border-radius: 10px; background-size: cover; background-position: center;" style="background-image: url('{{imageFile(notification?.image)}}');">
 
                                             </div>
                                         </td>
@@ -34,7 +34,7 @@
                                         <td style="text-align: center;">
                                             <i class="fa fa-{{notification?.seen ? 'check-circle' : 'exclamation-circle'}} fa-lg" [ngStyle]="{'color': notification?.seen ? '#3EA662' : '#5294E2'}" [title]="notification?.seen ? 'Vista' : 'Nueva'"></i></td>
                                         <td style="text-align: center;">
-                                            <button (click)="downloadImage(imageFile(notification?.file), notification?.file)" class="btn btn-success botones">
+                                            <button (click)="downloadImage(imageFile(notification?.image), notification?.image)" class="btn btn-success botones">
                                                 <i class="fa fa-download fa-lg"></i> Descargar
                                             </button>
                                             <button (click)="openNotification(OpenUser, notification)" class="btn btn-primary botones">
@@ -45,7 +45,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        
+
                         <div class="pagination-container"><pagination-controls
                             (pageChange)="page = $event"
                             autoHide="true"
@@ -72,7 +72,7 @@
             <b>{{prettyDate(recording?.hour)}}</b>
             <b><i style="color: #5294E2;" class="fa fa-map-marker fa-lg"></i> {{selectedCameraName(recording?.camera)}}</b>
         </div>
-        <div class="bg-foto-screenshot" style="background-image: url('{{imageFile(recording?.file)}}');"></div>
+        <div class="bg-foto-screenshot" style="background-image: url('{{imageFile(recording?.image)}}');"></div>
         <h5>Caracteristicas</h5>
         <div class="row">
             <div class="col-6 col-md-4">
@@ -86,8 +86,39 @@
             </div>
         </div>
     </div>
+
+    <div *ngIf="isUnknown" class="d-flex">
+      <div class="col-sm-6">
+         <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" class="form-control" #name="ngModel" name="name" [(ngModel)]="face.name" required />
+         </div>
+      </div>
+      <div class="col-sm-6">
+         <div class="form-group">
+            <label for="name">Apellido</label>
+            <input type="text" class="form-control" #surname="ngModel" name="surname" [(ngModel)]="face.surname" required />
+         </div>
+      </div>
+   </div>
+   <div *ngIf="isUnknown" class="d-flex">
+      <div class="col-sm-12">
+         <label for="confidenceLevels">Niveles de confianza</label>
+         <select class="form-control" name="confidenceLevels" [(ngModel)]="face.confidenceLevels">
+           <option class="placeholder" [value]="null" disabled>
+              Seleccione
+           </option>
+           <option
+           *ngFor="let level of confidenceLevels; let i = index"
+           [value]="level._id"
+           >
+           {{ level.title }}
+           </option>
+         </select>
+      </div>
+   </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-warning" aria-label="Close" (click)="modalRef.hide()">Ignorar</button>
-        <button type="button" class="btn btn-primary" aria-label="Close" (click)="modalRef.hide()">Añadir a niveles de confianza</button>
+        <button *ngIf="isUnknown" type="button" class="btn btn-primary" aria-label="Close" (click)="addToConfidenceLevels()">Añadir a niveles de confianza</button>
      </div>
 </ng-template>

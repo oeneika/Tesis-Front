@@ -203,21 +203,33 @@ export class AppVideoPlayerComponent implements OnInit {
           const name = recognition?.user ? recognition?.user : 'unknownuser';
           const imgFD = new FormData();
           imgFD.append('name', name.concat(moment().format('DD-MM-yyyy-HH-mm-ss'),'.png'));
+          imgFD.append('dateNow', moment().format('DD-MM-yyyy HH:mm:ss'));
+          imgFD.append('camera', this.cameraId);
           imgFD.append('imagen', new File([_blob], name.concat(moment().format('DD-MM-yyyy-HH-mm-ss'),'.png')), name.concat(moment().format('DD-MM-yyyy-HH-mm-ss'),'.png'));
+          recognition?.user ? this._imageService.createImage(imgFD).pipe(take(1)).subscribe((response: any) => {
+            const faceImgFD = new FormData();
+            faceImgFD.append('facialExpression', this.expressions[faceExpression.exp]);
+            faceImgFD.append('user', this.identity);
+            faceImgFD.append('image', response?.image?._id);
+            faceImgFD.append('face', recognition?.user);
+            this._faceService.createFaceImage(faceImgFD).subscribe(res => {console.log('Creado malandramente'); this.toastr.success('Todo malandro nene');});
+          }) :
           forkJoin([this._imageService.createImage(imgFD), this._faceService.addFace({
-            name: recognition?.face?.name,
-            surname: recognition?.face?.surname,
-            user: recognition?.user,
-            gender: detection.gender,
+            name: recognition?.face?.name ? recognition?.face?.name : '',
+            surname: recognition?.face?.surname ? recognition?.face?.surname : '',
+            user: this.identity,
+            gender: detection.gender === 'male' ? 'Masculino' : detection.gender === 'female'? 'Femenino' : detection.gender,
             age: Math.round(detection.age),
+            confidenceLevels: recognition?.face?.confidenceLevels ? recognition?.face?.confidenceLevels : '',
             unknown: unknown
           })]).pipe(take(1)).subscribe((response: any) => {
             console.log(response);
-            this._faceService.createFaceImage({
-              facialExpression: this.expressions[faceExpression.exp],
-              image: response[0]?.image?._id,
-              face: response[1]?.face?._id
-            }).subscribe(res => {console.log('Creado malandramente'); this.toastr.success('Todo malandro nene');});
+            const faceImgFD = new FormData();
+            faceImgFD.append('facialExpression', this.expressions[faceExpression.exp]);
+            faceImgFD.append('user', this.identity);
+            faceImgFD.append('image', response[0]?.image?._id);
+            faceImgFD.append('face', response[1]?.face?._id);
+            this._faceService.createFaceImage(faceImgFD).subscribe(res => {console.log('Creado malandramente'); this.toastr.success('Todo malandro nene');});
           });
         },
         "image/png",

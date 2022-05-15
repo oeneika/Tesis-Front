@@ -119,8 +119,7 @@ export class ConfidenceLevelsComponent implements OnInit {
         this.face = data.face;
         localStorage.setItem("identity", JSON.stringify(this.identity));
 
-        if (!this.filesToUpload) {
-        } else {
+        if (this.filesToUpload) {
           this.makeFileRequest(
             this.url + "upload-image-face/" + this.face._id,
             [],
@@ -129,10 +128,10 @@ export class ConfidenceLevelsComponent implements OnInit {
             this.face.image = result.image;
             localStorage.setItem("identity", JSON.stringify(this.identity));
             this.toastr.success('El usuario ha sido agregado con éxito.');
+            this.face = new Face("", "", "", "", "", "", "", "");
+            this.getFaces();
           });
         }
-        this.face = new Face("", "", "", "", "", "", "", "");
-        this.getFaces();
         this.modalRef.hide();
       },
       (err) => {}
@@ -142,9 +141,17 @@ export class ConfidenceLevelsComponent implements OnInit {
   public filesToUpload: Array<File>;
   //Método de subir imagen
   fileChangeEvent(fileInput: any) {
-    //Recoge los archivos que se pasan por input
-    this.filesToUpload = <Array<File>>fileInput.target.files;
-    console.log(this.filesToUpload);
+    const files = <Array<File>>fileInput.target.files;
+    const supportedFormats = ['image/jpeg', 'image/jpg', 'image/png'];
+    console.log('photo', files);
+    if (!supportedFormats.find(type =>  type == files[0].type)) {
+      this.toastr.error('El formato de la imagen debe ser correcto (jpg o png)');
+    } else if (files[0].size > 2024000) {
+      this.toastr.error('El tamaño de la imagen es muy grande, no debe exceder los 2MB');
+    } else {
+      this.filesToUpload = files;
+      this.toastr.success('Imagen cargada con éxito');
+    }
   }
 
   makeFileRequest(url: string, params: Array<string>, file: Array<File>) {
@@ -157,7 +164,8 @@ export class ConfidenceLevelsComponent implements OnInit {
 
       //recorrer los ficheros para subirlos
       for (var i = 0; i < file.length; i++) {
-        formData.append("image", file[i], file[i].name);
+        formData.append("imagen", file[i], file[i].name);
+        formData.append("name", file[i].name);
       }
 
       xhr.onreadystatechange = function () {
