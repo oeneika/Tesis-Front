@@ -10,6 +10,24 @@ video {
     position: relative;
 }
 
+.wrapper-video > video, .wrapper-video > .video-player__canvas {
+  visibility: visible;
+  opacity: 1;
+}
+
+.wrapper-video.isLoading > video, .wrapper-video.isLoading > .video-player__canvas {
+  visibility: hidden;
+  opacity: 0;
+}
+.loading-msg {
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%);
+}
 .label-name {
     background-color: white;
     position: absolute;

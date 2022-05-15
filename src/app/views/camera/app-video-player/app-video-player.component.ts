@@ -1,7 +1,8 @@
-import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnDestroy, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
 import * as faceapi from 'face-api.js';
 import { FaceDetection } from 'face-api.js';
 import moment from 'moment';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -17,20 +18,31 @@ declare var MediaRecorder: any;
   templateUrl: './app-video-player.component.html',
   styleUrls: ['./app-video-player.component.scss']
 })
-export class AppVideoPlayerComponent implements OnInit {
+export class AppVideoPlayerComponent implements OnInit, OnDestroy {
 
   public faces: any[] = [];
   public expressions: any = { 'angry': 'Molesto', 'disgusted': 'Asqueado', 'fearful': 'Atemorizado', 'happy': 'Feliz', 'neutral': 'Neutral', 'sad': 'Triste', 'surprised': 'Sorprendido' };
   public identity;
+  public interval = null;
+  public loading = true;
+  public lastRecognition: any;
   @ViewChild("video", { static: false }) video: ElementRef;
   @ViewChild("canvas", { static: false }) canvasRef: ElementRef;
   @ViewChild("capture", { static: false }) captureRef: ElementRef;
   @ViewChild("prueba", { static: false }) prueba: ElementRef;
   @Input() cameraId: any;
   @Input() stream: any;
+  public localStream: any;
+  @Output() closeCamera: EventEmitter<any> = new EventEmitter<any>();
   //https://rushipanchariya.medium.com/how-to-use-face-api-js-for-face-detection-in-video-or-image-using-angular-fca1e4bef797
   public recognitions: any[] = [];
-  constructor(private elRef: ElementRef, private _faceService: FaceService, private _userService: UserService, private notificationService: NotificationService, private toastr: ToastrService, private _imageService: ImageService) {
+  constructor(
+    private elRef: ElementRef,
+    private _faceService: FaceService,
+    private _userService: UserService,
+    private spinner: NgxSpinnerService,
+    private toastr: ToastrService,
+    private _imageService: ImageService) {
     this.identity = this._userService.identity;
     this.loadFaces();
   }
@@ -48,7 +60,7 @@ export class AppVideoPlayerComponent implements OnInit {
   async ngOnInit() {
     navigator.mediaDevices.enumerateDevices();
     await Promise.all([
-      faceapi.nets.ssdMobilenetv1.loadFromUri("../../assets/models"),
+      await faceapi.nets.ssdMobilenetv1.loadFromUri("../../assets/models"),
       await faceapi.nets.faceLandmark68Net.loadFromUri("../../assets/models"),
       await faceapi.nets.faceRecognitionNet.loadFromUri("../../assets/models"),
       await faceapi.nets.faceExpressionNet.loadFromUri("../../assets/models"),
@@ -60,7 +72,12 @@ export class AppVideoPlayerComponent implements OnInit {
    * loadFaces
    */
   public loadFaces() {
-    this._faceService.getFaceByUser(this.identity).pipe(take(1)).subscribe((response: any) => this.faces = response);
+    this._faceService.getFaceByUser(this.identity).pipe(take(1)).subscribe((response: any) => {
+      this.faces = response;
+      setTimeout(() => {
+        this.spinner.show();
+      }, 50);
+    });
   }
 
   startVideo() {
@@ -68,43 +85,20 @@ export class AppVideoPlayerComponent implements OnInit {
     const p = navigator.mediaDevices.getUserMedia({ audio: false, video: true });
     p.then((mediaStream: MediaStream) => {
       this.video.nativeElement.srcObject = mediaStream;
+      this.localStream = mediaStream;
+      this.onVideoPlay();
       this.recordVideo(mediaStream);
     });
-    this.onVideoPlay();
     p.catch(function(err) { console.log(err.name); }); // always check for errors at the end.
-  }
-
-  /**
-   * recordVideo
-   */
-  public recordVideo(mediaStream: MediaStream) {
-    const mr =  new MediaRecorder(mediaStream);
-    let chunks = [];
-    mr.start();
-    mr.ondataavailable = (e) => {
-        chunks.push(e.data);
-    };
-    mr.onstop = () => {
-        const blob = new Blob(chunks, { type: "video/mp4" });
-        chunks = [];
-        const recordedMedia = document.createElement("video");
-        recordedMedia.controls = true;
-        const recordedMediaURL = URL.createObjectURL(blob);
-        recordedMedia.src = recordedMediaURL;
-        const downloadButton = document.createElement("a");
-        downloadButton.download = "Recorded-Media";
-        downloadButton.href = recordedMediaURL;
-        downloadButton.innerText = "Download it!";
-        downloadButton.onclick = () => {
-            URL.revokeObjectURL(recordedMediaURL);
-        };
-    };
   }
 
   async onVideoPlay() {
     this.elRef.nativeElement
       .querySelector("video")
       .addEventListener("play", async () => {
+        this.loading = false;
+        this.spinner.hide();
+        this.lastRecognition = this.videoInput;
         this.canvas = await faceapi.createCanvasFromMedia(this.videoInput);
         this.canvasEl = this.canvasRef.nativeElement;
         this.canvasEl.appendChild(this.canvas);
@@ -130,21 +124,33 @@ export class AppVideoPlayerComponent implements OnInit {
       this.detection,
       this.displaySize
     );
-    if (this.resizedDetections.length > 0 && this.captureCheck) {
-      // En el campo resizedDetection esta toda la info de edad genero y toda la mierda, tambien donde esta la cara de la gente para ver si recortas.
-      this.capture(this.detection);
-    }
     this.canvas
       .getContext("2d")
       .clearRect(0, 0, this.canvas.width, this.canvas.height);
     faceapi.draw.drawDetections(this.canvas, this.resizedDetections);
     faceapi.draw.drawFaceLandmarks(this.canvas, this.resizedDetections);
     faceapi.draw.drawFaceExpressions(this.canvas, this.resizedDetections);
+    if (this.resizedDetections.length > 0 && this.captureCheck) {
+      // En el campo resizedDetection esta toda la info de edad genero y toda la mierda, tambien donde esta la cara de la gente para ver si recortas.
+      this.capture(this.detection);
+    } else {
+      this.detectFaces();
+    }
   }
 
-  private capture(detection: any[]) {
+  private async capture(detection: any[]) {
+    // clearInterval(this.interval);
     console.log(this.videoInput);
-    this.compareFaces(this.videoInput, detection);
+    const distance = await this.imgComparison(this.lastRecognition, this.videoInput);
+    if (distance > 0.6) {
+      this.compareFaces(this.videoInput, detection);
+      this.lastRecognition = this.videoInput;
+    } else {
+      setTimeout(async function() {
+        this.lastRecognition = this.videoInput;
+        await this.detectFaces();
+      }, 5000);
+    }
     const canvas: HTMLCanvasElement = this.captureRef.nativeElement;
     canvas.setAttribute('width', this.videoInput.offsetWidth);
     canvas.setAttribute('height', this.videoInput.offsetHeight);
@@ -175,18 +181,20 @@ export class AppVideoPlayerComponent implements OnInit {
           }
         }
       }
-      recognition.user && (_recognitions.findIndex(user => user?.user === recognition?.user) === -1)? _recognitions.push(recognition) && this.sendNotification(detect, recognition) :  undefined;
+      if (recognition.user && (_recognitions.findIndex(user => user?.user === recognition?.user) === -1)) {
+        _recognitions.push(recognition);
+        this.sendNotification(detect, recognition);
+      } else if (!recognition.user) {
+        _recognitions.push({ msg: 'Alerta! Rostro desconocido' });
+        this.sendNotification(this.detection[0], null, true);
+      }
     }
 
     this.recognitions = [].concat(_recognitions);
-    if (_recognitions.length === 0) {
-      this.sendNotification(this.detection[0], null, true);
-      this.recognitions.push({ msg: 'Alerta! Rostro desconocido' });
-    }
-    // await this.detectFaces();
   }
 
   private sendNotification(detection: any, recognition: any, unknown?: boolean | false) {
+    this.spinner.show();
     const faceExpression = { points: 0, exp: null };
     for (const expression in detection?.expressions) {
       if (Object.prototype.hasOwnProperty.call(detection?.expressions, expression)) {
@@ -212,7 +220,7 @@ export class AppVideoPlayerComponent implements OnInit {
             faceImgFD.append('user', this.identity);
             faceImgFD.append('image', response?.image?._id);
             faceImgFD.append('face', recognition?.user);
-            this._faceService.createFaceImage(faceImgFD).subscribe(res => {console.log('Creado malandramente'); this.toastr.success('Todo malandro nene');});
+            this._faceService.createFaceImage(faceImgFD).subscribe(res => {this.detectFaces(); this.toastr.success('Rostro detectado y notificación enviada'); this.spinner.hide();});
           }) :
           forkJoin([this._imageService.createImage(imgFD), this._faceService.addFace({
             name: recognition?.face?.name ? recognition?.face?.name : '',
@@ -229,7 +237,7 @@ export class AppVideoPlayerComponent implements OnInit {
             faceImgFD.append('user', this.identity);
             faceImgFD.append('image', response[0]?.image?._id);
             faceImgFD.append('face', response[1]?.face?._id);
-            this._faceService.createFaceImage(faceImgFD).subscribe(res => {console.log('Creado malandramente'); this.toastr.success('Todo malandro nene');});
+            this._faceService.createFaceImage(faceImgFD).subscribe(res => {this.detectFaces(); this.toastr.success('Rostro detectado y notificación enviada'); this.spinner.hide();});
           });
         },
         "image/png",
@@ -258,6 +266,40 @@ export class AppVideoPlayerComponent implements OnInit {
     } catch (error) {
       return 1;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.video.nativeElement.pause();
+    this.video.nativeElement.src = '';
+    this.localStream.getTracks()[0].stop();
+    this.closeCamera.emit();
+  }
+
+  /**
+   * recordVideo
+   */
+   public recordVideo(mediaStream: MediaStream) {
+    const mr =  new MediaRecorder(mediaStream);
+    let chunks = [];
+    mr.start();
+    mr.ondataavailable = (e) => {
+        chunks.push(e.data);
+    };
+    mr.onstop = () => {
+        const blob = new Blob(chunks, { type: "video/mp4" });
+        chunks = [];
+        const recordedMedia = document.createElement("video");
+        recordedMedia.controls = true;
+        const recordedMediaURL = URL.createObjectURL(blob);
+        recordedMedia.src = recordedMediaURL;
+        const downloadButton = document.createElement("a");
+        downloadButton.download = "Recorded-Media";
+        downloadButton.href = recordedMediaURL;
+        downloadButton.innerText = "Download it!";
+        downloadButton.onclick = () => {
+            URL.revokeObjectURL(recordedMediaURL);
+        };
+    };
   }
 
 }
