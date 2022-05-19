@@ -120,10 +120,6 @@ export class NotificationsComponent implements OnInit {
     });
   }
 
-  public get isUnknown (): boolean {
-    return !!this.face && !this.face._id;
-  }
-
   /**
    * addToConfidenceLevels
    */
@@ -140,6 +136,13 @@ export class NotificationsComponent implements OnInit {
     } else {
       this._toastr.error('Todos los campos son requeridos');
     }
+  }
+
+  /**
+   * confidenceLevelText
+  */
+  public confidenceLevelText(confidenceLevelId: string): string {
+    return this.confidenceLevels?.find((value: any) => value?._id === confidenceLevelId)?.title;
   }
 
 }

@@ -10,26 +10,24 @@
                                 <thead>
                                     <tr>
                                         <th>Imagen</th>
+                                        <th>Rostro</th>
+                                        <th>Nivel de Confianza</th>
                                         <th>Cámara</th>
-                                        <th>Edad</th>
-                                        <th>Género</th>
-                                        <th>Expresión facial</th>
                                         <th>Fecha y Hora</th>
                                         <th style="text-align: center;">Estatus</th>
                                         <th style="text-align: center;">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let notification of notifications | paginate: { itemsPerPage: 10, currentPage: page, totalItems: notifications?.length }; let i=index">
+                                    <tr *ngFor="let notification of notifications | paginate: { itemsPerPage: 10, currentPage: page, totalItems: notifications?.length }; let i=index" [ngStyle]="{'background-color': confidenceLevelText(notification?.face?.confidenceLevels) === 'Nivel 4' ? '#ff0000' : '#ffffff'}">
                                         <td>
                                             <div style="width: 100px;height: 100px; border-radius: 10px; background-size: cover; background-position: center;" style="background-image: url('{{imageFile(notification?.image)}}');">
 
                                             </div>
                                         </td>
+                                        <td>{{notification?.face?.name ? (notification?.face?.name+ ' ' + notification?.face?.surname) : 'Desconocido' }}</td>
+                                        <td>{{confidenceLevelText(notification?.face?.confidenceLevels) || 'Desconocido' }}</td>
                                         <td>{{selectedCameraName(notification?.camera)}}</td>
-                                        <td>{{notification?.age}} años</td>
-                                        <td>{{notification?.gender | titlecase}}</td>
-                                        <td>{{notification?.facialExpression || 'No detectable'}}</td>
                                         <td>{{prettyDate(notification?.hour)}}</td>
                                         <td style="text-align: center;">
                                             <i class="fa fa-{{notification?.seen ? 'check-circle' : 'exclamation-circle'}} fa-lg" [ngStyle]="{'color': notification?.seen ? '#3EA662' : '#5294E2'}" [title]="notification?.seen ? 'Vista' : 'Nueva'"></i></td>
@@ -62,7 +60,7 @@
 
 <ng-template #OpenUser>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">Se ha detectado una persona desconocida</h4>
+        <h4 class="modal-title pull-left">{{recording?.face?.name ? (recording?.face?.name+ ' ' + recording?.face?.surname) : 'Un rostro nuevo desconocido'}} ha sido detectado</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -76,18 +74,32 @@
         <h5>Caracteristicas</h5>
         <div class="row">
             <div class="col-6 col-md-4">
-                <p><strong>Sexo:</strong> {{recording?.gender | titlecase}}</p>
+                <p><strong>Sexo:</strong> {{(recording?.face?.gender || recording?.gender) | titlecase}}</p>
             </div>
             <div class="col-6 col-md-4">
-                <p><strong>Edad:</strong> {{recording?.age}} años</p>
+                <p><strong>Edad:</strong> {{recording?.face?.age || recording?.age}} años</p>
             </div>
             <div class="col-6 col-md-4">
                 <p><strong>Expresión facial:</strong> {{recording?.facialExpression || 'No detectable'}}</p>
             </div>
         </div>
+        <ng-container *ngIf="recording?.face?._id">
+          <h5>Datos del Rostro</h5>
+          <div class="row">
+              <div class="col-6 col-md-4">
+                  <p><strong>Nombre:</strong> {{recording?.face?.name}}</p>
+              </div>
+              <div class="col-6 col-md-4">
+                  <p><strong>Apellido:</strong> {{recording?.face?.surname}}</p>
+              </div>
+              <div class="col-6 col-md-4">
+                  <p><strong>Nivel de confianza:</strong> {{confidenceLevelText(recording?.face?.confidenceLevels) || 'Desconocido'}}</p>
+              </div>
+          </div>
+        </ng-container>
     </div>
 
-    <div *ngIf="isUnknown" class="d-flex">
+    <div *ngIf="!recording?.face?._id" class="d-flex">
       <div class="col-sm-6">
          <div class="form-group">
             <label for="name">Nombre</label>
@@ -101,7 +113,7 @@
          </div>
       </div>
    </div>
-   <div *ngIf="isUnknown" class="d-flex">
+   <div *ngIf="!recording?.face?._id" class="d-flex">
       <div class="col-sm-12">
          <label for="confidenceLevels">Niveles de confianza</label>
          <select class="form-control" name="confidenceLevels" [(ngModel)]="face.confidenceLevels">
@@ -119,6 +131,6 @@
    </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-warning" aria-label="Close" (click)="modalRef.hide()">Ignorar</button>
-        <button *ngIf="isUnknown" type="button" class="btn btn-primary" aria-label="Close" (click)="addToConfidenceLevels()">Añadir a niveles de confianza</button>
+        <button *ngIf="!recording?.face?._id" type="button" class="btn btn-primary" aria-label="Close" (click)="addToConfidenceLevels()">Añadir a niveles de confianza</button>
      </div>
 </ng-template>
