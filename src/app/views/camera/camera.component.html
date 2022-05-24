@@ -19,7 +19,7 @@
                         </div>
                     </ng-container>
                     <ng-container *ngIf="recording">
-                        <app-app-video-player #player [stream]="user" [cameraId]="idCamera" *ngFor="let user of listUser" (closeCamera)="recording = false"></app-app-video-player>
+                        <app-app-video-player #player [stream]="user" [confidenceLevels]="confidenceLevels" [cameraId]="idCamera" *ngFor="let user of listUser" (closeCamera)="recording = false"></app-app-video-player>
                     </ng-container>
                     <div class="row mt-3">
                         <div class="col-md-6 mb-3">

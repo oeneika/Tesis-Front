@@ -8,6 +8,8 @@ import { Camera } from "../../models/camera";
 import { CamerasService } from "../../services/cameras.service";
 import { UserService } from "../../services/user.service";
 import { ToastrService } from "ngx-toastr";
+import { ConfidenceLevels } from "../../models/confidenceLevels";
+import { ConfidenceLevelsService } from "../../services/confidence-levels.service";
 
 
 @Component({
@@ -21,6 +23,7 @@ export class CameraComponent implements OnInit {
   currentStream: any;
   listUser: Array<any> = [];
   statusCamera: Boolean = true;
+  public confidenceLevels: any[];
   modalRef: BsModalRef;
   recording = false;
   public identity;
@@ -36,6 +39,7 @@ export class CameraComponent implements OnInit {
     private peerService: PeerService,
     private modalService: BsModalService,
     private _cameraService: CamerasService,
+    private _confidenceLevelsService: ConfidenceLevelsService,
     private _userService: UserService,
     private toastr: ToastrService
 
@@ -47,6 +51,9 @@ export class CameraComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._confidenceLevelsService.getConfidenceLevels().subscribe((response: any) => {
+      this.confidenceLevels = response;
+    });
     if(!this._cameraService.idCamera){
       this.showModal();
     }

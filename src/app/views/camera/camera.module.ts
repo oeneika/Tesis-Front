@@ -13,6 +13,7 @@ import { FaceService } from "../../services/face.service";
 import { NotificationService } from "../../services/notifications.service";
 import { ImageService } from "../../services/images.service";
 import { RecordingsService } from "../../services/recordings.service";
+import { ConfidenceLevelsService } from "../../services/confidence-levels.service";
 
 @NgModule({
   imports: [
@@ -27,6 +28,6 @@ import { RecordingsService } from "../../services/recordings.service";
     ListCamerasComponent,
     AppVideoPlayerComponent
   ],
-  providers:[FaceService, NotificationService, ImageService, RecordingsService]
+  providers:[FaceService, NotificationService, ImageService, RecordingsService, ConfidenceLevelsService]
 })
 export class CameraModule {}

@@ -32,6 +32,7 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
   @ViewChild("capture", { static: false }) captureRef: ElementRef;
   @ViewChild("prueba", { static: false }) prueba: ElementRef;
   @Input() cameraId: any;
+  @Input() confidenceLevels: any;
   @Input() stream: any;
   public localRecorder: any;
   public localStream: any;
@@ -234,7 +235,7 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
             user: this.identity,
             gender: detection.gender === 'male' ? 'Masculino' : detection.gender === 'female'? 'Femenino' : detection.gender,
             age: Math.round(detection.age),
-            confidenceLevels: recognition?.face?.confidenceLevels ? recognition?.face?.confidenceLevels : '',
+            confidenceLevels: recognition?.face?.confidenceLevels ? recognition?.face?.confidenceLevels : this.confidenceLevels[2]._id,
             unknown: unknown
           })]).pipe(take(1)).subscribe((response: any) => {
             console.log(response);
