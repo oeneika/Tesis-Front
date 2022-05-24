@@ -229,8 +229,8 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
             this._faceService.createFaceImage(faceImgFD).subscribe(res => {this.detectFaces(); this.toastr.success('Rostro detectado y notificación enviada'); this.spinner.hide();});
           }) :
           forkJoin([this._imageService.createImage(imgFD), this._faceService.addFace({
-            name: recognition?.face?.name ? recognition?.face?.name : '',
-            surname: recognition?.face?.surname ? recognition?.face?.surname : '',
+            name: recognition?.face?.name ? recognition?.face?.name : 'Desconocido',
+            surname: recognition?.face?.surname ? recognition?.face?.surname : 'Desconocido',
             user: this.identity,
             gender: detection.gender === 'male' ? 'Masculino' : detection.gender === 'female'? 'Femenino' : detection.gender,
             age: Math.round(detection.age),
