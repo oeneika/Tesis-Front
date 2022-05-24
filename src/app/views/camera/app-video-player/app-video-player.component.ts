@@ -10,6 +10,7 @@ import { environment } from '../../../../environments/environment';
 import { FaceService } from '../../../services/face.service';
 import { ImageService } from '../../../services/images.service';
 import { NotificationService } from '../../../services/notifications.service';
+import { RecordingsService } from '../../../services/recordings.service';
 import { UserService } from '../../../services/user.service';
 declare var MediaRecorder: any;
 
@@ -32,6 +33,7 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
   @ViewChild("prueba", { static: false }) prueba: ElementRef;
   @Input() cameraId: any;
   @Input() stream: any;
+  public localRecorder: any;
   public localStream: any;
   @Output() closeCamera: EventEmitter<any> = new EventEmitter<any>();
   //https://rushipanchariya.medium.com/how-to-use-face-api-js-for-face-detection-in-video-or-image-using-angular-fca1e4bef797
@@ -42,6 +44,7 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
     private _userService: UserService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
+    private _videoService: RecordingsService,
     private _imageService: ImageService) {
     this.identity = this._userService.identity;
     this.loadFaces();
@@ -88,6 +91,9 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
       this.localStream = mediaStream;
       this.onVideoPlay();
       this.recordVideo(mediaStream);
+      setTimeout(() => {
+        this.stopVideo();
+      }, 30000);
     });
     p.catch(function(err) { console.log(err.name); }); // always check for errors at the end.
   }
@@ -271,7 +277,11 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.video.nativeElement.pause();
     this.video.nativeElement.src = '';
-    this.localStream.getTracks()[0].stop();
+    this.localRecorder.stop();
+    this.localStream.getTracks()
+    .forEach((track) => {
+        track.stop();
+    });
     this.closeCamera.emit();
   }
 
@@ -280,6 +290,7 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
    */
    public recordVideo(mediaStream: MediaStream) {
     const mr =  new MediaRecorder(mediaStream);
+    this.localRecorder = mr;
     let chunks = [];
     mr.start();
     mr.ondataavailable = (e) => {
@@ -288,18 +299,21 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
     mr.onstop = () => {
         const blob = new Blob(chunks, { type: "video/mp4" });
         chunks = [];
-        const recordedMedia = document.createElement("video");
-        recordedMedia.controls = true;
-        const recordedMediaURL = URL.createObjectURL(blob);
-        recordedMedia.src = recordedMediaURL;
-        const downloadButton = document.createElement("a");
-        downloadButton.download = "Recorded-Media";
-        downloadButton.href = recordedMediaURL;
-        downloadButton.innerText = "Download it!";
-        downloadButton.onclick = () => {
-            URL.revokeObjectURL(recordedMediaURL);
-        };
+        const videoFD = new FormData();
+        videoFD.append('camera', this.cameraId);
+        videoFD.append('file', new File([blob], moment().format('DD-MM-yyyy-HH-mm-ss') + '.mp4'), moment().format('DD-MM-yyyy-HH-mm-ss') + '.mp4');
+        this._videoService.createVideo(videoFD).subscribe((response: any) => {
+          this.toastr.success('Video grabado perro');
+          this.recordVideo(mediaStream);
+        });
     };
+  }
+
+  /**
+   * stopVideo
+   */
+  public stopVideo() {
+    this.localRecorder.stop();
   }
 
 }

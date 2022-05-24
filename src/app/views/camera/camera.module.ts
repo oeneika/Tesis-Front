@@ -12,6 +12,7 @@ import { ModalModule } from "ngx-bootstrap/modal";
 import { FaceService } from "../../services/face.service";
 import { NotificationService } from "../../services/notifications.service";
 import { ImageService } from "../../services/images.service";
+import { RecordingsService } from "../../services/recordings.service";
 
 @NgModule({
   imports: [
@@ -26,6 +27,6 @@ import { ImageService } from "../../services/images.service";
     ListCamerasComponent,
     AppVideoPlayerComponent
   ],
-  providers:[FaceService, NotificationService, ImageService]
+  providers:[FaceService, NotificationService, ImageService, RecordingsService]
 })
 export class CameraModule {}

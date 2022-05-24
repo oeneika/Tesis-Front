@@ -12,6 +12,9 @@ export class RecordingsService {
     .set("content-type", "application/json")
     .set("Authorization", this.userService.token)
     .set("Access-Control-Allow-Origin", "*");
+    public headersAuthorizationAlt = new HttpHeaders()
+      .set("Authorization", this.userService.token)
+      .set("Access-Control-Allow-Origin", "*");
 
   constructor(protected _http: HttpClient) {
     this.url = environment.url;
@@ -32,4 +35,12 @@ export class RecordingsService {
       });
     }
 
+    /**
+     * createVideo
+     */
+     public createVideo(file: any) {
+      return this._http.post(environment.url.concat('video'), file, {
+        headers: this.headersAuthorizationAlt,
+      });
+    }
 }
