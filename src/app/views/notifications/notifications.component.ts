@@ -113,7 +113,7 @@ export class NotificationsComponent implements OnInit {
 
   openNotification(x, notification: any) {
     this.recording = notification;
-    this.face = new Face(this.recording.face._id, '', '', this.recording.face.age, this.recording.face.gender, this.recording.image, '', this.recording.user);
+    this.face = new Face(this.recording?.face?._id, '', '', this.recording?.face?.age, this.recording?.face?.gender, this.recording.image, '', this.recording.user);
     notification?.seen ? this.openModal(x): this._notificationService.updateNotificationStatus(notification?._id, true).subscribe((response: any) => {
       this.openModal(x);
       this.getNotifications();
