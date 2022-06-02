@@ -1,18 +1,21 @@
 <section class="principal">
     <div class="row">
         <div class="col-sm-6">
-            <h1 class="mb-3">Detalle de cámaras</h1>
+            <h1 class="mb-3">Detalle de la cámara</h1>
         </div>
     </div>
-    <div class="row">
+    <div *ngIf="camera" class="row">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <h2>Cocina</h2>
+                    <h2>{{camera?.cameraId?.name}}</h2>
                 </div>
-                <div class="card-body">
-                    <video width="100%" height="400" controls>
-                        <source src="../../../assets/video/video-prueba.mp4" type="video/mp4">
+                <div class="card-body" style="min-height: 500px;">
+                  <ng-container *ngIf="!stream">
+                    <span class="loading-msg">Cargando video por favor espere</span>
+                  </ng-container>
+                    <video *ngIf="stream" id="video" #video [srcObject]="stream" width="100%" height="400" autoplay muted>
+                        <!-- <source src="../../../assets/video/video-prueba.mp4" type="video/mp4"> -->
                         Your browser does not support the video tag.
                       </video>
                 </div>

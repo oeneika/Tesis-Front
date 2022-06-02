@@ -10,7 +10,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 export class MyInterceptor implements HttpInterceptor {
     constructor(private toastr: ToastrService, private spinner: NgxSpinnerService){}
     intercept(req : HttpRequest<any>, next : HttpHandler) : Observable<HttpEvent<any>> {
-        console.log('Req: ', req);
+        // console.log('Req: ', req);
         this.spinner.show();
         return next.handle(req).pipe(
             retry(2),

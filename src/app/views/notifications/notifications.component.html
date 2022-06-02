@@ -83,7 +83,7 @@
                 <p><strong>Expresión facial:</strong> {{recording?.facialExpression || 'No detectable'}}</p>
             </div>
         </div>
-        <ng-container *ngIf="recording?.face?._id">
+        <ng-container *ngIf="!recording?.face?.unknown">
           <h5>Datos del Rostro</h5>
           <div class="row">
               <div class="col-6 col-md-4">
@@ -99,7 +99,7 @@
         </ng-container>
     </div>
 
-    <div *ngIf="!recording?.face?._id" class="d-flex">
+    <div *ngIf="recording?.face?.unknown" class="d-flex">
       <div class="col-sm-6">
          <div class="form-group">
             <label for="name">Nombre</label>
@@ -113,7 +113,7 @@
          </div>
       </div>
    </div>
-   <div *ngIf="!recording?.face?._id" class="d-flex">
+   <div *ngIf="recording?.face?.unknown" class="d-flex">
       <div class="col-sm-12">
          <label for="confidenceLevels">Niveles de confianza</label>
          <select class="form-control" name="confidenceLevels" [(ngModel)]="face.confidenceLevels">
@@ -131,6 +131,6 @@
    </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-warning" aria-label="Close" (click)="modalRef.hide()">Ignorar</button>
-        <button *ngIf="!recording?.face?._id" type="button" class="btn btn-primary" aria-label="Close" (click)="addToConfidenceLevels()">Añadir a niveles de confianza</button>
+        <button *ngIf="recording?.face?.unknown" type="button" class="btn btn-primary" aria-label="Close" (click)="addToConfidenceLevels()">Añadir a niveles de confianza</button>
      </div>
 </ng-template>

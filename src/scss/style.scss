@@ -39,3 +39,12 @@
     align-items: center;
     justify-content: center;
 }
+.loading-msg {
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%);
+}

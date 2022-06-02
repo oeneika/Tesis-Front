@@ -39,7 +39,7 @@ const routes: Routes = [
         },
       },
       {
-        path: "camera-details",
+        path: "camera-details/:id",
         component: CameraDetailsComponent,
         data: {
           title: "Detalles de la cámara",

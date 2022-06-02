@@ -19,7 +19,7 @@
                         </div>
                     </ng-container>
                     <ng-container *ngIf="recording">
-                        <app-app-video-player #player [stream]="user" [confidenceLevels]="confidenceLevels" [cameraId]="idCamera" *ngFor="let user of listUser" (closeCamera)="recording = false"></app-app-video-player>
+                        <app-app-video-player #player [confidenceLevels]="confidenceLevels" [cameraId]="idCamera" (closeCamera)="recording = false"></app-app-video-player>
                     </ng-container>
                     <div class="row mt-3">
                         <div class="col-md-6 mb-3">
@@ -77,33 +77,3 @@
     </div>
   </div>
 </div>
-
-
-
-<ng-template #OpenUser>
-    <div class="modal-header">
-        <h4 class="modal-title pull-left">Se ha detectado una persona desconocida</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <div class="bg-foto-screenshot" style="background-image: url('https://img.freepik.com/foto-gratis/retrato-mujer-caucasica-sonriendo_53876-24998.jpg?size=626&ext=jpg');"></div>
-        <h5>Caracteristicas</h5>
-        <div class="row">
-            <div class="col-6 col-md-4">
-                <p><strong>Sexo:</strong> Femenino</p>
-            </div>
-            <div class="col-6 col-md-4">
-                <p><strong>Edad:</strong> 25 años</p>
-            </div>
-            <div class="col-6 col-md-4">
-                <p><strong>Expresión facial:</strong> Feliz</p>
-            </div>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn btn-warning" value="Ignorar" />
-        <input type="submit" class="btn btn-primary" value="Añadir a niveles de confianza" />
-     </div>
-</ng-template>

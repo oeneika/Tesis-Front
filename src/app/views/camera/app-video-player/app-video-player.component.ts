@@ -4,14 +4,17 @@ import { FaceDetection } from 'face-api.js';
 import moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import Peer from 'peerjs';
 import { forkJoin } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { FaceService } from '../../../services/face.service';
 import { ImageService } from '../../../services/images.service';
 import { NotificationService } from '../../../services/notifications.service';
+import { PeerService } from '../../../services/peer.service';
 import { RecordingsService } from '../../../services/recordings.service';
 import { UserService } from '../../../services/user.service';
+import { WebSocketService } from '../../../services/web-socket.service';
 declare var MediaRecorder: any;
 
 @Component({
@@ -27,13 +30,14 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
   public interval = null;
   public loading = true;
   public lastRecognition: any;
+  public peer: Peer;
   @ViewChild("video", { static: false }) video: ElementRef;
   @ViewChild("canvas", { static: false }) canvasRef: ElementRef;
   @ViewChild("capture", { static: false }) captureRef: ElementRef;
   @ViewChild("prueba", { static: false }) prueba: ElementRef;
   @Input() cameraId: any;
   @Input() confidenceLevels: any;
-  @Input() stream: any;
+  // @Input() stream: any;
   public localRecorder: any;
   public localStream: any;
   @Output() closeCamera: EventEmitter<any> = new EventEmitter<any>();
@@ -43,6 +47,8 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
     private elRef: ElementRef,
     private _faceService: FaceService,
     private _userService: UserService,
+    private webSocketService: WebSocketService,
+    // private peerService: PeerService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
     private _videoService: RecordingsService,
@@ -83,14 +89,47 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
       }, 50);
     });
   }
+    initPeer = () => {
+      this.peer = new Peer('tesis-player-' + this.cameraId, {
+      host: environment.peerjsHost,
+      port: environment.peerJSPort,
+      path: '/peerjs',
+      secure: false
+    });
+    this.peer.on("open", (id) => {
+      const body = {
+        idPeer: id,
+        roomName: this.cameraId,
+      };
+      this.webSocketService.joinRoom(body);
+      this.initSocket();
+    });
+  };
+
+  initSocket = () => {
+    this.webSocketService.cbEvent.subscribe((res) => {
+      if (res.name === "new-user") {
+        const { idPeer } = res.data;
+        setTimeout(() => {
+          this.sendCall(idPeer, this.localStream);
+        }, 500);
+      }
+    });
+  };
+
+  sendCall = (idPeer, stream) => {
+    console.log("enviando la llamada al peer", idPeer);
+    this.peer.call(idPeer, stream);
+  };
 
   startVideo() {
     this.videoInput = this.video.nativeElement;
     const p = navigator.mediaDevices.getUserMedia({ audio: false, video: true });
     p.then((mediaStream: MediaStream) => {
-      this.video.nativeElement.srcObject = mediaStream;
       this.localStream = mediaStream;
+      this.video.nativeElement.srcObject = mediaStream;
       this.onVideoPlay();
+      this.initPeer();
       this.recordVideo(mediaStream);
       setTimeout(() => {
         this.stopVideo();
@@ -140,6 +179,7 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
     if (this.resizedDetections.length > 0 && this.captureCheck) {
       // En el campo resizedDetection esta toda la info de edad genero y toda la mierda, tambien donde esta la cara de la gente para ver si recortas.
       this.capture(this.detection);
+      this.captureCheck = false;
     } else {
       this.detectFaces();
     }
@@ -147,28 +187,31 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
 
   private async capture(detection: any[]) {
     // clearInterval(this.interval);
-    console.log(this.videoInput);
-    const distance = await this.imgComparison(this.lastRecognition, this.videoInput);
-    if (distance > 0.6) {
+    // console.log(this.videoInput);
+    // const distance = await this.imgComparison(this.lastRecognition, this.videoInput);
+    // if (distance > 0.6) {
       this.compareFaces(this.videoInput, detection);
-      this.lastRecognition = this.videoInput;
-    } else {
-      setTimeout(async function() {
-        this.lastRecognition = this.videoInput;
-        await this.detectFaces();
-      }, 5000);
-    }
-    const canvas: HTMLCanvasElement = this.captureRef.nativeElement;
-    canvas.setAttribute('width', this.videoInput.offsetWidth);
-    canvas.setAttribute('height', this.videoInput.offsetHeight);
-    canvas.getContext('2d').drawImage(this.videoInput, 0, 0, this.videoInput.offsetWidth, this.videoInput.offsetHeight);
-    const frame = canvas.getContext('2d').getImageData(0, 0, this.videoInput.offsetWidth, this.videoInput.offsetHeight);
-    const length = frame.data.length;
-    const data = frame.data;
-    const video = document.getElementById('video');
-    video.addEventListener('play', (event: any)=>{
-      // console.log('Ok', event);
-    });
+      setTimeout(() => {
+        this.captureCheck = true;
+      }, 15000);
+    //   this.lastRecognition = this.videoInput;
+    // } else {
+    //   setTimeout(async function() {
+    //     this.lastRecognition = this.videoInput;
+    //     await this.detectFaces();
+    //   }, 5000);
+    // }
+    // const canvas: HTMLCanvasElement = this.captureRef.nativeElement;
+    // canvas.setAttribute('width', this.videoInput.offsetWidth);
+    // canvas.setAttribute('height', this.videoInput.offsetHeight);
+    // canvas.getContext('2d').drawImage(this.videoInput, 0, 0, this.videoInput.offsetWidth, this.videoInput.offsetHeight);
+    // const frame = canvas.getContext('2d').getImageData(0, 0, this.videoInput.offsetWidth, this.videoInput.offsetHeight);
+    // const length = frame.data.length;
+    // const data = frame.data;
+    // const video = document.getElementById('video');
+    // video.addEventListener('play', (event: any)=>{
+    //   // console.log('Ok', event);
+    // });
 
   }
 
@@ -195,6 +238,11 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
         _recognitions.push({ msg: 'Alerta! Rostro desconocido' });
         this.sendNotification(this.detection[0], null, true);
       }
+      this.webSocketService.notifyRoom({
+        idPeer: this.peer.id,
+        roomName: this.cameraId,
+        message: _recognitions
+      })
     }
 
     this.recognitions = [].concat(_recognitions);
@@ -238,7 +286,6 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
             confidenceLevels: recognition?.face?.confidenceLevels ? recognition?.face?.confidenceLevels : this.confidenceLevels[2]._id,
             unknown: unknown
           })]).pipe(take(1)).subscribe((response: any) => {
-            console.log(response);
             const faceImgFD = new FormData();
             faceImgFD.append('facialExpression', this.expressions[faceExpression.exp]);
             faceImgFD.append('user', this.identity);

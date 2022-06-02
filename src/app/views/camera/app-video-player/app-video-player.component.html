@@ -1,5 +1,5 @@
-<div [ngClass]="{'isLoading': loading}" class="wrapper-video" *ngIf="stream">
-    <video [srcObject]="stream" id="video" #video autoplay muted></video>
+<div [ngClass]="{'isLoading': loading}" class="wrapper-video">
+    <video [srcObject]="localStream" id="video" #video autoplay muted></video>
     <div #canvas class="video-player__canvas"></div>
     <ng-container *ngIf="loading">
       <span class="loading-msg">Cargando video por favor espere</span>

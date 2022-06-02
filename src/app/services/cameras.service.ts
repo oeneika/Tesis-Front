@@ -28,8 +28,8 @@ export class CamerasService {
     }
 
     //Obtener Face
-    public getCamerasByUser(idUser): Observable<any> {
-        return this._http.get(environment.url + "get-cameras-by-user/" + idUser, {
+    public getCamerasByUser(idUser?: string): Observable<any> {
+        return this._http.get(environment.url + "get-cameras-by-user/" + (idUser ? idUser : JSON.parse(localStorage.getItem('identity'))), {
           headers: this.headersAuthorization,
         });
     }

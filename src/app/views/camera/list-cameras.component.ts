@@ -1,5 +1,6 @@
 import { Component, OnInit, TemplateRef } from "@angular/core";
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
+import { CamerasService } from "../../services/cameras.service";
 
 @Component({
   selector: "app-confidence-levels",
@@ -8,13 +9,26 @@ import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 })
 export class ListCamerasComponent implements OnInit {
   modalRef: BsModalRef;
-  constructor(private modalService: BsModalService) {}
+  public cameras: any[];
+  constructor(private modalService: BsModalService,
+              private _cameraService: CamerasService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getCamerasByUser();
+  }
 
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template, {
       class: "modal-dialog-centered",
+    });
+  }
+
+  /**
+   * getCamerasByUser
+   */
+  public getCamerasByUser() {
+    this._cameraService.getCamerasByUser().subscribe((response: any) => {
+      this.cameras = response;
     });
   }
 }
