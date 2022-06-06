@@ -4,10 +4,9 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <ng-container>
                         <div class="table-responsive">
                             <table class="table">
-                                <thead>
+                                <thead *ngIf="notifications && notifications?.length > 0">
                                     <tr>
                                         <th>Imagen</th>
                                         <th>Rostro</th>
@@ -19,6 +18,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                  <ng-container *ngIf="!notifications">
+                                    <span class="no-text-msg">Cargando notificaciones por favor espere.</span>
+                                  </ng-container>
+                                  <ng-container *ngIf="notifications && notifications?.length === 0">
+                                    <span class="no-text-msg">No hay notificaciones disponibles para el usuario.</span>
+                                  </ng-container>
+                                  <ng-container *ngIf="notifications && notifications?.length > 0">
                                     <tr *ngFor="let notification of notifications | paginate: { itemsPerPage: 10, currentPage: page, totalItems: notifications?.length }; let i=index" [ngStyle]="{'background-color': confidenceLevelText(notification?.face?.confidenceLevels) === 'Nivel 4' ? '#ff0000' : '#ffffff'}">
                                         <td>
                                             <div style="width: 100px;height: 100px; border-radius: 10px; background-size: cover; background-position: center;" style="background-image: url('{{imageFile(notification?.image)}}');">
@@ -40,6 +46,7 @@
                                             </button>
                                         </td>
                                     </tr>
+                                  </ng-container>
                                 </tbody>
                             </table>
                         </div>
@@ -51,7 +58,6 @@
                             responsive="true"
                             previousLabel="Anterior"
                             nextLabel="Siguiente"></pagination-controls></div>
-                    </ng-container>
                 </div>
             </div>
         </div>

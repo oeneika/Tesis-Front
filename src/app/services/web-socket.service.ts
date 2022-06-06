@@ -5,32 +5,40 @@ import {Socket} from 'ngx-socket-io';
   providedIn: 'root'
 })
 export class WebSocketService {
-  events = ['new-user', 'bye-user', 'message'];
+  events = ['new-user', 'bye-user', 'message', 'retrieve-rooms'];
   cbEvent: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private Socket: Socket) {
+  constructor(private _socket: Socket) {
     this.listener();
   }
 
   listener = () => {
     this.events.forEach(evenName => {
-      this.Socket.on(evenName, data => this.cbEvent.emit({
+      this._socket.on(evenName, data => {this.cbEvent.emit({
         name: evenName,
         data
-      }));
+      }); console.log('vent', evenName, data)});
     });
+  };
+
+  getRooms = (data) => {
+    return this._socket.emit('get-rooms', data);
   };
 
   leaveRoom = (data) => {
     console.log("saliendo del cuarto", data);
-    this.Socket.emit('leave', data);
+    this._socket.emit('leave', data);
   }
   joinRoom = (data) => {
     console.log("uniendose al cuarto", data);
-    this.Socket.emit('join', data);
+    this._socket.emit('join', data);
   }
   notifyRoom = (data) => {
     console.log("notificando al cuarto", data);
-    this.Socket.emit('message', data);
+    this._socket.emit('message', data);
+  }
+  disconnect() {
+    console.log('desconectando socket');
+    this._socket.disconnect();
   }
 }

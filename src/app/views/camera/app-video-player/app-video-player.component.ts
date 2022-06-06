@@ -53,8 +53,6 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private _videoService: RecordingsService,
     private _imageService: ImageService) {
-    this.identity = this._userService.identity;
-    this.loadFaces();
   }
   detection: any;
   resizedDetections: any;
@@ -68,6 +66,8 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
   image2;
 
   async ngOnInit() {
+    this.identity = this._userService.identity;
+    this.loadFaces();
     navigator.mediaDevices.enumerateDevices();
     await Promise.all([
       await faceapi.nets.ssdMobilenetv1.loadFromUri("../../assets/models"),
@@ -108,11 +108,14 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
 
   initSocket = () => {
     this.webSocketService.cbEvent.subscribe((res) => {
+      console.log(res);
       if (res.name === "new-user") {
         const { idPeer } = res.data;
         setTimeout(() => {
           this.sendCall(idPeer, this.localStream);
         }, 500);
+      } else if (res.name === "retrieve-rooms") {
+        this.webSocketService.getRooms({cameraId: this.cameraId, confirmedCamera: true})
       }
     });
   };
@@ -130,10 +133,10 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
       this.video.nativeElement.srcObject = mediaStream;
       this.onVideoPlay();
       this.initPeer();
-      this.recordVideo(mediaStream);
-      setTimeout(() => {
-        this.stopVideo();
-      }, 30000);
+      // this.recordVideo(mediaStream);
+      // setTimeout(() => {
+      //   this.stopVideo();
+      // }, 30000);
     });
     p.catch(function(err) { console.log(err.name); }); // always check for errors at the end.
   }
@@ -325,7 +328,13 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.video.nativeElement.pause();
     this.video.nativeElement.src = '';
-    this.localRecorder.stop();
+    // this.localRecorder.stop();
+    this.webSocketService.leaveRoom({
+      idPeer: this.peer.id,
+      roomName: this.cameraId,
+    });
+    this.peer.destroy();
+    this.webSocketService.disconnect();
     this.localStream.getTracks()
     .forEach((track) => {
         track.stop();
@@ -340,11 +349,11 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
     const mr =  new MediaRecorder(mediaStream);
     this.localRecorder = mr;
     let chunks = [];
-    mr.start();
-    mr.ondataavailable = (e) => {
+    this.localRecorder.start();
+    this.localRecorder.ondataavailable = (e) => {
         chunks.push(e.data);
     };
-    mr.onstop = () => {
+    this.localRecorder.onstop = () => {
         const blob = new Blob(chunks, { type: "video/mp4" });
         chunks = [];
         const videoFD = new FormData();

@@ -3,15 +3,6 @@
         <div class="col-md-6">
             <h1 class="mb-3">Mis cámaras en vivo</h1>
         </div>
-        <!--
-        <div class="col-md-6">
-            <div class="text-right">
-                <button class="btn btn-primary botones" (click)="openModal(template)">
-          Agregar colaboradores
-        </button>
-            </div>
-        </div>
-        -->
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -19,15 +10,23 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table">
-                            <thead>
+                            <thead *ngIf="liveCameras && liveCameras?.length > 0">
                                 <tr>
                                     <th>Nombre de la cámara</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let camera of cameras">
+                              <ng-container *ngIf="!liveCameras">
+                                <span class="no-text-msg">Cargando grabaciones en vivo por favor espere.</span>
+                              </ng-container>
+                              <ng-container *ngIf="liveCameras && liveCameras?.length === 0">
+                                <span class="no-text-msg">No hay grabaciones en vivo disponibles para el usuario.</span>
+                              </ng-container>
+                              <ng-container *ngIf="liveCameras && liveCameras?.length > 0">
+                                <tr *ngFor="let camera of liveCameras">
                                     <td><button [routerLink]="'/camera/camera-details/' + camera?.cameraId?._id" style="font-weight: bold; color: #3f51b5;">{{camera?.cameraId?.name}}</button></td>
                                 </tr>
+                              </ng-container>
                             </tbody>
                         </table>
                     </div>
