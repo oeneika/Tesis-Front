@@ -5,7 +5,7 @@ import moment from 'moment';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import Peer from 'peerjs';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { FaceService } from '../../../services/face.service';
@@ -27,10 +27,12 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
   public faces: any[] = [];
   public expressions: any = { 'angry': 'Molesto', 'disgusted': 'Asqueado', 'fearful': 'Atemorizado', 'happy': 'Feliz', 'neutral': 'Neutral', 'sad': 'Triste', 'surprised': 'Sorprendido' };
   public identity;
+  public last: boolean= false;
   public interval = null;
   public loading = true;
   public lastRecognition: any;
   public peer: Peer;
+  public subscriptions: Subscription[] = [];
   @ViewChild("video", { static: false }) video: ElementRef;
   @ViewChild("canvas", { static: false }) canvasRef: ElementRef;
   @ViewChild("capture", { static: false }) captureRef: ElementRef;
@@ -107,7 +109,7 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
   };
 
   initSocket = () => {
-    this.webSocketService.cbEvent.subscribe((res) => {
+    this.subscriptions.push(this.webSocketService.cbEvent.subscribe((res) => {
       console.log(res);
       if (res.name === "new-user") {
         const { idPeer } = res.data;
@@ -117,7 +119,7 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
       } else if (res.name === "retrieve-rooms") {
         this.webSocketService.getRooms({cameraId: this.cameraId, confirmedCamera: true})
       }
-    });
+    }));
   };
 
   sendCall = (idPeer, stream) => {
@@ -133,10 +135,10 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
       this.video.nativeElement.srcObject = mediaStream;
       this.onVideoPlay();
       this.initPeer();
-      // this.recordVideo(mediaStream);
-      // setTimeout(() => {
-      //   this.stopVideo();
-      // }, 30000);
+      this.recordVideo(mediaStream);
+      setTimeout(() => {
+        this.stopVideo();
+      }, 30000);
     });
     p.catch(function(err) { console.log(err.name); }); // always check for errors at the end.
   }
@@ -278,7 +280,7 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
             faceImgFD.append('user', this.identity);
             faceImgFD.append('image', response?.image?._id);
             faceImgFD.append('face', recognition?.user);
-            this._faceService.createFaceImage(faceImgFD).subscribe(res => {this.detectFaces(); this.toastr.success('Rostro detectado y notificación enviada'); this.spinner.hide();});
+            this._faceService.createFaceImage(faceImgFD).pipe(take(1)).subscribe(res => {this.detectFaces(); this.toastr.success('Rostro detectado y notificación enviada'); this.spinner.hide();});
           }) :
           forkJoin([this._imageService.createImage(imgFD), this._faceService.addFace({
             name: recognition?.face?.name ? recognition?.face?.name : 'Desconocido',
@@ -294,7 +296,7 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
             faceImgFD.append('user', this.identity);
             faceImgFD.append('image', response[0]?.image?._id);
             faceImgFD.append('face', response[1]?.face?._id);
-            this._faceService.createFaceImage(faceImgFD).subscribe(res => {this.detectFaces(); this.toastr.success('Rostro detectado y notificación enviada'); this.spinner.hide();});
+            this._faceService.createFaceImage(faceImgFD).pipe(take(1)).subscribe(res => {this.detectFaces(); this.toastr.success('Rostro detectado y notificación enviada'); this.spinner.hide();});
           });
         },
         "image/png",
@@ -328,13 +330,15 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.video.nativeElement.pause();
     this.video.nativeElement.src = '';
-    // this.localRecorder.stop();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.localRecorder.stop();
+    this.last = true;
     this.webSocketService.leaveRoom({
       idPeer: this.peer.id,
       roomName: this.cameraId,
     });
     this.peer.destroy();
-    this.webSocketService.disconnect();
+    // this.webSocketService.disconnect();
     this.localStream.getTracks()
     .forEach((track) => {
         track.stop();
@@ -359,9 +363,14 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
         const videoFD = new FormData();
         videoFD.append('camera', this.cameraId);
         videoFD.append('file', new File([blob], moment().format('DD-MM-yyyy-HH-mm-ss') + '.mp4'), moment().format('DD-MM-yyyy-HH-mm-ss') + '.mp4');
-        this._videoService.createVideo(videoFD).subscribe((response: any) => {
+        this._videoService.createVideo(videoFD).pipe(take(1)).subscribe((response: any) => {
           this.toastr.success('Video grabado perro');
-          this.recordVideo(mediaStream);
+          if(!this.last) {
+            this.recordVideo(mediaStream);
+            setTimeout(() => {
+              this.stopVideo();
+            }, 30000);
+          }
         });
     };
   }
@@ -370,7 +379,9 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
    * stopVideo
    */
   public stopVideo() {
-    this.localRecorder.stop();
+    if (!this.last) {
+      this.localRecorder.stop();
+    }
   }
 
 }

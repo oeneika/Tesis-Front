@@ -17,7 +17,8 @@ export class WebSocketService {
       this._socket.on(evenName, data => {this.cbEvent.emit({
         name: evenName,
         data
-      }); console.log('vent', evenName, data)});
+      }); //console.log('vent', evenName, data)
+    });
     });
   };
 

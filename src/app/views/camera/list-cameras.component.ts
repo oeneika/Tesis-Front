@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit, TemplateRef } from "@angular/core";
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
+import { Subscription } from "rxjs";
+import { take } from "rxjs/operators";
 import { CamerasService } from "../../services/cameras.service";
 import { WebSocketService } from "../../services/web-socket.service";
 
@@ -10,7 +12,9 @@ import { WebSocketService } from "../../services/web-socket.service";
 })
 export class ListCamerasComponent implements OnInit, OnDestroy {
   modalRef: BsModalRef;
+  public imIn: boolean = false;
   public cameras: any[];
+  public subscriptions: Subscription[] = [];
   public liveCameras: any[];
   constructor(private modalService: BsModalService,
               private webSocketService: WebSocketService,
@@ -22,6 +26,7 @@ export class ListCamerasComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
     // this.webSocketService.disconnect();
   }
 
@@ -39,32 +44,33 @@ export class ListCamerasComponent implements OnInit, OnDestroy {
   }
 
   initSocket = () => {
-    this.webSocketService.cbEvent.subscribe((res) => {
+    this.subscriptions.push(this.webSocketService.cbEvent.subscribe((res) => {
       console.log(res);
       if (res.name === "retrieve-rooms" && res.data.confirmedCamera) {
         this.liveCameras.push(this.cameras.find(cam => cam.cameraId._id === res.data.cameraId));
-        this.webSocketService.leaveRoom({
-          idPeer: 'wtf',
-          roomName: res.data.cameraId,
-        });
+        // this.webSocketService.leaveRoom({
+        //   idPeer: 'wtf',
+        //   roomName: res.data.cameraId,
+        // });
       } else if (res.name === 'new-user') {
         this.getCamerasByUser();
       } else if (res.name === 'bye-user') {
         // this.liveCameras = [];
         this.getCamerasByUser();
       }
-    });
+    }));
   };
 
   /**
    * getCamerasByUser
    */
   public getCamerasByUser() {
-    this._cameraService.getCamerasByUser().subscribe((response: any) => {
+    this._cameraService.getCamerasByUser().pipe(take(1)).subscribe((response: any) => {
       this.cameras = response;
       this.liveCameras = [];
       response.forEach(element => {
-        this.getLiveCameras({cameraId: element?.cameraId?._id, joinRoom: true});
+        this.getLiveCameras({cameraId: element?.cameraId?._id, joinRoom: !this.imIn});
+        this.imIn = true;
       });
     });
   }
