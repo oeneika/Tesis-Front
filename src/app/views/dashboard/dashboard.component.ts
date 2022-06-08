@@ -36,13 +36,13 @@ export class DashboardComponent implements OnInit {
     public tableSize;
 
 
-  constructor(private modalService: BsModalService, private _camerasService: CamerasService, private _confidenceLevels: ConfidenceLevelsService,private _faceService: FaceService, private _reportsService: ReportsService, 
+  constructor(private modalService: BsModalService, private _camerasService: CamerasService, private _confidenceLevels: ConfidenceLevelsService,private _faceService: FaceService, private _reportsService: ReportsService,
     private _userService: UserService){
       this.face = new Face("", "", "", "", "", "", "", "");
       this.token = this._userService.token;
       this.identity = this._userService.identity;
       this.url = environment.url;
-      
+
   }
   ngOnInit(){
     // this.getConfidenceLevels();
@@ -83,7 +83,7 @@ export class DashboardComponent implements OnInit {
    */
   public getFacesByCameraAndDate() {
     console.log(this.selectedRange, this.dateRange);
-    
+
     this._reportsService.getFacesByCameraAndDate(this.selectedCamera, this.dateRange.from, this.dateRange.to).pipe(take(1)).subscribe((response: any) => {
       this.reportsbyDate = response;
     });
@@ -93,7 +93,7 @@ export class DashboardComponent implements OnInit {
    * dateRange
    */
   public get dateRange(): any {
-    return this.selectedRange && this.selectedRange.length > 0 ? 
+    return this.selectedRange && this.selectedRange.length > 0 ?
     { from:  moment(this.selectedRange[0]).format('DD/MM/YYYY'), to: moment(this.selectedRange[1]).format('DD/MM/YYYY')} :
     null;
   }
@@ -123,7 +123,7 @@ export class DashboardComponent implements OnInit {
    * imageFile
    */
   public imageFile(fileName: string): string {
-    return 'http://localhost:8000/api/get-image-file/'.concat(fileName);
+    return 'http://localhost:8000/api/get-image/'.concat(fileName);
   }
 
   getCamerasByAdmin() {

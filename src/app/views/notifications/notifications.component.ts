@@ -125,7 +125,7 @@ export class NotificationsComponent implements OnInit {
    */
   public addToConfidenceLevels() {
     if (this.face.surname && this.face.name && this.face.confidenceLevels) {
-      this._faceService.addFace(this.face).subscribe(
+      this._faceService.editFace(this.face).subscribe(
         (data) => {
           this.face = data.face;
           this.modalRef.hide();
