@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 import { User } from "../../models/user";
 import { UserService } from "../../services/user.service";
 import { SwPush } from "@angular/service-worker";
+import { environment } from "../../../environments/environment";
 
 @Component({
   selector: "app-dashboard",
@@ -68,7 +69,7 @@ export class DefaultLayoutComponent implements OnInit {
   public setPhoto() {
     if (this.user.image && this.user.image != null) {
       this.photo_default =
-        "http://localhost:8000/api/get-image-file/" + this.user.image;
+        environment.url + "get-image-file/" + this.user.image;
     }
   }
 

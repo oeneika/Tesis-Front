@@ -226,7 +226,7 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
       let recognition = { user: null, msg: null, distance: 1, face: null };
       for (const face of this.faces) {
         if (face?.image) {
-          const distance = await this.imgComparison('http://localhost:8000/api/get-image-face/'.concat(face.image), capturedFace ? capturedFace : this.videoInput);
+          const distance = await this.imgComparison(environment.url + 'get-image-face/'.concat(face.image), capturedFace ? capturedFace : this.videoInput);
           if (distance <= 0.6 && distance < recognition.distance) {
             recognition.distance = distance;
             recognition.msg = 'Se reconoció a '.concat(face?.name, ' ', face?.surname);

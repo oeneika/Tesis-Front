@@ -123,7 +123,7 @@ export class DashboardComponent implements OnInit {
    * imageFile
    */
   public imageFile(fileName: string): string {
-    return 'http://localhost:8000/api/get-image/'.concat(fileName);
+    return environment.url + 'get-image/'.concat(fileName);
   }
 
   getCamerasByAdmin() {

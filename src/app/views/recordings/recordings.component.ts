@@ -4,6 +4,7 @@ import { UserService } from "../../services/user.service";
 import { RecordingsService } from "../../services/recordings.service";
 import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import { take } from "rxjs/operators";
+import { environment } from "../../../environments/environment";
 
 @Component({
   templateUrl: "recordings.component.html",
@@ -20,7 +21,7 @@ export class RecordingsComponent implements OnInit {
   constructor(
     private router: Router,
     private _userService: UserService,
-    private modalService: BsModalService, 
+    private modalService: BsModalService,
     private _recordingsService : RecordingsService
   ) {
     this.identity = this._userService.identity;
@@ -79,6 +80,6 @@ export class RecordingsComponent implements OnInit {
    * videSrc
    */
   public videoSrc(fileName: string): string {
-    return 'http://localhost:8000/api/get-video-file/'.concat(fileName);
+    return environment.url + 'get-video-file/'.concat(fileName);
   }
 }

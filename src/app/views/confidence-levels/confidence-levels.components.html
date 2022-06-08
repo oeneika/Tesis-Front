@@ -49,7 +49,7 @@
                               <td>
                                   <ng-container *ngIf="face?.image;else other_content">
                                     <div class="image-confidence-level" [ngStyle]="{
-                                        'background-image': 'url(http://localhost:8000/api/get-image-face/' + face?.image + ')'
+                                        'background-image': 'url(' + envUrl + 'get-image-face/' + face?.image + ')'
                                         }"></div>
                                   </ng-container>
                                   <ng-template #other_content>

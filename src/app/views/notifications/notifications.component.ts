@@ -10,6 +10,7 @@ import { Face } from "../../models/face";
 import { ConfidenceLevelsService } from "../../services/confidence-levels.service";
 import { FaceService } from "../../services/face.service";
 import { ToastrService } from "ngx-toastr";
+import { environment } from "../../../environments/environment";
 
 @Component({
   templateUrl: "notifications.component.html",
@@ -74,7 +75,7 @@ export class NotificationsComponent implements OnInit {
    * imageFile
    */
    public imageFile(fileName: string): string {
-    return 'http://localhost:8000/api/get-image/'.concat(fileName);
+    return environment.url + 'get-image/'.concat(fileName);
   }
 
   /**

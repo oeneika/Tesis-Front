@@ -44,6 +44,10 @@ export class ConfidenceLevelsComponent implements OnInit {
     this.getFaces();
   }
 
+  public get envUrl () {
+    return environment.url;
+  }
+
   public getConfidenceLevels(faces: any[]) {
     this._confidenceLevels.getConfidenceLevels().subscribe((levels: any[]) => {
       levels.map((level: any, i: number) => {
