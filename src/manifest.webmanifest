@@ -1,8 +1,8 @@
 {
-  "name": "ng",
-  "short_name": "ng",
-  "theme_color": "#1976d2",
-  "background_color": "#fafafa",
+  "name": "Sistema de videovigilancia",
+  "short_name": "Sistema de videovigilancia",
+  "theme_color": "#2EB1FF",
+  "background_color": "#00244D",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
