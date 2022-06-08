@@ -2,7 +2,7 @@
   "name": "Sistema de videovigilancia",
   "short_name": "Sistema de videovigilancia",
   "theme_color": "#2EB1FF",
-  "background_color": "#0978BA",
+  "background_color": "#00244D",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
