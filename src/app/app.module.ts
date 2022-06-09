@@ -59,8 +59,8 @@ import { MyInterceptor } from "./services/interceptor.service";
 import { UserService } from "./services/user.service";
 
 const config: SocketIoConfig = {
-  // url: environment.shortURL + "/socket.io/?EIO=3&transport=polling",
-  url: environment.shortURL,
+  url: environment.shortURL + "/socket.io/?EIO=3&transport=polling",
+  // url: environment.shortURL,
 };
 
 const APP_CONTAINERS = [DefaultLayoutComponent];
