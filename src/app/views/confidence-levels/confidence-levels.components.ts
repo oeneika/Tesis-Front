@@ -79,10 +79,7 @@ export class ConfidenceLevelsComponent implements OnInit {
   deleteFace(id) {
     this._faceService.removeFace(id).subscribe(
       (data) => {
-        if (!data.faceRemoved) {
-          alert("Error en el servidor");
-        }
-
+        this.toastr.success('Excelente', 'Rostro eliminado con éxito');
         this.getFaces();
       },
       (err) => {}
