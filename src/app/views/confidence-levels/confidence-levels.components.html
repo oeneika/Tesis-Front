@@ -13,7 +13,7 @@
     </div>
     <div class="row">
       <ng-container *ngFor="let level of confidenceLevels; let i = index">
-        <div class="col-sm-6">
+        <div class="col-md-6">
            <div class="card">
               <div class="card-header">
                  <div class="row">
@@ -27,7 +27,7 @@
               </div>
               <div class="card-body">
                 <ng-container *ngIf="level?.faces?.length === 0">
-                  <span class="no-text-msg">No existen usuarios para este nivel de confianza, para hacerlo presione el botón <span style="color: #1B8EB7;">"Agregar Usuario"</span></span>
+                  <span class="no-text-msg">No existen usuarios para este nivel de confianza</span>
                 </ng-container>
                 <ng-container *ngIf="level?.faces?.length > 0">
                   <div class="table-responsive">

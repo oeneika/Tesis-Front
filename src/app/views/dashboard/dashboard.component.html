@@ -3,7 +3,7 @@
     <div class="card">
         <div class="card-body">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-sm-6 col-md-4">
                         <div class="form-group">
                             <label for="name">Selecciona la cámara</label>
                             <select class="form-control" [(ngModel)]="selectedCamera" (change)="getReportsByFrequency()">
@@ -12,7 +12,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-sm-6 col-md-4">
                         <div class="form-group">
                             <label for="name">Selecciona un rango de fechas</label>
                             <input type="text"
@@ -25,9 +25,9 @@
                                 <!-- <pre class="alert alert-info">Time is: {{time}}</pre> -->
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-sm-12 col-md-4">
                         <div class="form-group"></div>
-                        <button (click)="getFacesByCameraAndDate()" [disabled]="!selectedRange || !selectedCamera" class="btn btn-primary w-100" style="margin-top: 14px">
+                        <button (click)="getFacesByCameraAndDate()" [disabled]="!selectedRange || !selectedCamera" class="btn btn-primary w-100 mt-md-3">
               Generar Reporte
             </button>
                     </div>
@@ -104,10 +104,10 @@
               </ng-container>
                 <div *ngIf="selectedCamera" class="card-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-8 col-lg-6">
                             <h5>Reporte de frecuencia {{report?.name}}</h5>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4 col-lg-6">
                             <div class="col-form-label radiobuttons-dashboard">
                                 <div id="inline-radios" class="form-check form-check-inline mr-2 block-mobile">
                                     <input type="radio" name="inline-radios" id="inlineRadio1" value="daily" class="form-check-input" [(ngModel)]="selectedFrequencyReport" /><label for="inlineRadio1" class="form-check-label">Reporte diario</label
