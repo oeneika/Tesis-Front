@@ -196,6 +196,7 @@ export class CameraComponent implements OnInit {
       (data) => {
         this.camera = data;
         this.camera = new Camera(data._id,data.name, data.power, data.turn_screen, this.identity);
+        this.idCamera = data._id;
         localStorage.setItem("idCamera", JSON.stringify(data._id));
         this.hideModal();
         this.toastr.success('Cámara creada exitosamente');

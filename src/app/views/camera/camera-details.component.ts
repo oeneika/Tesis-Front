@@ -9,6 +9,7 @@ import { take } from "rxjs/operators";
 import { Subscription } from "rxjs";
 import { environment } from "../../../environments/environment";
 import Peer from "peerjs";
+import { ConfidenceLevelsService } from "../../services/confidence-levels.service";
 @Component({
   selector: "app-confidence-levels",
   templateUrl: "camera-details.component.html",
@@ -16,6 +17,7 @@ import Peer from "peerjs";
 })
 export class CameraDetailsComponent implements OnInit, OnDestroy {
   public camera: any;
+  public confidenceLevels: any[] = [];
   public subscriptions: Subscription[] = [];
   public stream: any;
   public peer: any;
@@ -23,12 +25,14 @@ export class CameraDetailsComponent implements OnInit, OnDestroy {
   constructor(private webSocketService: WebSocketService,
               private spinner: NgxSpinnerService,
               private cameraService: CamerasService,
+              private confidencelevelsService: ConfidenceLevelsService,
               private toastr: ToastrService,
               // private peerService: PeerService,
               private _route: Router,
               public _router: ActivatedRoute) {}
 
   ngOnInit() {
+    this.getConfidenceLevels();
     this.cameraService.getCamerasByUser().pipe(take(1)).subscribe((response: any[]) => {
       setTimeout(() => {
         this.spinner.show();
@@ -37,6 +41,20 @@ export class CameraDetailsComponent implements OnInit, OnDestroy {
       this.initPeer();
       this.initSocket();
     });
+  }
+
+  /**
+   * getConfidenceLevels
+   */
+  public getConfidenceLevels() {
+    this.confidencelevelsService.getConfidenceLevels().pipe(take(1)).subscribe((response: any) => this.confidenceLevels = response);
+  }
+
+  /**
+   * confidenceLevelText
+  */
+   public confidenceLevelText(confidenceLevelId: string): string {
+    return this.confidenceLevels?.find((value: any) => value?._id === confidenceLevelId)?.title;
   }
 
   initPeer = () => {
@@ -90,7 +108,28 @@ export class CameraDetailsComponent implements OnInit, OnDestroy {
       if (res.name === "message") {
         res.data.message.forEach(item => {
           if (item.msg) {
-            this.toastr.info(item.msg, 'Notificación', { disableTimeOut: true });
+            const params = [item.msg, 'Rostro capturado', { timeOut: 20000 }];
+            if (item?.face) {
+              switch (this.confidenceLevelText(item?.face?.confidenceLevels)) {
+                case 'Nivel 1':
+                  this.toastr.success(...params);
+                  break;
+                case 'Nivel 2':
+                  this.toastr.info(...params);
+                  break;
+                case 'Nivel 3':
+                  this.toastr.warning(...params);
+                  break;
+                case 'Nivel 4':
+                  this.toastr.error(...params);
+                  break;
+                default:
+                  console.log(item.face, this.confidenceLevelText(item?.face?.confidenceLevels));
+                  break;
+              }
+            } else {
+              this.toastr.warning(...params);
+            }
           }
           if(item.imDone) {
             this.backToList();
