@@ -333,9 +333,14 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
     this.localRecorder.stop();
     this.last = true;
-    this.webSocketService.leaveRoom({
+    // this.webSocketService.leaveRoom({
+    //   idPeer: this.peer.id,
+    //   roomName: this.cameraId,
+    // });
+    this.webSocketService.notifyRoom({
       idPeer: this.peer.id,
       roomName: this.cameraId,
+      message: [{imDone: true}]
     });
     this.peer.destroy();
     // this.webSocketService.disconnect();

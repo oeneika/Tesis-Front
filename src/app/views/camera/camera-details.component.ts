@@ -34,9 +34,9 @@ export class CameraDetailsComponent implements OnInit, OnDestroy {
         this.spinner.show();
       }, 50);
       this.camera = response.find((camera: any) => camera?.cameraId?._id === this.cameraId);
+      this.initPeer();
+      this.initSocket();
     });
-    this.initPeer();
-    this.initSocket();
   }
 
   initPeer = () => {
@@ -48,14 +48,21 @@ export class CameraDetailsComponent implements OnInit, OnDestroy {
     });
     let int = null;
     this.peer.on("open", (id) => {
+      let tries = 0;
       const body = {
         idPeer: id,
         roomName: this.cameraId,
       };
       int = setInterval(()=> {
         if (!this.stream) {
+          tries++;
           this.webSocketService.leaveRoom(body);
-          this.webSocketService.joinRoom(body);
+          if (tries >= 3) {
+            this.backToList();
+            clearInterval(int);
+          } else {
+            this.webSocketService.joinRoom(body);
+          }
         } else {
           clearInterval(int);
         }
@@ -66,45 +73,15 @@ export class CameraDetailsComponent implements OnInit, OnDestroy {
     this.peer.on(
       "call",
       (callEnter) => {
+        this.spinner.hide();
         console.log("agregando la llamada entrante al front", callEnter);
         callEnter.answer(null);
-        this.spinner.hide();
         callEnter.on("stream", (streamRemote) => {
           // this.video.nativeElement.srcObject = streamRemote;
           this.stream = streamRemote;
         });
       }
     );
-    // const { peer } = this.peerService;
-    // let int = null;
-    // peer.on("open", (id) => {
-    //   const body = {
-    //     idPeer: id,
-    //     roomName: this.cameraId,
-    //   };
-    //   int = setInterval(()=> {
-    //     if (!this.stream) {
-    //       this.webSocketService.leaveRoom(body);
-    //       this.webSocketService.joinRoom(body);
-    //     } else {
-    //       clearInterval(int);
-    //     }
-    //   },5000);
-    //   this.webSocketService.joinRoom(body);
-    // });
-
-    // peer.on(
-    //   "call",
-    //   (callEnter) => {
-    //     console.log("agregando la llamada entrante al front", callEnter);
-    //     callEnter.answer(null);
-    //     this.spinner.hide();
-    //     callEnter.on("stream", (streamRemote) => {
-    //       // this.video.nativeElement.srcObject = streamRemote;
-    //       this.stream = streamRemote;
-    //     });
-    //   }
-    // );
   };
 
   initSocket = () => {
@@ -112,18 +89,34 @@ export class CameraDetailsComponent implements OnInit, OnDestroy {
       console.log(res);
       if (res.name === "message") {
         res.data.message.forEach(item => {
-          this.toastr.info(item.msg, 'Notificación', { disableTimeOut: true });
+          if (item.msg) {
+            this.toastr.info(item.msg, 'Notificación', { disableTimeOut: true });
+          }
+          if(item.imDone) {
+            this.backToList();
+            this.peer.destroy();
+            this.subscriptions.forEach(subscription => subscription.unsubscribe());
+          }
         });
       } else if (res.name === 'bye-user') {
-        this.spinner.show();
-        this.toastr.warning('Cámara desconectada', 'Se ha desconectado la cámara de la red, por favor revise el dispositivo, se redireccionará en breve al listado de cámaras activas.');
-        setTimeout(() => {
-          this.spinner.hide();
-          this._route.navigate(['camera/list-cameras']);
-        }, 3000);
+        this.backToList();
+        this.peer.destroy();
+        this.subscriptions.forEach(subscription => subscription.unsubscribe());
       }
     }));
   };
+
+  /**
+   * backToList
+   */
+  public backToList() {
+    this.spinner.show();
+    this.toastr.warning('Cámara desconectada', 'Se ha desconectado la cámara de la red, por favor revise el dispositivo, se redireccionará en breve al listado de cámaras activas.');
+    setTimeout(() => {
+      this.spinner.hide();
+      this._route.navigate(['camera/list-cameras']);
+    }, 3000);
+  }
 
   ngOnDestroy(): void {
     // this.video.nativeElement.pause();
