@@ -6,3 +6,6 @@ export const environment = {
   peerjsHost: "localhost",
   peerJSPort: 3001
 };
+
+//http://localhost:8000/api/
+//http://localhost:8000
