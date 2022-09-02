@@ -8,6 +8,7 @@ import { P404Component } from "./views/error/404.component";
 import { P500Component } from "./views/error/500.component";
 import { LoginComponent } from "./views/login/login.component";
 import { RegisterComponent } from "./views/register/register.component";
+import { VerificationEmailComponent } from "./views/verification-email/verification-email.component";
 import { WebcamComponent } from "./webcam/webcam.component";
 import { VerficationCodeComponent } from "./views/verification-code/verification-code.component";
 import { YourCodeComponent } from "./views/verification-code/your-code.component";
@@ -74,6 +75,13 @@ export const routes: Routes = [
     component: RegisterComponent,
     data: {
       title: "Register Page",
+    },
+  },
+  {
+    path: "verification-email",
+    component: VerificationEmailComponent,
+    data: {
+      title: "Verification Email Page",
     },
   },
   {
