@@ -30,6 +30,8 @@ import { P500Component } from "./views/error/500.component";
 import { LoginComponent } from "./views/login/login.component";
 import { VerificationEmailComponent } from "./views/verification-email/verification-email.component";
 import { RegisterComponent } from "./views/register/register.component";
+import { ForgotPasswordComponent } from "./views/forgot-password/forgot-password.component";
+import { RecoverPasswordComponent } from "./views/recover-password/recover-password.component";
 import { VerficationCodeComponent } from "./views/verification-code/verification-code.component";
 import { YourCodeComponent } from "./views/verification-code/your-code.component";
 
@@ -103,6 +105,8 @@ const APP_CONTAINERS = [DefaultLayoutComponent];
     P500Component,
     LoginComponent,
     RegisterComponent,
+    ForgotPasswordComponent,
+    RecoverPasswordComponent,
     VerificationEmailComponent,
     WebcamComponent,
     VerficationCodeComponent,
