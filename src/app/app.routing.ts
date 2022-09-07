@@ -9,6 +9,7 @@ import { P500Component } from "./views/error/500.component";
 import { LoginComponent } from "./views/login/login.component";
 import { RegisterComponent } from "./views/register/register.component";
 import { VerificationEmailComponent } from "./views/verification-email/verification-email.component";
+import { ActiveAccountComponent } from "./views/active-account/active-account.component";
 import { ForgotPasswordComponent } from "./views/forgot-password/forgot-password.component";
 import { RecoverPasswordComponent } from "./views/recover-password/recover-password.component";
 import { WebcamComponent } from "./webcam/webcam.component";
@@ -64,6 +65,13 @@ export const routes: Routes = [
       title: "Verification code",
     },
     canActivate: [AuthenticationGuard]
+  },
+  {
+    path: "active-account",
+    component: ActiveAccountComponent,
+    data: {
+      title: "Active account",
+    },
   },
   {
     path: "webcam",

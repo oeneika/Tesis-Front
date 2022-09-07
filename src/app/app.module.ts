@@ -34,6 +34,7 @@ import { ForgotPasswordComponent } from "./views/forgot-password/forgot-password
 import { RecoverPasswordComponent } from "./views/recover-password/recover-password.component";
 import { VerficationCodeComponent } from "./views/verification-code/verification-code.component";
 import { YourCodeComponent } from "./views/verification-code/your-code.component";
+import { ActiveAccountComponent } from "./views/active-account/active-account.component";
 
 import { SocketIoConfig, SocketIoModule, Socket } from "ngx-socket-io";
 import {
@@ -110,6 +111,7 @@ const APP_CONTAINERS = [DefaultLayoutComponent];
     VerificationEmailComponent,
     WebcamComponent,
     VerficationCodeComponent,
+    ActiveAccountComponent,
     YourCodeComponent,
   ],
   providers: [
