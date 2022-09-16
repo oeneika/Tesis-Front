@@ -21,7 +21,7 @@ export class RegisterComponent {
     localStorage.removeItem("hasTwoStepsAuth");
     localStorage.removeItem("hasSetTwoSteps");
     localStorage.removeItem("isTwoStepsAuth");
-    localStorage.clear();
+    // localStorage.clear();
   }
 
   public onSubmit() {
@@ -31,11 +31,12 @@ export class RegisterComponent {
           console.log(data);
           if (data.token) {
             localStorage.setItem("secret", JSON.stringify(data.secret.secret));
-            localStorage.setItem("token", JSON.stringify(data.token));
+            // localStorage.setItem("token", JSON.stringify(data.token));
             localStorage.setItem("identity", JSON.stringify(data.id));
             localStorage.setItem("hasTwoStepsAuth", JSON.stringify(data.hasTwoStepsAuth));
             localStorage.setItem("hasSetTwoSteps", JSON.stringify(data.hasSetTwoSteps));
-            this.router.navigate(['/']);
+            localStorage.setItem("email", JSON.stringify(this.user.email));
+            this.router.navigate(['/verification-email']);
           } else {
             this.errorRegister = true;
           }

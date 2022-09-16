@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
   selector: "app-active-account",
@@ -7,9 +7,10 @@ import { Router } from "@angular/router";
 })
 export class ActiveAccountComponent implements OnInit {
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private activeRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
+    localStorage.setItem("token", JSON.stringify(this.activeRoute.snapshot.paramMap.get("token")));
   }
 }

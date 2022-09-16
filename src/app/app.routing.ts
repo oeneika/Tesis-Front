@@ -67,19 +67,19 @@ export const routes: Routes = [
     canActivate: [AuthenticationGuard]
   },
   {
-    path: "active-account",
+    path: "active-account/:token",
     component: ActiveAccountComponent,
     data: {
       title: "Active account",
     },
   },
-  {
-    path: "webcam",
-    component: WebcamComponent,
-    data: {
-      title: "Webcam page",
-    },
-  },
+  // {
+  //   path: "webcam",
+  //   component: WebcamComponent,
+  //   data: {
+  //     title: "Webcam page",
+  //   },
+  // },
   {
     path: "register",
     component: RegisterComponent,
@@ -102,7 +102,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: "recover-password",
+    path: "recover-password/:token",
     component: RecoverPasswordComponent,
     data: {
       title: "Recover Password Page",

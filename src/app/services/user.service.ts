@@ -35,6 +35,24 @@ export class UserService {
     );
   }
 
+  /**
+   * changePasswordByEmail
+   */
+   public changePasswordByEmail(pwd: any) {
+    return this._http.post(environment.url.concat('changePasswordByEmail'), pwd, {
+      headers: this.headersAuthorization,
+    });
+  }
+
+  /**
+   * forgotPassword
+   */
+    public forgotPassword(email: string) {
+    return this._http.put(environment.url.concat('forgot-password'), {email: email}, {
+      headers: this.headersAuthorization,
+    });
+  }
+
   //Usuario entra al sistema
   signUp(user_to_register): Observable<any> {
     let json = JSON.stringify(user_to_register);

@@ -11,6 +11,15 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
 @import '~ngx-toastr/toastr';
 
+.super-link {
+  color: rgb(45, 45, 156);
+  cursor: pointer;
+}
+
+.super-link:hover {
+  text-decoration: underline;
+}
+
 .no-text-msg {
     display: block;
     font-size: 16px;

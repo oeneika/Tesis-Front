@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
+import { UserService } from "../../services/user.service";
 
 @Component({
   selector: "app-recover-password",
@@ -7,9 +8,27 @@ import { Router } from "@angular/router";
 })
 export class RecoverPasswordComponent implements OnInit {
 
-  constructor(private router: Router) {
+  public pwd!: any;
+
+  constructor(private router: Router, private activeRoute: ActivatedRoute,
+    private userService: UserService) {
+      localStorage.setItem("token", JSON.stringify(this.activeRoute.snapshot.paramMap.get("token")));
+      this.pwd = {
+        password: null,
+        repeatPassword: null,
+        token: this.userService.token
+      }
   }
 
   ngOnInit() {
+  }
+
+  /**
+   * recoverPassword
+   */
+  public recoverPassword() {
+    this.userService.changePasswordByEmail(this.pwd).subscribe((response: any) => {
+
+    });
   }
 }

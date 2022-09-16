@@ -12,4 +12,8 @@ export class VerificationEmailComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  get email(): string {
+    return localStorage.getItem('email');
+  }
 }

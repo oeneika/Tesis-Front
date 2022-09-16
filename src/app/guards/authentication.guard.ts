@@ -15,7 +15,7 @@ export class AuthenticationGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       if (!this.auth) {
-        this.router.navigate(['/login']);
+        !this.unverified ? this.router.navigate(['/verification-email']) : this.router.navigate(['/login']);
       }
     return this.shallPass;
   }
@@ -23,9 +23,14 @@ export class AuthenticationGuard implements CanActivate {
   private get shallPass(): boolean {
     return this.auth;
   }
-  
+
   private get auth(): boolean {
     return !!this.userService.token && !!this.userService.identity && !!this.userService.secret;
   }
-  
+
+  private get unverified(): boolean {
+    return !this.userService.token && !!this.userService.identity && !!this.userService.secret;
+  }
+
+
 }
