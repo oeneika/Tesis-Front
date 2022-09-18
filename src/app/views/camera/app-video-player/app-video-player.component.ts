@@ -33,24 +33,22 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
   public lastRecognition: any;
   public peer: Peer;
   public subscriptions: Subscription[] = [];
+  public notifiedKnownFaces: string[] = [];
   @ViewChild("video", { static: false }) video: ElementRef;
   @ViewChild("canvas", { static: false }) canvasRef: ElementRef;
   @ViewChild("capture", { static: false }) captureRef: ElementRef;
   @ViewChild("prueba", { static: false }) prueba: ElementRef;
   @Input() cameraId: any;
   @Input() confidenceLevels: any;
-  // @Input() stream: any;
   public localRecorder: any;
   public localStream: any;
   @Output() closeCamera: EventEmitter<any> = new EventEmitter<any>();
-  //https://rushipanchariya.medium.com/how-to-use-face-api-js-for-face-detection-in-video-or-image-using-angular-fca1e4bef797
   public recognitions: any[] = [];
   constructor(
     private elRef: ElementRef,
     private _faceService: FaceService,
     private _userService: UserService,
     private webSocketService: WebSocketService,
-    // private peerService: PeerService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
     private _videoService: RecordingsService,
@@ -191,33 +189,10 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
   }
 
   private async capture(detection: any[]) {
-    // clearInterval(this.interval);
-    // console.log(this.videoInput);
-    // const distance = await this.imgComparison(this.lastRecognition, this.videoInput);
-    // if (distance > 0.6) {
       this.compareFaces(this.videoInput, detection);
       setTimeout(() => {
         this.captureCheck = true;
       }, 15000);
-    //   this.lastRecognition = this.videoInput;
-    // } else {
-    //   setTimeout(async function() {
-    //     this.lastRecognition = this.videoInput;
-    //     await this.detectFaces();
-    //   }, 5000);
-    // }
-    // const canvas: HTMLCanvasElement = this.captureRef.nativeElement;
-    // canvas.setAttribute('width', this.videoInput.offsetWidth);
-    // canvas.setAttribute('height', this.videoInput.offsetHeight);
-    // canvas.getContext('2d').drawImage(this.videoInput, 0, 0, this.videoInput.offsetWidth, this.videoInput.offsetHeight);
-    // const frame = canvas.getContext('2d').getImageData(0, 0, this.videoInput.offsetWidth, this.videoInput.offsetHeight);
-    // const length = frame.data.length;
-    // const data = frame.data;
-    // const video = document.getElementById('video');
-    // video.addEventListener('play', (event: any)=>{
-    //   // console.log('Ok', event);
-    // });
-
   }
 
   private async compareFaces(capturedFace: any, detection: any[]) {
@@ -238,16 +213,34 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
       }
       if (recognition.user && (_recognitions.findIndex(user => user?.user === recognition?.user) === -1)) {
         _recognitions.push(recognition);
-        this.sendNotification(detect, recognition);
+        if (this.notifiedKnownFaces.findIndex(face => face === recognition.user) === -1) {
+          this.notifiedKnownFaces.push(recognition.user);
+          console.log('Notified Faces Added ', this.notifiedKnownFaces);
+          this.sendNotification(detect, recognition);
+          this.webSocketService.notifyRoom({
+            idPeer: this.peer.id,
+            roomName: this.cameraId,
+            message: _recognitions
+          });
+          setTimeout(() => {
+            const index = this.notifiedKnownFaces.findIndex(face => face === recognition.user);
+            console.log('User ID ', recognition.user);
+            this.notifiedKnownFaces.splice(index, 1);
+            console.log('Notified Faces Sliced ', this.notifiedKnownFaces);
+          }, 60000);
+          // }, 900000);
+        } else {
+          this.detectFaces();
+        }
       } else if (!recognition.user) {
         _recognitions.push({ msg: 'Alerta! Rostro desconocido' });
         this.sendNotification(this.detection[0], null, true);
+        this.webSocketService.notifyRoom({
+          idPeer: this.peer.id,
+          roomName: this.cameraId,
+          message: _recognitions
+        });
       }
-      this.webSocketService.notifyRoom({
-        idPeer: this.peer.id,
-        roomName: this.cameraId,
-        message: _recognitions
-      })
     }
 
     this.recognitions = [].concat(_recognitions);
@@ -261,7 +254,6 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
         detection?.expressions[expression] > faceExpression.points ? (faceExpression.points = detection?.expressions[expression]) && (faceExpression.exp = expression) : undefined;
       }
     }
-    // if (!unknown) {
       const canvas: HTMLCanvasElement = this.captureRef.nativeElement;
       canvas.setAttribute('width', this.videoInput.offsetWidth);
       canvas.setAttribute('height', this.videoInput.offsetHeight);
@@ -333,17 +325,12 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
     this.localRecorder.stop();
     this.last = true;
-    // this.webSocketService.leaveRoom({
-    //   idPeer: this.peer.id,
-    //   roomName: this.cameraId,
-    // });
     this.webSocketService.notifyRoom({
       idPeer: this.peer.id,
       roomName: this.cameraId,
       message: [{imDone: true}]
     });
     this.peer.destroy();
-    // this.webSocketService.disconnect();
     this.localStream.getTracks()
     .forEach((track) => {
         track.stop();
