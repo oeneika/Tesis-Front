@@ -73,7 +73,7 @@
                                               {{face?.face?.name}} {{face?.face?.surname}}
                                           </div>
                                       </td>
-                                      <td>Nivel {{face?.face?.confidenceLevels?.level}} 2</td>
+                                      <td>{{confidenceLevelDescription(face?.face?.confidenceLevels)}}</td>
                                       <td>{{face?.face?.age}} años</td>
                                       <td>{{face?.face?.gender}}</td>
                                   </tr>
@@ -162,7 +162,7 @@
                               {{face?.face?.name}} {{face?.face?.surname}}
                           </div>
                       </td>
-                      <td>Nivel {{face?.face?.confidenceLevels?.level}} 2</td>
+                      <td>{{confidenceLevelDescription(face?.face?.confidenceLevels)}}</td>
                       <td>{{face?.face?.age}} años</td>
                       <td>{{face?.face?.gender}}</td>
                   </tr>

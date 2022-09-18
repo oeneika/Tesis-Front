@@ -12,7 +12,7 @@ export class RecoverPasswordComponent implements OnInit {
 
   constructor(private router: Router, private activeRoute: ActivatedRoute,
     private userService: UserService) {
-      localStorage.setItem("token", JSON.stringify(this.activeRoute.snapshot.paramMap.get("token")));
+      localStorage.setItem("token", this.activeRoute.snapshot.paramMap.get("token"));
       this.pwd = {
         password: null,
         repeatPassword: null,
@@ -28,7 +28,9 @@ export class RecoverPasswordComponent implements OnInit {
    */
   public recoverPassword() {
     this.userService.changePasswordByEmail(this.pwd).subscribe((response: any) => {
-
+      setTimeout(() => {
+        response?.ok ? this.router.navigate(['/login']) : undefined;
+      }, 1500);
     });
   }
 }

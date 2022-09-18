@@ -56,7 +56,7 @@ export class ProfilePageComponent implements OnInit {
         this.usuario = data.userUpdated;
         //subir la imagen
         if (!this.filesToUpload) {
-          //redirección
+          this.toastr.success('Datos del usuario actualizados con éxito.');
         } else {
           this.makeFileRequest(
             this.url + "upload-image-user/" + this.user._id,
@@ -70,6 +70,7 @@ export class ProfilePageComponent implements OnInit {
             document
               .getElementById("image-logged")
               .setAttribute("style", `background-image: url(${image_path});`);
+              this.toastr.success('Datos del usuario actualizados con éxito.');
           });
         }
       },

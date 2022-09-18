@@ -45,7 +45,7 @@ export class DashboardComponent implements OnInit {
 
   }
   ngOnInit(){
-    // this.getConfidenceLevels();
+    this.getConfidenceLevels();
     this.getCamerasByAdmin();
   }
 
@@ -117,6 +117,13 @@ export class DashboardComponent implements OnInit {
       case 'weekly':
         return {list: this.reportsbyWeek, name: 'semanal'};
     }
+  }
+
+  /**
+   * confidenceLevelDescription
+   */
+  public confidenceLevelDescription(levelId: string) {
+    return this.confidenceLevels?.find(level => level?._id === levelId)?.title || 'Desconocido';
   }
 
   /**
