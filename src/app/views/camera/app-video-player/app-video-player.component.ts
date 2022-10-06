@@ -91,24 +91,27 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
   }
     initPeer = () => {
       this.peer = new Peer('tesis-player-' + this.cameraId, {
-      host: environment.peerjsHost,
-      port: environment.peerJSPort,
-      path: '/peerjs',
-      secure: false
+      //host: environment.peerjsHost,
+      //port: environment.peerJSPort,
+      //path: '/peerjs',
+      debug:3,
+      //secure: false
     });
     this.peer.on("open", (id) => {
+      console.log("open",id);
       const body = {
         idPeer: id,
         roomName: this.cameraId,
       };
-      this.webSocketService.joinRoom(body);
       this.initSocket();
+      this.webSocketService.joinRoom(body);
+
     });
   };
 
   initSocket = () => {
     this.subscriptions.push(this.webSocketService.cbEvent.subscribe((res) => {
-      console.log(res);
+      console.log("websocket" , res);
       if (res.name === "new-user") {
         const { idPeer } = res.data;
         setTimeout(() => {
@@ -356,7 +359,7 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
         videoFD.append('camera', this.cameraId);
         videoFD.append('file', new File([blob], moment().format('DD-MM-yyyy-HH-mm-ss') + '.mp4'), moment().format('DD-MM-yyyy-HH-mm-ss') + '.mp4');
         this._videoService.createVideo(videoFD).pipe(take(1)).subscribe((response: any) => {
-          this.toastr.success('Video grabado perro');
+          this.toastr.success('Video grabado exitosamente');
           if(!this.last) {
             this.recordVideo(mediaStream);
             setTimeout(() => {

@@ -10,10 +10,11 @@ export class PeerService {
 
   constructor() {
     this.peer = new Peer('tesis-' + String(JSON.parse(localStorage.getItem('idCamera'))), {
-      host: environment.peerjsHost,
-      port: environment.peerJSPort,
-      path: '/peerjs',
-      secure: false
+      //host: environment.peerjsHost,
+      //port: environment.peerJSPort,
+      //path: '/peerjs',
+      debug:3,
+      //secure: false
     });
   }
 }

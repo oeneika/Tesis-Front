@@ -40,6 +40,7 @@ export class ListCamerasComponent implements OnInit, OnDestroy {
    * getLiveCameras
    */
   public getLiveCameras(data: any) {
+    console.log("Data Camara :(", data);
     this.webSocketService.getRooms(data);
   }
 
@@ -72,6 +73,8 @@ export class ListCamerasComponent implements OnInit, OnDestroy {
         this.getLiveCameras({cameraId: element?.cameraId?._id, joinRoom: !this.imIn});
         this.imIn = true;
       });
+      console.log("Camaras :)", this.cameras);
+      console.log("Live Camaras :D", this.liveCameras);
     });
   }
 }
