@@ -3,6 +3,7 @@ import { User } from "../../models/user";
 import { UserService } from "../../services/user.service";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
+import { SwPush } from '@angular/service-worker';
 
 @Component({
   selector: "app-login",
@@ -13,8 +14,10 @@ export class LoginComponent implements OnInit {
   public user: User;
   public identity;
   public token;
+  respuesta: any;
+  readonly VAPID_PUBLIC_KEY = "BNDAl3-ES2V08t5bTL-3YuexUNceQr8c4Cel79zqP3A4GUxsDscRc2JEAWmYmAvJwtOxsYqMl4pR9dD1hZ1ofqg";
 
-  constructor(private _userService: UserService, private router: Router, private toastr: ToastrService) {
+  constructor(private _userService: UserService, private swPush: SwPush, private router: Router, private toastr: ToastrService) {
     this.user = new User("", "", "", "", "", {}, "", "", "", "ROLE_USER");
     localStorage.removeItem("identity");
     localStorage.removeItem("token");
@@ -23,6 +26,7 @@ export class LoginComponent implements OnInit {
     localStorage.removeItem("hasSetTwoSteps");
     localStorage.removeItem("isTwoStepsAuth");
     localStorage.clear();
+    this.subscribeToNotifications();
   }
 
   ngOnInit() {
@@ -50,4 +54,17 @@ export class LoginComponent implements OnInit {
       this.toastr.error('Todos los campos son obligatorios.');
     }
   }
+/*NOTIFICACIONES PUSH*/
+  subscribeToNotifications = () => {
+    if (!this.swPush.isEnabled) {
+      console.log("Notification is not enabled.");
+      return;
+    }
+
+    this.swPush.requestSubscription({
+      serverPublicKey: this.VAPID_PUBLIC_KEY
+    }).then((_) => {
+      console.log(JSON.stringify(_));
+    }).catch((_) => console.log);
+  };
 }
