@@ -1,8 +1,8 @@
 export const environment = {
   production: false,
   contentType: "application/json",
-  url: "http://localhost:8000/api/",
-  shortURL: "http://localhost:8000",
-  peerjsHost: "localhost",
-  peerJSPort: 3001
+  url: "https://sistema-de-videovigilancia.herokuapp.com/api/",
+  shortURL: "https://sistema-de-videovigilancia.herokuapp.com/",
+  peerjsHost: "sistema-de-videovigilancia.herokuapp.com",
+  peerJSPort: 15500
 };

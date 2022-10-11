@@ -95,7 +95,7 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
       //port: environment.peerJSPort,
       //path: '/peerjs',
       debug:3,
-      //secure: false
+      secure: !!environment.production
     });
     this.peer.on("open", (id) => {
       console.log("open",id);

@@ -46,6 +46,14 @@ export class RecordingsComponent implements OnInit {
   }
 
   /**
+   * getPrettySize
+   */
+  public getPrettySize(size: string) {
+    const _size = Number(size);
+    return Math.fround(_size / 1000000).toFixed(2);
+  }
+
+  /**
    * getRecordings
    */
   public getRecordings(): void {

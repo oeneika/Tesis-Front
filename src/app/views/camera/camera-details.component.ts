@@ -63,7 +63,7 @@ export class CameraDetailsComponent implements OnInit, OnDestroy {
       //port: environment.peerJSPort,
       //path: '/peerjs',
       debug:3,
-      //secure: false
+      secure: !!environment.production
     });
     let int = null;
     this.peer.on("open", (id) => {

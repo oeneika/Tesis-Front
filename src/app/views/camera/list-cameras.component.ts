@@ -48,17 +48,14 @@ export class ListCamerasComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.webSocketService.cbEvent.subscribe((res) => {
       console.log(res);
       if (res.name === "retrieve-rooms" && res.data.confirmedCamera) {
+        console.log('Lo que me encontre: ', this.cameras.find(cam => cam.cameraId._id === res.data.cameraId));
         this.liveCameras.push(this.cameras.find(cam => cam.cameraId._id === res.data.cameraId));
-        // this.webSocketService.leaveRoom({
-        //   idPeer: 'wtf',
-        //   roomName: res.data.cameraId,
-        // });
       } else if (res.name === 'new-user') {
         this.getCamerasByUser();
       } else if (res.name === 'bye-user') {
-        // this.liveCameras = [];
         this.getCamerasByUser();
       }
+      console.log("Live Camaras :D", this.liveCameras);
     }));
   };
 
@@ -71,10 +68,9 @@ export class ListCamerasComponent implements OnInit, OnDestroy {
       this.liveCameras = [];
       response.forEach(element => {
         this.getLiveCameras({cameraId: element?.cameraId?._id, joinRoom: !this.imIn});
-        this.imIn = true;
       });
+      this.imIn = true;
       console.log("Camaras :)", this.cameras);
-      console.log("Live Camaras :D", this.liveCameras);
     });
   }
 }

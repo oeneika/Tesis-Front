@@ -8,6 +8,7 @@ import { UserService } from "../../services/user.service";
 import { ToastrService } from "ngx-toastr";
 import { ConfidenceLevels } from "../../models/confidenceLevels";
 import { ConfidenceLevelsService } from "../../services/confidence-levels.service";
+import { take } from "rxjs/operators";
 
 
 @Component({
@@ -49,24 +50,41 @@ export class CameraComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getCamerasByUser();
+    this.getConfidenceLevels();
+  }
+
+  /**
+   * getCamerasByUser
+   */
+   public getCamerasByUser() {
+    this._cameraService.getCamerasByUser().pipe(take(1)).subscribe((response: any) => {
+      console.log('Camaras: ', response);
+      this.cameras = response.map((res: any) => res.cameraId);
+      if((this.cameras.length === 0) && !this._cameraService.idCamera) {
+        this.showModal();
+      }
+      this.getCamera();
+    });
+  }
+
+  /**
+   * getConfidenceLevels
+   */
+  public getConfidenceLevels() {
     this._confidenceLevelsService.getConfidenceLevels().subscribe((response: any) => {
       this.confidenceLevels = response;
     });
-    if(!this._cameraService.idCamera){
-      this.showModal();
-    }
-    this.getCamera();
   }
 
   public getCamera() {
     console.log(this.idCamera)
-    let id = this._cameraService.idCamera?.replace(/['"]+/g, '');
-    if (id){
-      this._cameraService.getCamera(id).subscribe(
+    if (this.idCamera){
+      this._cameraService.getCamera(this.idCamera).subscribe(
         (data) => {
           this.camera = data;
+          console.log('Camara: ', data);
           // this.record(true);
-          console.log(this.cameras);
         },
         (err) => {}
       );
@@ -74,88 +92,23 @@ export class CameraComponent implements OnInit {
 
   }
 
+  /**
+   * onCameraChange
+   */
+  public onCameraChange(value: any) {
+    this.idCamera = value;
+    localStorage.setItem("idCamera", JSON.stringify(value));
+    this.getCamera();
+  }
+
   record(start: boolean) {
 
     if(this.camera.name == '' || this.camera.name == null){
       this.toastr.error('Debe añadirle un nombre a la cámara para iniciar la grabación.')
     }else{
-      // this.checkMediaDevices();
-      // this.initPeer();
-      // this.initSocket();
       this.recording = start;
     }
   }
-
-  // initPeer = () => {
-  //   const { peer } = this.peerService;
-  //   peer.on("open", (id) => {
-  //     const body = {
-  //       idPeer: id,
-  //       roomName: this.roomName,
-  //     };
-  //     console.log("uniendose al cuarto");
-  //     this.webSocketService.joinRoom(body);
-  //   });
-
-  //   peer.on(
-  //     "call",
-  //     (callEnter) => {
-  //       console.log("agregando la llamada entrante al front");
-  //       callEnter.answer(this.currentStream);
-  //       callEnter.on("stream", (streamRemote) => {
-  //         this.addVideoUser(streamRemote);
-  //       });
-  //     },
-  //     (err) => {
-  //       console.log("*** ERROR *** Peer call ", err);
-  //     }
-  //   );
-  // };
-
-  // initSocket = () => {
-  //   this.webSocketService.cbEvent.subscribe((res) => {
-  //     if (res.name === "new-user") {
-  //       console.log("SOCKET", res);
-  //       const { idPeer } = res.data;
-  //       this.sendCall(idPeer, this.currentStream);
-  //     }
-  //   });
-  // };
-
-  // checkMediaDevices = () => {
-  //   if (navigator && navigator.mediaDevices) {
-  //     navigator.mediaDevices
-  //       .getUserMedia({
-  //         audio: false,
-  //         video: true,
-  //       })
-  //       .then((stream) => {
-  //         this.currentStream = stream;
-  //         this.addVideoUser(stream);
-  //       })
-  //       .catch(() => {
-  //         console.log("*** ERROR *** Not permissions");
-  //       });
-  //   } else {
-  //     console.log("*** ERROR *** Not media devices");
-  //   }
-  // };
-
-  // addVideoUser = (stream: any) => {
-  //   this.listUser.push(stream);
-  //   const unique = new Set(this.listUser);
-  //   this.listUser = [...unique];
-  // };
-
-  // sendCall = (idPeer, stream) => {
-  //   console.log("enviando la llamada al peer", idPeer);
-  //   const newUserCall = this.peerService.peer.call(idPeer, stream);
-  //   if (!!newUserCall) {
-  //     newUserCall.on("stream", (userStream) => {
-  //       this.addVideoUser(userStream);
-  //     });
-  //   }
-  // };
 
   changeStatus() {
     if (!this.statusCamera) {
@@ -177,6 +130,9 @@ export class CameraComponent implements OnInit {
   }
 
   showModal(): void {
+    this.idCamera = null;
+    localStorage.removeItem("idCamera");
+    this.camera = new Camera("", "", false, false, "");
     this.isModalShown = true;
   }
 

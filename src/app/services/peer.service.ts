@@ -14,7 +14,7 @@ export class PeerService {
       //port: environment.peerJSPort,
       //path: '/peerjs',
       debug:3,
-      //secure: false
+      secure: !!environment.production
     });
   }
 }

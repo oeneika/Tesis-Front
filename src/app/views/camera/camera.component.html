@@ -41,8 +41,19 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body" align="center">
-                    <p *ngIf="camera.name" class="mb-0">Nombre de la cámara: {{camera.name}}</p>
-                    <button  *ngIf="!camera.name" class="btn btn-primary w-100 mb-3" (click)="showModal()">Nombre de cámara</button>
+                    <label for="confidenceLevels">Cámara seleccionada</label>
+                    <select class="form-control" name="confidenceLevels" [(ngModel)]="camera._id" (ngModelChange)="onCameraChange($event)" [disabled]="recording">
+                      <option class="placeholder" placeholder="Seleccione" [value]="''" disabled>
+                         Seleccione
+                      </option>
+                      <option
+                      *ngFor="let _camera of cameras; let i = index"
+                      [value]="_camera?._id"
+                      >
+                      {{ _camera?.name }}
+                      </option>
+                    </select>
+                    <button class="btn btn-primary w-100 mt-3 mb-3" (click)="showModal()" [disabled]="recording">Agregar Cámara</button>
                 </div>
             </div>
         </div>
