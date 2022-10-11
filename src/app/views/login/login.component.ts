@@ -66,12 +66,12 @@ export class LoginComponent implements OnInit {
       serverPublicKey: this.VAPID_PUBLIC_KEY
     }).then((val) => {
       const push = {
-        endpoint: val?.endpoint,
-        auth: val.getKey('auth'),
-        p256dh: val.getKey('p256dh')
+        endpoint: JSON.parse(JSON.stringify(val))?.endpoint,
+        auth: JSON.parse(JSON.stringify(val)).keys?.auth,
+        p256dh: JSON.parse(JSON.stringify(val)).keys?.p256dh
       };
       console.log('MAMAME EL GUEVO ALEXANDER: ', push)
-      console.log('Push: ', val);
+      console.log('Push: ', JSON.parse(JSON.stringify(val)));
 
       this.notificationService.sendNotificationsPush(push)
     }).catch((val) => console.log);
