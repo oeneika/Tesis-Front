@@ -65,12 +65,15 @@ export class LoginComponent implements OnInit {
     this.swPush.requestSubscription({
       serverPublicKey: this.VAPID_PUBLIC_KEY
     }).then((val) => {
-      console.log('Push: ', val);
-      this.notificationService.sendNotificationsPush({
+      const push = {
         endpoint: val?.endpoint,
         auth: val.getKey('auth'),
         p256dh: val.getKey('p256dh')
-      })
+      };
+      console.log('MAMAME EL GUEVO ALEXANDER: ', push)
+      console.log('Push: ', val);
+
+      this.notificationService.sendNotificationsPush(push)
     }).catch((val) => console.log);
   };
 }
