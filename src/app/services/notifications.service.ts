@@ -18,6 +18,15 @@ export class NotificationService {
   }
 
     /**
+     * sendNotificationsPush
+     */
+     public sendNotificationsPush(notification: any) {
+      return this._http.post(environment.url.concat('send-notifications'), notification, {
+        headers: this.headersAuthorization,
+      });
+    }
+
+    /**
      * createNotification
      */
      public createNotification(notification: any) {
