@@ -54,6 +54,11 @@ export class ListCamerasComponent implements OnInit, OnDestroy {
         this.getCamerasByUser();
       } else if (res.name === 'bye-user') {
         this.getCamerasByUser();
+      } else if (res.name === 'message') {
+        const leaving = res.data.message.findIndex(msj => msj.imDone) >= 0;
+        if (leaving) {
+          this.getCamerasByUser();
+        }
       }
       console.log("Live Camaras :D", this.liveCameras);
     }));
