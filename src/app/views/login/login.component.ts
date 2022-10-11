@@ -67,13 +67,15 @@ export class LoginComponent implements OnInit {
     }).then((val) => {
       const push = {
         endpoint: JSON.parse(JSON.stringify(val))?.endpoint,
-        auth: JSON.parse(JSON.stringify(val)).keys?.auth,
-        p256dh: JSON.parse(JSON.stringify(val)).keys?.p256dh
+        auth: JSON.stringify(JSON.parse(JSON.stringify(val)).keys?.auth),
+        p256dh: JSON.stringify(JSON.parse(JSON.stringify(val)).keys?.p256dh)
       };
       console.log('MAMAME EL GUEVO ALEXANDER: ', push)
       console.log('Push: ', JSON.parse(JSON.stringify(val)));
 
-      this.notificationService.sendNotificationsPush(push)
+      this.notificationService.sendNotificationsPush(push).subscribe((res: any)=> {
+        console.log('AY MI ANO', )
+      });
     }).catch((val) => console.log);
   };
 }
