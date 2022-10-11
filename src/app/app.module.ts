@@ -61,6 +61,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MyInterceptor } from "./services/interceptor.service";
 import { UserService } from "./services/user.service";
+import { NotificationService } from "./services/notifications.service";
 
 const config: SocketIoConfig = {
   // url: environment.shortURL + "/socket.io/?EIO=3",
@@ -122,7 +123,8 @@ const APP_CONTAINERS = [DefaultLayoutComponent];
     { provide: HTTP_INTERCEPTORS, useClass: MyInterceptor, multi: true },
     IconSetService,
     BsDatepickerConfig,
-    UserService
+    UserService,
+    NotificationService
   ],
   bootstrap: [AppComponent],
 })
