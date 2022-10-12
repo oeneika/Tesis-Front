@@ -5,7 +5,7 @@ import {Socket} from 'ngx-socket-io';
   providedIn: 'root'
 })
 export class WebSocketService {
-  events = ['new-user', 'bye-user', 'message', 'retrieve-rooms'];
+  events = ['new-user', 'bye-user', 'message', 'retrieve-rooms', 'push'];
   cbEvent: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private _socket: Socket) {
@@ -33,6 +33,10 @@ export class WebSocketService {
   joinRoom = (data) => {
     console.log("uniendose al cuarto", data);
     this._socket.emit('join', data);
+  }
+  pushRoom = (data) => {
+    console.log("emitiendo push al cuarto", data);
+    this._socket.emit('push', data);
   }
   notifyRoom = (data) => {
     console.log("notificando al cuarto", data);

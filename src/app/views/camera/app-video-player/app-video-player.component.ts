@@ -225,6 +225,13 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
             roomName: this.cameraId,
             message: _recognitions
           });
+          if (recognition?.face?.confidenceLevels === '633ee44324cfea0016161014') {
+            console.log('semamo')
+            this.webSocketService.pushRoom({
+            roomName: this.cameraId,
+            identity: this.identity
+          });
+          }
           setTimeout(() => {
             const index = this.notifiedKnownFaces.findIndex(face => face === recognition.user);
             console.log('User ID ', recognition.user);

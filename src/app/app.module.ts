@@ -62,6 +62,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { MyInterceptor } from "./services/interceptor.service";
 import { UserService } from "./services/user.service";
 import { NotificationService } from "./services/notifications.service";
+import { CamerasService } from "./services/cameras.service";
+import { WebSocketService } from "./services/web-socket.service";
 
 const config: SocketIoConfig = {
   // url: environment.shortURL + "/socket.io/?EIO=3",
@@ -124,7 +126,9 @@ const APP_CONTAINERS = [DefaultLayoutComponent];
     IconSetService,
     BsDatepickerConfig,
     UserService,
-    NotificationService
+    NotificationService,
+    CamerasService,
+    WebSocketService
   ],
   bootstrap: [AppComponent],
 })

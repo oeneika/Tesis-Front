@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   respuesta: any;
   readonly VAPID_PUBLIC_KEY = "BNDAl3-ES2V08t5bTL-3YuexUNceQr8c4Cel79zqP3A4GUxsDscRc2JEAWmYmAvJwtOxsYqMl4pR9dD1hZ1ofqg";
 
-  constructor(private _userService: UserService, private swPush: SwPush, private router: Router, private toastr: ToastrService, private notificationService: NotificationService) {
+  constructor(private _userService: UserService, private swPush: SwPush, private router: Router, private toastr: ToastrService, ) {
     this.user = new User("", "", "", "", "", {}, "", "", "", "ROLE_USER");
     localStorage.removeItem("identity");
     localStorage.removeItem("token");
@@ -72,10 +72,8 @@ export class LoginComponent implements OnInit {
       };
       // console.log('MAMAME EL GUEVO ALEXANDER: ', push)
       // console.log('Push: ', JSON.parse(JSON.stringify(val)));
-
-      this.notificationService.sendNotificationsPush(push).subscribe((res: any)=> {
-        // console.log('AY MI ANO', )
-      });
+      localStorage.setItem('swPush', JSON.stringify(push));
+      // this.notificationService.sendNotificationsPush(push).subscribe((res: any)=> {});
     }).catch((val) => console.log);
   };
 }
