@@ -18,6 +18,8 @@ import { take } from "rxjs/operators";
 })
 export class CameraComponent implements OnInit {
   public camera: Camera;
+  public typeCamera: string = 'user';
+  public devices: string[] = [];
   roomName: string;
   currentStream: any;
   listUser: Array<any> = [];
@@ -50,8 +52,16 @@ export class CameraComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.ajab();
     this.getCamerasByUser();
     this.getConfidenceLevels();
+  }
+
+  async ajab() {
+
+  this.devices = await (await navigator.mediaDevices.enumerateDevices()).filter(a => a instanceof InputDeviceInfo && a.kind === 'videoinput')
+  .map(a => a.deviceId.concat('(', a.label, ')'));
+  console.log(this.devices)
   }
 
   /**

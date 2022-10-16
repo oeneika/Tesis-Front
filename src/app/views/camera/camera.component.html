@@ -2,8 +2,8 @@
     <div class="row">
         <div class="col-sm-12">
             <h1 class="mb-3">Grabación en vivo</h1>
-            <p>1. Antes de iniciar la grabación, por favor añada un nombre a la cámara de vigilancia.</p>
-            <p>2. Coloque el dispositivo de cámara cerca de los objetos de interés (1-2 metros) para asegurar que el reconocimiento facial funcione.</p>
+            <p>Antes de iniciar la grabación, por favor añada un nombre a la cámara de vigilancia.</p>
+            <!-- <p>2. Coloque el dispositivo de cámara cerca de los objetos de interés (1-2 metros) para asegurar que el reconocimiento facial funcione.</p> -->
         </div>
     </div>
     <div class="row">
@@ -19,7 +19,7 @@
                         </div>
                     </ng-container>
                     <ng-container *ngIf="recording">
-                        <app-app-video-player #player [confidenceLevels]="confidenceLevels" [cameraId]="idCamera" (closeCamera)="recording = false"></app-app-video-player>
+                        <app-app-video-player #player [confidenceLevels]="confidenceLevels" [cameraId]="idCamera" [typeCamera]="typeCamera" (closeCamera)="recording = false"></app-app-video-player>
                     </ng-container>
                     <div class="row mt-3">
                         <div class="col-md-6 mb-3">
@@ -41,9 +41,9 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body" align="center">
-                    <label for="confidenceLevels">Cámara seleccionada</label>
-                    <select class="form-control" name="confidenceLevels" [(ngModel)]="camera._id" (ngModelChange)="onCameraChange($event)" [disabled]="recording">
-                      <option class="placeholder" placeholder="Seleccione" [value]="''" disabled>
+                    <label for="camera">Cámara seleccionada</label>
+                    <select class="form-control mb-3" name="camera" [(ngModel)]="camera._id" (ngModelChange)="onCameraChange($event)" [disabled]="recording">
+                      <option class="placeholder" [value]="''" disabled>
                          Seleccione
                       </option>
                       <option
@@ -51,6 +51,14 @@
                       [value]="_camera?._id"
                       >
                       {{ _camera?.name }}
+                      </option>
+                    </select>
+                    <select *ngIf="devices.length > 0" class="form-control" name="typeCamera" [(ngModel)]="typeCamera" [disabled]="recording">
+                      <option class="placeholder" [value]="'user'">
+                         Frontal
+                      </option>
+                      <option *ngIf="devices.length > 1" class="placeholder" [value]="'environment'">
+                         Trasera
                       </option>
                     </select>
                     <button class="btn btn-primary w-100 mt-3 mb-3" (click)="showModal()" [disabled]="recording">Agregar Cámara</button>

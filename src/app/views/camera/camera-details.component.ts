@@ -108,7 +108,7 @@ export class CameraDetailsComponent implements OnInit, OnDestroy {
       console.log(res);
       if (res.name === "message") {
         res.data.message.forEach(item => {
-          if (item.msg) {
+          if (item.msg && !item.zoomErr) {
             const params = [item.msg, 'Rostro capturado', { timeOut: 20000 }];
             if (item?.face) {
               switch (this.confidenceLevelText(item?.face?.confidenceLevels)) {
@@ -131,6 +131,8 @@ export class CameraDetailsComponent implements OnInit, OnDestroy {
             } else {
               this.toastr.warning(...params);
             }
+          } else if (item.msg && item.zoomErr) {
+            this.toastr.error(item.msg);
           }
           if(item.imDone) {
             this.backToList();
@@ -156,6 +158,16 @@ export class CameraDetailsComponent implements OnInit, OnDestroy {
       this.spinner.hide();
       this._route.navigate(['camera/list-cameras']);
     }, 3000);
+  }
+
+  /**
+   * manageCamera
+   */
+  public manageCamera(reason: string) {
+    this.webSocketService.manageCamera({
+    roomName: this.cameraId,
+    reason: reason
+  });
   }
 
   ngOnDestroy(): void {

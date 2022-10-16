@@ -5,9 +5,16 @@
       <span class="loading-msg">Cargando video por favor espere</span>
     </ng-container>
 </div>
+<div class="row mt-3">
+    <div class="col-md-6 mb-3">
+        <button class="btn btn-primary w-100" (click)="zoomIt(true)">Zoom (+)</button>
+    </div>
+    <div class="col-md-6 mb-3">
+        <button class="btn btn-primary w-100" (click)="zoomIt(false)">Zoom (-)</button>
+    </div>
+</div>
 <div *ngFor="let face of recognitions" class="face-recognition">
   <span class="face-recognition-message">{{face?.msg}}</span>
 </div>
 <div id="recording"></div>
-<button (click)="zoomIn()"> + </button>
 <canvas #capture style="display: none"></canvas>

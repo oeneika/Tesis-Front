@@ -25,7 +25,6 @@ declare var MediaRecorder: any;
 export class AppVideoPlayerComponent implements OnInit, OnDestroy {
 
   public faces: any[] = [];
-  public zoom: number = 0;
   public expressions: any = { 'angry': 'Molesto', 'disgusted': 'Asqueado', 'fearful': 'Atemorizado', 'happy': 'Feliz', 'neutral': 'Neutral', 'sad': 'Triste', 'surprised': 'Sorprendido' };
   public identity;
   public last: boolean= false;
@@ -39,6 +38,7 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
   @ViewChild("canvas", { static: false }) canvasRef: ElementRef;
   @ViewChild("capture", { static: false }) captureRef: ElementRef;
   @ViewChild("prueba", { static: false }) prueba: ElementRef;
+  @Input() typeCamera: string;
   @Input() cameraId: any;
   @Input() confidenceLevels: any;
   public localRecorder: any;
@@ -120,6 +120,18 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
         }, 500);
       } else if (res.name === "retrieve-rooms") {
         this.webSocketService.getRooms({cameraId: this.cameraId, confirmedCamera: true})
+      } else if (res.name === 'manageCamera') {
+        switch (res.data.reason) {
+          case 'turnOff':
+            this.closeCamera.emit();
+            break;
+          case 'zoomIn':
+            this.zoomIt(true);
+            break;
+          case 'zoomOut':
+            this.zoomIt(false);
+            break;
+        }
       }
     }));
   };
@@ -131,7 +143,8 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
 
   startVideo() {
     this.videoInput = this.video.nativeElement;
-    const p = navigator.mediaDevices.getUserMedia({ audio: false, video: true });
+    const constraints = { facingMode: this.typeCamera, zoom: true };
+    const p = navigator.mediaDevices.getUserMedia({ audio: false, video: constraints });
     p.then((mediaStream: MediaStream) => {
       this.localStream = mediaStream;
       this.video.nativeElement.srcObject = mediaStream;
@@ -381,16 +394,22 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
   /**
    * zoomIn
    */
-  public zoomIn() {
+  public zoomIt(isIn: boolean) {
     const [track] = this.localStream.getVideoTracks();
     const settings = track.getSettings();
-
     // Check whether zoom is supported or not.
     if (!('zoom' in settings)) {
-      this.toastr.error('El dispositivo '.concat(track.label, ' no soporta Zoom.'))
+      this.toastr.error('El dispositivo '.concat(track.label, ' no soporta Zoom.'));
+      this.webSocketService.notifyRoom({
+        idPeer: this.peer.id,
+        roomName: this.cameraId,
+        message: [{zoomErr: true, msg: 'El dispositivo '.concat(track.label, ' no soporta Zoom.')}]
+      });
+    } else {
+      let zoom = settings.zoom;
+      zoom = isIn ? (zoom + 1) : (zoom - 1);
+      track.applyConstraints({advanced: [ {zoom: zoom} ]});
     }
-    this.zoom = this.zoom + 10;
-    track.applyConstraints({advanced: [ {zoom: this.zoom} ]});
   }
 
   /**
