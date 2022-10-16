@@ -25,6 +25,7 @@ declare var MediaRecorder: any;
 export class AppVideoPlayerComponent implements OnInit, OnDestroy {
 
   public faces: any[] = [];
+  public zoom: number = 0;
   public expressions: any = { 'angry': 'Molesto', 'disgusted': 'Asqueado', 'fearful': 'Atemorizado', 'happy': 'Feliz', 'neutral': 'Neutral', 'sad': 'Triste', 'surprised': 'Sorprendido' };
   public identity;
   public last: boolean= false;
@@ -375,6 +376,21 @@ export class AppVideoPlayerComponent implements OnInit, OnDestroy {
           }
         });
     };
+  }
+
+  /**
+   * zoomIn
+   */
+  public zoomIn() {
+    const [track] = this.localStream.getVideoTracks();
+    const settings = track.getSettings();
+
+    // Check whether zoom is supported or not.
+    if (!('zoom' in settings)) {
+      this.toastr.error('El dispositivo '.concat(track.label, ' no soporta Zoom.'))
+    }
+    this.zoom = this.zoom + 10;
+    track.applyConstraints({advanced: [ {zoom: this.zoom} ]});
   }
 
   /**

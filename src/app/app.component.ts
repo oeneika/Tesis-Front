@@ -35,10 +35,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.swPush = JSON.parse(localStorage.getItem('swPush'));
-    this.initSocket();
-    this.getCamerasByUser();
+    if (this.userService.identity) {
+      this.swPush = JSON.parse(localStorage.getItem('swPush'));
+      this.initSocket();
+      this.getCamerasByUser();
+    }
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
         return;
