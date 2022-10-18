@@ -7,6 +7,7 @@ export class Face {
     public gender: string,
     public image: string,
     public confidenceLevels: string,
-    public user: string
+    public user: string,
+    public unknown: boolean
   ) {}
 }

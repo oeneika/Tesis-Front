@@ -36,7 +36,7 @@ export class ConfidenceLevelsComponent implements OnInit {
   ) {
     this.identity = this._userService.identity;
     this.token = this._userService.token;
-    this.face = new Face("", "", "", "", "", "", "", "");
+    this.face = new Face("", "", "", "", "", "", "", "", true);
     this.url = environment.url;
   }
 
@@ -87,6 +87,9 @@ export class ConfidenceLevelsComponent implements OnInit {
   }
 
   onSubmitEdit() {
+    if (this.face.confidenceLevels !== '634ad8c8043dd000160b3585') {
+      this.face.unknown = false;
+    }
     this._faceService.editFace(this.face).subscribe(
       (data) => {
         this.face = data.face;
@@ -115,6 +118,9 @@ export class ConfidenceLevelsComponent implements OnInit {
   onSubmit() {
     let payload = this.face;
     payload.user = this.identity;
+    if (payload.confidenceLevels !== '634ad8c8043dd000160b3585') {
+      payload.unknown = false;
+    }
     this._faceService.addFace(payload).subscribe(
       (data) => {
         this.face = data.face;
@@ -129,7 +135,7 @@ export class ConfidenceLevelsComponent implements OnInit {
             this.face.image = result.image;
             localStorage.setItem("identity", JSON.stringify(this.identity));
             this.toastr.success('El usuario ha sido agregado con éxito.');
-            this.face = new Face("", "", "", "", "", "", "", "");
+            this.face = new Face("", "", "", "", "", "", "", "", true);
             this.getFaces();
           });
         }

@@ -167,6 +167,7 @@ export class CameraComponent implements OnInit {
         this.hideModal();
         this.toastr.success('Cámara creada exitosamente');
         this.getCamera();
+        this.getCamerasByUser();
       },
       (err) => {
         console.log(err);

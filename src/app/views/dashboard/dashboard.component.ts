@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(private modalService: BsModalService, private _camerasService: CamerasService, private _confidenceLevels: ConfidenceLevelsService,private _faceService: FaceService, private _reportsService: ReportsService,
     private _userService: UserService){
-      this.face = new Face("", "", "", "", "", "", "", "");
+      this.face = new Face("", "", "", "", "", "", "", "", true);
       this.token = this._userService.token;
       this.identity = this._userService.identity;
       this.url = environment.url;
@@ -191,7 +191,7 @@ export class DashboardComponent implements OnInit {
             localStorage.setItem("identity", JSON.stringify(this.identity));
           });
         }
-        this.face = new Face("", "", "", "", "", "", "", "");
+        this.face = new Face("", "", "", "", "", "", "", "", true);
         this.getFaces();
         this.modalRef.hide();
       },
