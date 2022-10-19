@@ -50,7 +50,9 @@ export class ListCamerasComponent implements OnInit, OnDestroy {
       if (res.name === "retrieve-rooms" && res.data.confirmedCamera) {
         console.log('Lo que me encontre: ', this.cameras.find(cam => cam.cameraId._id === res.data.cameraId));
         const alreadyAdded = this.liveCameras.findIndex(cam => cam.cameraId._id === res.data.cameraId) >= 0;
-        this.liveCameras.push(this.cameras.find(cam => !alreadyAdded && cam.cameraId._id === res.data.cameraId));
+        if (!alreadyAdded) {
+          this.liveCameras.push(this.cameras.find(cam => cam.cameraId.name && (cam.cameraId._id === res.data.cameraId)));
+        }
       } else if (res.name === 'new-user') {
         this.getCamerasByUser();
       } else if (res.name === 'bye-user') {
