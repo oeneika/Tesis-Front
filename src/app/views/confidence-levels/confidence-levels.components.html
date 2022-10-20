@@ -6,7 +6,7 @@
        <div class="col-sm-6">
           <div style="text-align: right">
              <button class="btn btn-primary botones mb-3" (click)="openModal(AddUser)">
-             Agregar usuario
+             Agregar rostro
              </button>
           </div>
        </div>
@@ -27,7 +27,7 @@
               </div>
               <div class="card-body">
                 <ng-container *ngIf="level?.faces?.length === 0">
-                  <span class="no-text-msg">No existen usuarios para este nivel de confianza</span>
+                  <span class="no-text-msg">No existen rostros para este nivel de confianza</span>
                 </ng-container>
                 <ng-container *ngIf="level?.faces?.length > 0">
                   <div class="table-responsive">
@@ -49,7 +49,7 @@
                               <td>
                                   <ng-container *ngIf="face?.image;else other_content">
                                     <div class="image-confidence-level" [ngStyle]="{
-                                        'background-image': 'url(' + envUrl + 'get-image-face/' + face?.image + ')'
+                                        'background-image': 'url('  + envUrl + imageURL(face?.image) + face?.image+ ')'
                                         }"></div>
                                   </ng-container>
                                   <ng-template #other_content>
@@ -88,7 +88,7 @@
  <!-- AGREGAR USUARIO-->
  <ng-template #AddUser>
     <div class="modal-header">
-       <h4 class="modal-title pull-left">Agregar usuario</h4>
+       <h4 class="modal-title pull-left">Agregar rostro</h4>
        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
        <span aria-hidden="true">&times;</span>
        </button>
@@ -150,7 +150,7 @@
           <div class="row">
              <div class="col-sm-12">
                 <div class="form-group row">
-                   <label class="col-md-12 col-form-label" for="file-input">Retrato del usuario</label
+                   <label class="col-md-12 col-form-label" for="file-input">Retrato del rostro</label
                       >
                    <div class="col-md-12">
                       <input
@@ -172,7 +172,7 @@
  <!-- EDITAR USUARIO-->
  <ng-template #EditUser>
     <div class="modal-header">
-       <h4 class="modal-title pull-left">Editar usuario</h4>
+       <h4 class="modal-title pull-left">Editar rostro</h4>
        <button
           type="button"
           class="close pull-right"
@@ -249,7 +249,7 @@
              <div class="row">
                 <div class="col-sm-12">
                    <div class="form-group row">
-                      <label class="col-md-12 col-form-label" for="file-input">Retrato del usuario</label
+                      <label class="col-md-12 col-form-label" for="file-input">Retrato del rostro</label
                          >
                       <div class="col-md-12">
                          <input

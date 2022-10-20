@@ -133,7 +133,8 @@ export class NotificationsComponent implements OnInit {
         (data) => {
           this.face = data.face;
           this.modalRef.hide();
-          this._toastr.success('Rostro agregado satisfactoriamente a los niveles de confianza')
+          this._toastr.success('Rostro agregado satisfactoriamente a los niveles de confianza');
+          this.getNotifications();
         },
         (err) => {}
       );

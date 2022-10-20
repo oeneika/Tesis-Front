@@ -38,7 +38,7 @@
                                         <td style="text-align: center;">
                                             <i class="fa fa-{{notification?.seen ? 'check-circle' : 'exclamation-circle'}} fa-lg" [ngStyle]="{'color': notification?.seen ? '#3EA662' : '#5294E2'}" [title]="notification?.seen ? 'Vista' : 'Nueva'"></i></td>
                                         <td style="text-align: center;">
-                                            <button (click)="downloadImage(imageFile(notification?.image), notification?.image)" class="btn btn-success botones">
+                                            <button (click)="downloadImage(imageFile(notification?.image), notification?.image)" class="btn btn-success botones mr-2">
                                                 <i class="fa fa-download fa-lg"></i> Descargar
                                             </button>
                                             <button (click)="openNotification(OpenUser, notification)" class="btn btn-primary botones">
@@ -120,7 +120,7 @@
       </div>
    </div>
    <div *ngIf="recording?.face?.unknown" class="d-flex">
-      <div class="col-sm-12">
+      <div class="col-sm-12 mb-2">
          <label for="confidenceLevels">Niveles de confianza</label>
          <select class="form-control" name="confidenceLevels" [(ngModel)]="face.confidenceLevels">
            <option class="placeholder" [value]="null" disabled>

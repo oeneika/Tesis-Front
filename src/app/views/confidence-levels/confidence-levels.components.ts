@@ -105,6 +105,7 @@ export class ConfidenceLevelsComponent implements OnInit {
             this.face.image = result.image;
             localStorage.setItem("identity", JSON.stringify(this.identity));
             this.toastr.success('El usuario ha sido editado con éxito.');
+            this.getFaces();
           });
         }
 
@@ -143,6 +144,14 @@ export class ConfidenceLevelsComponent implements OnInit {
       },
       (err) => {}
     );
+  }
+
+  public hasFormat(name: string) {
+    return name.includes('.jpg') || name.includes('.png') || name.includes('.svg') || name.includes('.jpeg');
+  }
+
+  public imageURL(name: string) {
+    return this.hasFormat(name) ? 'get-image-face/' : 'get-image/';
   }
 
   public filesToUpload: Array<File>;
